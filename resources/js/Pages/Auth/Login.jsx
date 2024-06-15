@@ -106,8 +106,15 @@ export default function Login({ status, canResetPassword }) {
                 </div>
             </form>
             <div className=" text-mainText text-sm  border-t-2 border-gray-200 flex items-center justify-between w-full mt-6 pt-6 ">
-                <h1>Become a seller</h1>
-                <h1>Create an account</h1>
+                <Link className="hover:text-slate-700 duration-200 ease-in-out hover:font-medium">
+                    Become a seller
+                </Link>
+                <Link
+                    href={route("register")}
+                    className="hover:text-slate-700 duration-200 ease-in-out hover:font-medium"
+                >
+                    Create an account
+                </Link>
             </div>
         </GuestLayout>
     );
