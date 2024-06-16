@@ -1,4 +1,4 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import shopImage from "../../assets/shop_page_asset.jpg";
 

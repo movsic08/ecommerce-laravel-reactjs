@@ -4,6 +4,10 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
+import UserChatIcon from "@/assets/icons/UserChatIcon.svg";
+import UserCartIcon from "@/assets/icons/UserCartIcon.svg";
+import SearchIcon from "@/assets/icons/SearchIcon.svg";
+import HeartIcon from "@/assets/icons/HeartIcon.svg";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -54,8 +58,34 @@ export default function Authenticated({ user, header, children }) {
                             </NavLink>
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
-                            <div className="ms-3 relative">
+                        <div className=" gap-3 flex sm:items-center sm:ms-6">
+                            <img
+                                className=" h-6 "
+                                src={SearchIcon}
+                                alt="search icon"
+                            />
+                            <img
+                                className=" h-6 "
+                                src={HeartIcon}
+                                alt="heart icon"
+                            />
+                            <img
+                                className=" h-6 "
+                                src={UserChatIcon}
+                                alt="chat icon"
+                            />
+                            <div className=" relative">
+                                <span className=" absolute -top-2 -right-2 text-sm font-bold">
+                                    2
+                                </span>
+                                <img
+                                    className=" h-6 "
+                                    src={UserCartIcon}
+                                    alt="cart icon"
+                                />
+                            </div>
+
+                            <div className=" relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
@@ -63,7 +93,7 @@ export default function Authenticated({ user, header, children }) {
                                                 type="button"
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {user.name}
+                                                {user.fname}
 
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
@@ -80,7 +110,6 @@ export default function Authenticated({ user, header, children }) {
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
-
                                     <Dropdown.Content>
                                         <Dropdown.Link
                                             href={route("profile.edit")}
