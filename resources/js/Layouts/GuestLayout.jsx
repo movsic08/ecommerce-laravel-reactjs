@@ -1,7 +1,5 @@
-import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Link } from "@inertiajs/react";
 import GuestHeader from "./GuestHeader";
-import GuestFooter from "./GuestFooter";
 
 export default function Guest({ children }) {
     return (
@@ -12,7 +10,6 @@ export default function Guest({ children }) {
                     {children}
                 </div>
             </main>
-            <GuestFooter />
         </div>
     );
 }
