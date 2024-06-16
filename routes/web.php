@@ -17,6 +17,23 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/shop', function () {
+    return Inertia::render('User/Shop');
+})->middleware(['auth'])->name('shop');
+
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->middleware(['auth'])->name('about');
+
+Route::get('/blog', function () {
+    return Inertia::render('Blog');
+})->middleware(['auth'])->name('blog');
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->middleware(['auth'])->name('contact');
+
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
