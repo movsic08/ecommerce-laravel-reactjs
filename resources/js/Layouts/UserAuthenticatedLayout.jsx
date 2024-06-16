@@ -8,6 +8,7 @@ import UserChatIcon from "@/assets/icons/UserChatIcon.svg";
 import UserCartIcon from "@/assets/icons/UserCartIcon.svg";
 import SearchIcon from "@/assets/icons/SearchIcon.svg";
 import HeartIcon from "@/assets/icons/HeartIcon.svg";
+import Logo from "@/assets/icons/Logo.svg";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -19,8 +20,8 @@ export default function Authenticated({ user, header, children }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="shrink-0 flex items-center">
-                            <Link href="/">
-                                <h1>LOGO</h1>
+                            <Link href="/" className=" flex items-center gap-1">
+                                <img className=" h-12" src={Logo} alt="Logo" />
                                 <h1>MADEBYHANDS</h1>
                             </Link>
                         </div>
