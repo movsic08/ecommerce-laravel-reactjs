@@ -10,14 +10,14 @@ export default function NavLink({
         <Link
             {...props}
             className={
-                "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none "
+                "inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none "
             }
         >
             <span
                 className={`border-b-2 ${
                     active
                         ? "border-indigo-400"
-                        : "border-transparent hover:border-gray-300 focus:border-gray-300"
+                        : "border-transparent hover:border-gray-300 "
                 }`}
             >
                 {children}

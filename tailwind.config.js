@@ -18,6 +18,8 @@ export default {
             backgroundColor: {
                 footer: "#222222",
                 header: "#FFC8A9",
+                secondaryColor: "#FF914D",
+                thirdColor: "#222222",
             },
             textColor: {
                 mainText: "#403E3E",

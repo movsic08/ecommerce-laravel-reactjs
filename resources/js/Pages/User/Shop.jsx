@@ -1,13 +1,14 @@
-import AuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
+import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import shopImage from "../../assets/shop_page_asset.jpg";
 import StarRating from "@/Components/StarRating";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
+import { Link } from "@inertiajs/react";
 
 export default function Shop({ auth }) {
     return (
-        <AuthenticatedLayout
+        <UserAuthenticatedLayout
             user={auth.user}
             // header={
             //     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
@@ -151,7 +152,10 @@ export default function Shop({ auth }) {
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    <div className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden">
+                                    <Link
+                                        href={route("view-product", 123)}
+                                        className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
+                                    >
                                         <a href="#">
                                             <img
                                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
@@ -170,13 +174,13 @@ export default function Shop({ auth }) {
                                                 Php 400.00
                                             </p>
                                         </div>
-                                    </div>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </UserAuthenticatedLayout>
     );
 }
