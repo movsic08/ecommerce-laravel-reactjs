@@ -24,6 +24,10 @@ Route::get('/dashboard', function () {
 Route::get('/shop', function () {
   return Inertia::render('User/Shop');
 })->middleware(['auth'])->name('shop');
+Route::get('/messages', function () {
+  return Inertia::render('User/UserMessages');
+})->middleware(['auth'])->name('user-messages');
+
 
 Route::get('/shop/view={productid}', function () {
   return Inertia::render('User/ViewProduct');

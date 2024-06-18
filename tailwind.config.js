@@ -23,6 +23,7 @@ export default {
             },
             textColor: {
                 mainText: "#403E3E",
+                themeColor: "#FF914D",
             },
         },
     },

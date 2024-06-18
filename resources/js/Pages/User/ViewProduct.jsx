@@ -30,14 +30,7 @@ export default function ViewProduct({ auth }) {
 
     return (
         <>
-            <UserAuthenticatedLayout
-                user={auth.user}
-                // header={
-                //     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                //         Dashboard
-                //     </h2>
-                // }
-            >
+            <UserAuthenticatedLayout user={auth.user}>
                 <Head title="Product name" />
                 <div className="py-12 bg-slate-50 h-full ">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
