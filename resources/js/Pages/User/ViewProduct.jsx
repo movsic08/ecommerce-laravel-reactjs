@@ -20,6 +20,14 @@ export default function ViewProduct({ auth }) {
         );
     };
 
+    //photo carnival
+    const [currentPhoto, setCurrentPhoto] = useState(
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+    );
+    const changePhoto = (src) => {
+        setCurrentPhoto(src);
+    };
+
     return (
         <>
             <UserAuthenticatedLayout
@@ -38,31 +46,51 @@ export default function ViewProduct({ auth }) {
                                 <div className="w-[40%] h-full ">
                                     <div className=" p-3 rounded-md bg-slate-200">
                                         <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                                            src={currentPhoto}
                                             alt="Sample Image"
                                             className="rounded-md h-[25rem] w-full object-cover"
                                         />
                                     </div>
                                     <div className=" flex gap-2 mt-2">
                                         <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbPMPtHRj9L90QtmKd4b9wGeO5rtoQj1_R5A&s"
+                                            onClick={() => {
+                                                changePhoto(
+                                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                                                );
+                                            }}
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
                                             alt="Sample Image"
-                                            className="rounded-md h-[7rem] w-[7rem]  object-cover"
+                                            className="rounded-md h-[7rem] w-[7rem]  cursor-pointer object-cover p-2  bg-secondaryColor"
                                         />
                                         <img
+                                            onClick={() => {
+                                                changePhoto(
+                                                    "https://p.globalsources.com/IMAGES/PDT/B1186575162/lady-handbag.jpg"
+                                                );
+                                            }}
                                             src="https://p.globalsources.com/IMAGES/PDT/B1186575162/lady-handbag.jpg"
                                             alt="Sample Image"
-                                            className="rounded-md h-[7rem] w-[7rem]  object-cover"
+                                            className="rounded-md h-[7rem] w-[7rem]  cursor-pointer object-cover"
                                         />
                                         <img
+                                            onClick={() => {
+                                                changePhoto(
+                                                    "https://m.media-amazon.com/images/I/31fEusvQBML._AC_SY580_.jpg"
+                                                );
+                                            }}
                                             src="https://m.media-amazon.com/images/I/31fEusvQBML._AC_SY580_.jpg"
                                             alt="Sample Image"
-                                            className="rounded-md h-[7rem] w-[7rem]  object-cover"
+                                            className="rounded-md h-[7rem] w-[7rem]  cursor-pointer object-cover"
                                         />
                                         <img
+                                            onClick={() => {
+                                                changePhoto(
+                                                    "https://my-test-11.slatic.net/p/7baf0d1de165ee94a44efc319a5798ea.jpg"
+                                                );
+                                            }}
                                             src="https://my-test-11.slatic.net/p/7baf0d1de165ee94a44efc319a5798ea.jpg"
                                             alt="Sample Image"
-                                            className="rounded-md h-[7rem] w-[7rem]  object-cover"
+                                            className="rounded-md h-[7rem] w-[7rem]  cursor-pointer object-cover"
                                         />
                                     </div>
                                 </div>
