@@ -20,6 +20,7 @@ export default {
                 header: "#FFC8A9",
                 secondaryColor: "#FF914D",
                 thirdColor: "#222222",
+                themeColor: "#FF914D",
             },
             textColor: {
                 mainText: "#403E3E",

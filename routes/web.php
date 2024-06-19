@@ -27,6 +27,9 @@ Route::get('/shop', function () {
 Route::get('/messages', function () {
   return Inertia::render('User/UserMessages');
 })->middleware(['auth'])->name('user-messages');
+Route::get('/cart', function () {
+  return Inertia::render('User/Cart');
+})->middleware(['auth'])->name('user-cart');
 
 
 Route::get('/shop/view={productid}', function () {

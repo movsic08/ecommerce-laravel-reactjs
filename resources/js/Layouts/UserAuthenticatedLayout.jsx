@@ -76,17 +76,18 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                                     alt="chat icon"
                                 />
                             </NavLink>
-                            <div className=" relative">
-                                <span className=" absolute -top-2 -right-2 text-sm font-bold">
-                                    2
-                                </span>
-                                <img
-                                    className=" h-6 "
-                                    src={UserCartIcon}
-                                    alt="cart icon"
-                                />
-                            </div>
-
+                            <NavLink href={route("user-cart")}>
+                                <div className=" relative">
+                                    <span className=" absolute -top-2 -right-2 text-sm font-bold">
+                                        2
+                                    </span>
+                                    <img
+                                        className=" h-6 "
+                                        src={UserCartIcon}
+                                        alt="cart icon"
+                                    />
+                                </div>
+                            </NavLink>
                             <div className=" relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>

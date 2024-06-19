@@ -1,25 +1,14 @@
 import StarRating from "@/Components/StarRating";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { useState } from "react";
 import { GoHeart } from "react-icons/go";
+import { useState } from "react";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaPinterest } from "react-icons/fa";
+import Quantity from "@/Components/Quantity";
 
 export default function ViewProduct({ auth }) {
-    const [quantity, setQuantity] = useState(0);
-
-    const handleAdd = () => {
-        setQuantity((prevQuantity) => prevQuantity + 1);
-    };
-
-    const handleSubtract = () => {
-        setQuantity((prevQuantity) =>
-            prevQuantity > 0 ? prevQuantity - 1 : 0
-        );
-    };
-
     //photo carnival
     const [currentPhoto, setCurrentPhoto] = useState(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
@@ -104,26 +93,7 @@ export default function ViewProduct({ auth }) {
                                         gives a illusion of being by the sea.
                                     </p>
                                     <div className=" mt-4">
-                                        <strong className=" text-lg">
-                                            Quantity:{" "}
-                                        </strong>
-                                        <div className="flex items-center text-white ">
-                                            <button
-                                                className=" bg-thirdColor rounded-l-xl  font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 "
-                                                onClick={handleSubtract}
-                                            >
-                                                -
-                                            </button>
-                                            <span className="text-lg bg-thirdColor py-1 mx-1 px-4  font-semibold">
-                                                {quantity}
-                                            </span>
-                                            <button
-                                                className=" bg-thirdColor rounded-r-xl  font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 "
-                                                onClick={handleAdd}
-                                            >
-                                                +
-                                            </button>
-                                        </div>
+                                        <Quantity quantity={2} />
                                     </div>
                                     <div className=" flex gap-2 items-center mt-4 ">
                                         <button className=" text-white px-2 py-1 rounded-md bg-secondaryColor ">
