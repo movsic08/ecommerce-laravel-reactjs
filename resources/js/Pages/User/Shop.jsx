@@ -165,12 +165,11 @@ export default function Shop({ auth }) {
                                                 }
                                                 className="mx-auto h-48 w-full object-cover"
                                             />
-
-                                            <div className="p-4 text-center flex-grow">
-                                                <p className="line-clamp-2">
+                                            <div className="p-4 text-center h-fit flex flex-col">
+                                                <p className="line-clamp-2 h-[5vw] grow ">
                                                     {product.product_name}
                                                 </p>
-                                                <div className="flex flex-col justify-end items-center">
+                                                <div className="flex  flex-none flex-col ">
                                                     <StarRating
                                                         rating={product.rating}
                                                     />
