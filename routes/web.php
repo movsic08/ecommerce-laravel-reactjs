@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -21,9 +22,8 @@ Route::get('/dashboard', function () {
   return Inertia::render('Dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/shop', function () {
-  return Inertia::render('User/Shop');
-})->middleware(['auth'])->name('shop');
+Route::get('/shop', [ProductsController::class, 'allProducts'])->middleware(['auth'])->name('shop');
+
 Route::get('/messages', function () {
   return Inertia::render('User/UserMessages');
 })->middleware(['auth'])->name('user-messages');

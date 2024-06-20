@@ -1,12 +1,15 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
 import shopImage from "../../assets/shop_page_asset.jpg";
 import StarRating from "@/Components/StarRating";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
-import { Link } from "@inertiajs/react";
+import { Link, Head, usePage } from "@inertiajs/react";
+import { useState, useEffect, React } from "react";
 
 export default function Shop({ auth }) {
+    const { products } = usePage().props;
+    console.log(products);
+
     return (
         <UserAuthenticatedLayout
             user={auth.user}
