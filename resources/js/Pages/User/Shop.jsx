@@ -8,17 +8,10 @@ import { useState, useEffect, React } from "react";
 
 export default function Shop({ auth }) {
     const { products } = usePage().props;
-    // console.log(products);
+    console.log(products);
 
     return (
-        <UserAuthenticatedLayout
-            user={auth.user}
-            // header={
-            //     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-            //         Dashboard
-            //     </h2>
-            // }
-        >
+        <UserAuthenticatedLayout user={auth.user}>
             <Head title="Shop" />
             <img
                 className="  object-cover  h-36 w-full "
@@ -132,7 +125,7 @@ export default function Shop({ auth }) {
                                 </div>
                             </div>
 
-                            <div className="w-full md:w-2/3 lg:w-3/4 bg-white p-4 overflow-y-auto">
+                            <div className="w-full md:w-2/3 lg:w-3/4 bg-white p-4 ">
                                 <div className=" flex w-full  justify-between items-center mb-2">
                                     <div className="  flex items-center gap-2">
                                         <BsGrid3X3GapFill size={30} />
@@ -155,28 +148,29 @@ export default function Shop({ auth }) {
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    <Link
-                                        href={route("view-product", 123)}
-                                        className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
-                                    >
-                                        <img
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                                            alt="Sample Image"
-                                            className="mx-auto h-48 w-full object-cover"
-                                        />
+                                    {products.map((product) => (
+                                        <Link
+                                            key={product.id}
+                                            href={route("view-product", 123)}
+                                            className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
+                                        >
+                                            <img
+                                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                                                alt="Sample Image"
+                                                className="mx-auto h-48 w-full object-cover"
+                                            />
 
-                                        <div className="p-4 text-center">
-                                            <p className="  line-clamp-2 ">
-                                                Pullout Bags LV Pullout Bags LV
-                                                Pullout Bags LV Pullout Bags LV
-                                                Pullout Bags LV Pullout Bags LV
-                                            </p>
-                                            <StarRating rating={10} />
-                                            <p className="font-semibold">
-                                                Php 400.00
-                                            </p>
-                                        </div>
-                                    </Link>
+                                            <div className="p-4 text-center">
+                                                <p className="  line-clamp-2 ">
+                                                    {product.product_name}
+                                                </p>
+                                                <StarRating rating={10} />
+                                                <p className="font-semibold">
+                                                    Php 400.00
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
                             </div>
                         </div>
