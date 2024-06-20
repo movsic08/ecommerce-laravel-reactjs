@@ -19,6 +19,7 @@ class ProductsFactory extends Factory
       'rating' => $this->faker->randomFloat(1, 0, 5),
       'quantity' => $this->faker->numberBetween(0, 100),
       'seller_id' => $this->faker->numberBetween(1, 20),
+      'price' => $this->faker->numberBetween(0, 3000.00),
       'category_id' => \App\Models\Categories::inRandomOrder()->first()->id,
       'type' => $this->faker->randomElement(['physical', 'digital']),
     ];

@@ -151,23 +151,33 @@ export default function Shop({ auth }) {
                                     {products.map((product) => (
                                         <Link
                                             key={product.id}
-                                            href={route("view-product", 123)}
+                                            href={route(
+                                                "view-product",
+                                                product.id
+                                            )}
                                             className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
                                         >
                                             <img
                                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                                                alt="Sample Image"
+                                                alt={
+                                                    product.product_name +
+                                                    " Image"
+                                                }
                                                 className="mx-auto h-48 w-full object-cover"
                                             />
 
-                                            <div className="p-4 text-center">
-                                                <p className="  line-clamp-2 ">
+                                            <div className="p-4 text-center flex-grow">
+                                                <p className="line-clamp-2">
                                                     {product.product_name}
                                                 </p>
-                                                <StarRating rating={10} />
-                                                <p className="font-semibold">
-                                                    Php 400.00
-                                                </p>
+                                                <div className="flex flex-col justify-end items-center">
+                                                    <StarRating
+                                                        rating={product.rating}
+                                                    />
+                                                    <p className="font-semibold">
+                                                        Php {product.price}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </Link>
                                     ))}
