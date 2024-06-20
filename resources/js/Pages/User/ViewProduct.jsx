@@ -1,6 +1,6 @@
 import StarRating from "@/Components/StarRating";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { GoHeart } from "react-icons/go";
 import { useState } from "react";
 import { FaFacebookSquare } from "react-icons/fa";
@@ -9,6 +9,8 @@ import { FaPinterest } from "react-icons/fa";
 import Quantity from "@/Components/Quantity";
 
 export default function ViewProduct({ auth }) {
+    const { product } = usePage().props;
+
     //photo carnival
     const [currentPhoto, setCurrentPhoto] = useState(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
@@ -20,7 +22,7 @@ export default function ViewProduct({ auth }) {
     return (
         <>
             <UserAuthenticatedLayout user={auth.user}>
-                <Head title="Product name" />
+                <Head title={product.product_name} />
                 <div className="py-12 bg-slate-50 h-full ">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="container mx-auto p-4">
@@ -29,7 +31,7 @@ export default function ViewProduct({ auth }) {
                                     <div className=" p-3 rounded-md bg-slate-200">
                                         <img
                                             src={currentPhoto}
-                                            alt="Sample Image"
+                                            alt={product.product_name + "Image"}
                                             className="rounded-md h-[25rem] w-full object-cover"
                                         />
                                     </div>
@@ -78,22 +80,17 @@ export default function ViewProduct({ auth }) {
                                 </div>
                                 <div className="px-10 w-[60%] ">
                                     <h1 className=" text-3xl">
-                                        Nasa Cowrie Shell Chandelier
+                                        {product.product_name}
                                     </h1>
-                                    <p className="mt-2 text-2xl">Php 300.00</p>
-                                    <StarRating rating={4.5} />
+                                    <p className="mt-2 text-2xl">
+                                        Php {product.price}
+                                    </p>
+                                    <StarRating rating={product.rating} />
                                     <p className=" text-lg mt-2">
-                                        Nasa Cowrie Shell Chandelier (30") This
-                                        beautiful hanging Chandelier is made of
-                                        thousands of shells of 4 different
-                                        species in the islands the money cowrie
-                                        is a symbol of good luck that will bring
-                                        you fortune. These baskets are a
-                                        complement to any patio or garden and
-                                        gives a illusion of being by the sea.
+                                        {product.description}
                                     </p>
                                     <div className=" mt-4">
-                                        <Quantity quantity={2} />
+                                        <Quantity quantity={product.quantity} />
                                     </div>
                                     <div className=" flex gap-2 items-center mt-4 ">
                                         <button className=" text-white px-2 py-1 rounded-md bg-secondaryColor ">

@@ -8,7 +8,6 @@ import { useState, useEffect, React } from "react";
 
 export default function Shop({ auth }) {
     const { products } = usePage().props;
-    console.log(products);
 
     return (
         <UserAuthenticatedLayout user={auth.user}>

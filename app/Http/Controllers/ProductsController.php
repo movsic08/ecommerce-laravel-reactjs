@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Products;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -17,4 +18,19 @@ class ProductsController extends Controller
       'products' => $products,
     ]);
   }
+  public function viewProduct($productid)
+  {
+    try {
+      $product = Products::findOrFail($productid);
+      return Inertia::render('User/ViewProduct', [
+        'product' => $product
+      ]);
+    } catch (ModelNotFoundException $e) {
+      return response()->json(['message' => 'Product not found.']);
+    }
+
+  }
+
+
+
 }

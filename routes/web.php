@@ -32,9 +32,7 @@ Route::get('/cart', function () {
 })->middleware(['auth'])->name('user-cart');
 
 
-Route::get('/shop/view={productid}', function () {
-  return Inertia::render('User/ViewProduct');
-})->middleware(['auth'])->name('view-product');
+Route::get('/shop/view={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
 
 
 Route::get('/about', function () {
