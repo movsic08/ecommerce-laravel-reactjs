@@ -7,6 +7,7 @@ import { FaFacebookSquare } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaPinterest } from "react-icons/fa";
 import Quantity from "@/Components/Quantity";
+import AddToCart from "@/Components/AddToCart";
 
 export default function ViewProduct({ auth }) {
     const { product } = usePage().props;
@@ -19,10 +20,29 @@ export default function ViewProduct({ auth }) {
         setCurrentPhoto(src);
     };
 
+    const [modalOpen, setModalOpen] = useState(false);
+
+    const toggleModal = () => {
+        setModalOpen(!modalOpen);
+    };
+
     return (
         <>
             <UserAuthenticatedLayout user={auth.user}>
                 <Head title={product.product_name} />
+
+                {/* Modal */}
+                <AddToCart
+                    isOpen={modalOpen}
+                    onClose={toggleModal}
+                    itemImage={
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                    }
+                    price={product.price}
+                    stock={product.quantity}
+                    name={product.product_name}
+                    rating={product.rating}
+                />
                 <div className="py-12 bg-slate-50 h-full ">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="container mx-auto p-4">
@@ -93,8 +113,11 @@ export default function ViewProduct({ auth }) {
                                         <Quantity quantity={product.quantity} />
                                     </div>
                                     <div className=" flex gap-2 items-center mt-4 ">
-                                        <button className=" text-white px-2 py-1 rounded-md bg-secondaryColor ">
-                                            View cart
+                                        <button
+                                            onClick={toggleModal}
+                                            className=" text-white px-2 py-1 rounded-md bg-secondaryColor "
+                                        >
+                                            Add to cart
                                         </button>
                                         <GoHeart size={30} />
                                     </div>

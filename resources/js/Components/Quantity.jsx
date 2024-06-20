@@ -1,10 +1,13 @@
 import { useState, React } from "react";
 
-export default function Quantity({ quantity }) {
-    const [currentQuantity, setCurrentQuantity] = useState(quantity);
+export default function Quantity({ quantity, currentStock }) {
+    const initialQuality = quantity ?? 0;
+    const [currentQuantity, setCurrentQuantity] = useState(initialQuality);
 
     const handleAdd = () => {
-        setCurrentQuantity((prevQuantity) => prevQuantity + 1);
+        setCurrentQuantity((prevQuantity) =>
+            prevQuantity < currentStock ? prevQuantity + 1 : prevQuantity
+        );
     };
 
     const handleSubtract = () => {
@@ -15,7 +18,7 @@ export default function Quantity({ quantity }) {
 
     return (
         <>
-            <strong className="text-lg">Quantity:</strong>
+            <strong className="text-md">Quantity:</strong>
             <div className="flex items-center text-white ">
                 <button
                     className="bg-thirdColor rounded-l-xl font-bold py-2 px-4 rounded focus:outline-none focus:ring-2"
