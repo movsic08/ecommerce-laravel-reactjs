@@ -159,13 +159,12 @@ export default function Shop({ auth }) {
                                         href={route("view-product", 123)}
                                         className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
                                     >
-                                        <a href="#">
-                                            <img
-                                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                                                alt="Sample Image"
-                                                className="mx-auto h-48 w-full object-cover"
-                                            />
-                                        </a>
+                                        <img
+                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                                            alt="Sample Image"
+                                            className="mx-auto h-48 w-full object-cover"
+                                        />
+
                                         <div className="p-4 text-center">
                                             <p className="  line-clamp-2 ">
                                                 Pullout Bags LV Pullout Bags LV
