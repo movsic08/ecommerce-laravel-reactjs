@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -27,9 +28,7 @@ Route::get('/shop', [ProductsController::class, 'allProducts'])->middleware(['au
 Route::get('/messages', function () {
   return Inertia::render('User/UserMessages');
 })->middleware(['auth'])->name('user-messages');
-Route::get('/cart', function () {
-  return Inertia::render('User/Cart');
-})->middleware(['auth'])->name('user-cart');
+Route::get('/cart', [CartController::class, 'currentCartList'])->middleware(['auth'])->name('user-cart');
 
 
 Route::get('/shop/view={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');

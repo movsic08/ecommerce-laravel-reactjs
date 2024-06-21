@@ -10,6 +10,7 @@ export default function AddToCart({
     price,
     itemImage,
     rating,
+    itemId
 }) {
     const [isVisible, setIsVisible] = useState(true);
 

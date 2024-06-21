@@ -1,7 +1,7 @@
 import Checkbox from "@/Components/Checkbox";
 import Quantity from "@/Components/Quantity";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
@@ -48,78 +48,79 @@ export default function Cart({ auth }) {
             price: 230.0,
         },
     ];
-
+    const { cartsItem } = usePage().props;
+    const isCartEmpty = true;
     return (
         <>
             <UserAuthenticatedLayout user={auth.user}>
                 <Head title="Cart" />
                 <div className="py-12  h-full ">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
-                            {items.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className="flex items-center justify-between p-4 border-b border-gray-200"
-                                >
-                                    <div className="flex items-center">
-                                        <Checkbox
-                                            className=" mr-6"
-                                            checked={checkedItems.includes(
-                                                item.id
-                                            )}
-                                            onChange={(e) =>
-                                                handleCheckboxChange(
-                                                    item.id,
-                                                    e.target.checked
-                                                )
-                                            }
-                                        />
-                                        <img
-                                            src={item.image}
-                                            alt={item.name}
-                                            className="w-16 h-16 mr-4"
-                                        />
-                                        <div>
-                                            <h2 className="text-lg font-semibold">
-                                                {item.name}
-                                            </h2>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center">
-                                        <div className="mr-6">
-                                            <div className="mt-1 relative rounded-md shadow-sm">
-                                                {/* <input
-                                                    type="number"
-                                                    className="text-center w-12 border-gray-300 rounded-md"
-                                                    defaultValue={item.quantity}
-                                                    min="1"
-                                                /> */}
-                                                <Quantity
-                                                    quantity={item.quantity}
-                                                />
+                        {isCartEmpty ? (
+                            <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
+                                Cart is empty.
+                            </div>
+                        ) : (
+                            <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
+                                {items.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        className="flex items-center justify-between p-4 border-b border-gray-200"
+                                    >
+                                        <div className="flex items-center">
+                                            <Checkbox
+                                                className=" mr-6"
+                                                checked={checkedItems.includes(
+                                                    item.id
+                                                )}
+                                                onChange={(e) =>
+                                                    handleCheckboxChange(
+                                                        item.id,
+                                                        e.target.checked
+                                                    )
+                                                }
+                                            />
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="w-16 h-16 mr-4"
+                                            />
+                                            <div>
+                                                <h2 className="text-lg font-semibold">
+                                                    {item.name}
+                                                </h2>
                                             </div>
                                         </div>
-                                        <div className="text-lg mr-4 font-semibold">
-                                            ₱ {item.price.toFixed(2)}
-                                        </div>
-                                        <div className="text-lg  text-red-600 font-semibold">
-                                            <FaTrash />
+                                        <div className="flex items-center">
+                                            <div className="mr-6">
+                                                <div className="mt-1 relative rounded-md shadow-sm">
+                                                    <Quantity
+                                                        quantity={item.quantity}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="text-lg mr-4 font-semibold">
+                                                ₱ {item.price.toFixed(2)}
+                                            </div>
+                                            <div className="text-lg  text-red-600 font-semibold">
+                                                <FaTrash />
+                                            </div>
                                         </div>
                                     </div>
+                                ))}
+                                <div className=" mt-4 px-4 flex w-full items-center justify-between  font-semibold">
+                                    <p className="  text-lg">
+                                        Total Amount{" "}
+                                        <span className=" text-themeColor">
+                                            ₱ {calculateTotalAmount()}
+                                        </span>
+                                    </p>
+                                    <button className=" bg-themeColor py-2 px-3 text-white rounded-lg">
+                                        Checkout ({calculateTotalChecked()})
+                                    </button>
                                 </div>
-                            ))}
-                            <div className=" mt-4 px-4 flex w-full items-center justify-between  font-semibold">
-                                <p className="  text-lg">
-                                    Total Amount{" "}
-                                    <span className=" text-themeColor">
-                                        ₱ {calculateTotalAmount()}
-                                    </span>
-                                </p>
-                                <button className=" bg-themeColor py-2 px-3 text-white rounded-lg">
-                                    Checkout ({calculateTotalChecked()})
-                                </button>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </UserAuthenticatedLayout>
