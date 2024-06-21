@@ -10,7 +10,7 @@ export default function AddToCart({
     price,
     itemImage,
     rating,
-    itemId
+    itemId,
 }) {
     const [isVisible, setIsVisible] = useState(true);
 
@@ -45,7 +45,11 @@ export default function AddToCart({
     return (
         <>
             {isVisible && (
-                <div className="fixed inset-0 z-30 flex items-center justify-center bg-gray-900 bg-opacity-40 backdrop-blur-md">
+                <div
+                    className={`fixed inset-0 flex items-center backdrop-blur-md justify-center bg-gray-900 bg-opacity-50 z-50 transition-opacity ${
+                        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
+                >
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                         <h2 className="text-xl font-bold mb-4">Add to cart</h2>
                         <div className=" flex gap-2">
