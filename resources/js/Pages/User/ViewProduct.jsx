@@ -40,6 +40,7 @@ export default function ViewProduct({ auth }) {
                     }
                     price={product.price}
                     stock={product.quantity}
+                    product_id={product.id}
                     name={product.product_name}
                     rating={product.rating}
                 />
@@ -110,7 +111,7 @@ export default function ViewProduct({ auth }) {
                                         {product.description}
                                     </p>
                                     <div className=" mt-4">
-                                        <Quantity quantity={product.quantity} />
+                                        Stocks: <span>{product.quantity}</span>
                                     </div>
                                     <div className=" flex gap-2 items-center mt-4 ">
                                         <button

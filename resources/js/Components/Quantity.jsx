@@ -1,26 +1,34 @@
-import { useState, React } from "react";
+import { useState, useEffect } from "react";
 
-export default function Quantity({ quantity, currentStock }) {
-    const initialQuality = quantity ?? 0;
-    const [currentQuantity, setCurrentQuantity] = useState(initialQuality);
+export default function Quantity({ quantity, currentStock, onQuantityChange }) {
+    const [currentQuantity, setCurrentQuantity] = useState(quantity);
 
     const handleAdd = () => {
-        setCurrentQuantity((prevQuantity) =>
-            prevQuantity < currentStock ? prevQuantity + 1 : prevQuantity
-        );
+        if (currentQuantity < currentStock) {
+            const newQuantity = currentQuantity + 1;
+            setCurrentQuantity(newQuantity);
+            onQuantityChange(newQuantity);
+        }
     };
 
     const handleSubtract = () => {
-        setCurrentQuantity((prevQuantity) =>
-            prevQuantity > 0 ? prevQuantity - 1 : 0
-        );
+        if (currentQuantity > 0) {
+            const newQuantity = currentQuantity - 1;
+            setCurrentQuantity(newQuantity);
+            onQuantityChange(newQuantity);
+        }
     };
+
+    // useEffect(() => {
+    //     console.log("Current Quantity:", currentQuantity);
+    // }, [currentQuantity]);
 
     return (
         <>
             <strong className="text-md">Quantity:</strong>
-            <div className="flex items-center text-white ">
+            <div className="flex items-center text-white">
                 <button
+                    type="button"
                     className="bg-thirdColor rounded-l-xl font-bold py-2 px-4 rounded focus:outline-none focus:ring-2"
                     onClick={handleSubtract}
                 >
@@ -30,6 +38,7 @@ export default function Quantity({ quantity, currentStock }) {
                     {currentQuantity}
                 </span>
                 <button
+                    type="button"
                     className="bg-thirdColor rounded-r-xl font-bold py-2 px-4 rounded focus:outline-none focus:ring-2"
                     onClick={handleAdd}
                 >
