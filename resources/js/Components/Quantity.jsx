@@ -31,6 +31,7 @@ export default function Quantity({ quantity, currentStock, onQuantityChange }) {
                     type="button"
                     className="bg-thirdColor rounded-l-xl font-bold py-2 px-4 rounded focus:outline-none focus:ring-2"
                     onClick={handleSubtract}
+                    disabled={currentQuantity === 1}
                 >
                     -
                 </button>
@@ -41,6 +42,7 @@ export default function Quantity({ quantity, currentStock, onQuantityChange }) {
                     type="button"
                     className="bg-thirdColor rounded-r-xl font-bold py-2 px-4 rounded focus:outline-none focus:ring-2"
                     onClick={handleAdd}
+                    disabled={currentQuantity === currentStock}
                 >
                     +
                 </button>
