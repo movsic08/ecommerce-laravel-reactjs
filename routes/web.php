@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
+use App\Models\CartItem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,7 +32,11 @@ Route::get('/messages', function () {
 Route::get('/cart', [CartController::class, 'currentCartList'])->middleware(['auth'])->name('user-cart');
 
 
-Route::get('/shop/view={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
+Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
+Route::post('/store-to-cart', [CartController::class, 'addToCart'])->middleware(['auth'])->name('store-to-cart');
+Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
+
+
 
 
 Route::get('/about', function () {

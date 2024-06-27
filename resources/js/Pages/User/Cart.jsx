@@ -1,13 +1,16 @@
 import Checkbox from "@/Components/Checkbox";
 import Quantity from "@/Components/Quantity";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import defaultImgIcon from "../../assets/img/Image-Placeholder.svg";
 
 export default function Cart({ auth }) {
+    const { props } = usePage();
+    // console.log(props.cartsItem);
     const [checkedItems, setCheckedItems] = useState([]);
-    console.log(checkedItems);
+    // console.log(checkedItems);
 
     const handleCheckboxChange = (itemId, isChecked) => {
         if (isChecked) {
@@ -32,7 +35,7 @@ export default function Cart({ auth }) {
         return checkedItems.length; // Count the number of checked items
     };
 
-    const items = [
+    const itemsList = [
         {
             id: 1,
             name: "Wood Car",
@@ -48,15 +51,20 @@ export default function Cart({ auth }) {
             price: 230.0,
         },
     ];
-    const { cartsItem } = usePage().props;
-    const isCartEmpty = true;
+
+    const { setData } = useForm();
+    const items = props.cartsItem;
+    const handleQuantityChange = (newQuantity) => {
+        setData("quantity", newQuantity);
+    };
+
     return (
         <>
             <UserAuthenticatedLayout user={auth.user}>
                 <Head title="Cart" />
                 <div className="py-12  h-full ">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        {isCartEmpty ? (
+                        {props.cartsItem == null ? (
                             <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
                                 Cart is empty.
                             </div>
@@ -81,27 +89,43 @@ export default function Cart({ auth }) {
                                                 }
                                             />
                                             <img
-                                                src={item.image}
-                                                alt={item.name}
+                                                src={
+                                                    item.product.img_path ??
+                                                    defaultImgIcon
+                                                }
+                                                alt={item.product.product_name}
                                                 className="w-16 h-16 mr-4"
                                             />
+
                                             <div>
                                                 <h2 className="text-lg font-semibold">
-                                                    {item.name}
+                                                    {item.product.product_name}
                                                 </h2>
+                                                <small>
+                                                    Stock:{" "}
+                                                    {item.product.quantity}
+                                                </small>
                                             </div>
                                         </div>
                                         <div className="flex items-center">
                                             <div className="mr-6">
                                                 <div className="mt-1 relative rounded-md shadow-sm">
                                                     <Quantity
+                                                        onQuantityChange={
+                                                            handleQuantityChange
+                                                        }
                                                         quantity={item.quantity}
+                                                        currentStock={
+                                                            item.product
+                                                                .quantity
+                                                        }
                                                     />
                                                 </div>
                                             </div>
-                                            <div className="text-lg mr-4 font-semibold">
-                                                ₱ {item.price.toFixed(2)}
-                                            </div>
+                                            <p className="text-lg mr-4 font-semibold whitespace-wrap">
+                                                ₱{" "}
+                                                {item.product.price.toFixed(2)}
+                                            </p>
                                             <div className="text-lg  text-red-600 font-semibold">
                                                 <FaTrash />
                                             </div>
