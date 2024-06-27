@@ -4,6 +4,7 @@ import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import defaultImgIcon from "../../assets/img/Image-Placeholder.svg";
 
 export default function Cart({ auth }) {
     const { props } = usePage();
@@ -88,10 +89,14 @@ export default function Cart({ auth }) {
                                                 }
                                             />
                                             <img
-                                                // src={item.image}
+                                                src={
+                                                    item.product.img_path ??
+                                                    defaultImgIcon
+                                                }
                                                 alt={item.product.product_name}
                                                 className="w-16 h-16 mr-4"
                                             />
+
                                             <div>
                                                 <h2 className="text-lg font-semibold">
                                                     {item.product.product_name}
