@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export default function Quantity({ quantity, currentStock, onQuantityChange }) {
-    const [currentQuantity, setCurrentQuantity] = useState(quantity);
+    const [currentQuantity, setCurrentQuantity] = useState(1);
 
     const handleAdd = () => {
         if (currentQuantity < currentStock) {
@@ -12,7 +12,7 @@ export default function Quantity({ quantity, currentStock, onQuantityChange }) {
     };
 
     const handleSubtract = () => {
-        if (currentQuantity > 0) {
+        if (currentQuantity > 1) {
             const newQuantity = currentQuantity - 1;
             setCurrentQuantity(newQuantity);
             onQuantityChange(newQuantity);

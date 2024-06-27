@@ -26,26 +26,18 @@ class CartController extends Controller
     ]);
 
     try {
-      $cartItem = CartItem::create([
+      CartItem::create([
         'product_id' => $request->product_id,
         'quantity' => $request->quantity,
         'user_id' => auth()->id()
       ]);
-      return response()->json([
-        'message' => 'Item added to cart successfully!', 200
-      ]);
+
+      // dd('quantity' . $request->quantity);
+      return back()->with('message', 'Item added successfully!');
     } catch (\Exception $e) {
       return response()->json([
         'message' => 'Something went wrong!', 500
       ]);
     };
-
-
-
-
-    // return dd(
-    //   $request->product_id,
-    //   'this is the quantity: ' . $request->quantity
-    // );
   }
 }

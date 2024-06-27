@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import StarRating from "./StarRating";
 import Quantity from "./Quantity";
-import { useForm } from "@inertiajs/react";
+import { useForm, router, usePage } from "@inertiajs/react";
 import SpinnerLoading from "./SpinnerLoading";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function AddToCart({
@@ -17,6 +17,7 @@ export default function AddToCart({
     product_id,
 }) {
     const [isVisible, setIsVisible] = useState(true);
+    const [userQuantity, setUserQuantity] = useState(0);
 
     useEffect(() => {
         setIsVisible(isOpen);
@@ -44,59 +45,63 @@ export default function AddToCart({
         onClose();
     };
 
-    const [userQuantity, setUserQuantity] = useState(0);
-
     const handleQuantityChange = (newQuantity) => {
         setData("quantity", newQuantity);
     };
 
-    const { data, post, errors, setData } = useForm({
+    const { data, post, errors, setData, processing } = useForm({
         product_id: product_id,
         quantity: userQuantity,
     });
 
-    const [submitting, setSubmitting] = useState(false);
+    const { flash } = usePage().props;
 
     const submitToCart = async (e) => {
-        setSubmitting(true);
         e.preventDefault();
         try {
-            await post("/store-to-cart"),
-                {
-                    onSuccess: () => {
-                        alert("success");
-                        closeModal();
-                    },
-                    onError: () => {
-                        alert("failed");
-                        closeModal();
-                    },
-                };
-        } catch (error) {}
-        setSubmitting(false);
+            await post("/store-to-cart", {
+                onSuccess: async () => {
+                    toast.success(
+                        flash.message || "Item added to cart successfully!"
+                    );
+                    await sleep(500);
+                    closeModal();
+                },
+                onError: async () => {
+                    toast.error("Something went wrong");
+                    await sleep(500);
+                    closeModal();
+                },
+            });
+        } catch (error) {
+            console.log(error);
+        }
     };
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     return (
         <>
+            <ToastContainer />
             {isVisible && (
                 <div className="fixed inset-0 z-30 flex items-center justify-center bg-gray-900 bg-opacity-40 backdrop-blur-md">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                         <h2 className="text-xl font-bold mb-4">Add to cart</h2>
                         <form onSubmit={submitToCart} method="post">
-                            <div className=" flex gap-2">
+                            <div className="flex gap-2">
                                 <img
                                     src={itemImage}
                                     alt="Sample Image"
-                                    className="rounded-md h-[12rem] w-[12rem]  cursor-pointer object-cover"
+                                    className="rounded-md h-[12rem] w-[12rem] cursor-pointer object-cover"
                                 />
-                                <div className=" grow px-3">
+                                <div className="grow px-3">
                                     <input
                                         type="text"
                                         disabled
                                         value={name}
                                         hidden
                                     />
-                                    <h1 className=" text-slate-800 font-bold text-xl">
+                                    <h1 className="text-slate-800 font-bold text-xl">
                                         {name}
                                     </h1>
                                     <StarRating rating={rating} />
@@ -108,13 +113,13 @@ export default function AddToCart({
                                         currentStock={stock}
                                         onQuantityChange={handleQuantityChange}
                                     />
-                                    <p className=" text-2xl mt-1">
+                                    <p className="text-2xl mt-1">
                                         Price:
                                         <span> Php {price}</span>
                                     </p>
                                 </div>
                             </div>
-                            <div className=" w-full items-center flex mt-2 justify-end">
+                            <div className="w-full items-center flex mt-2 justify-end">
                                 <button
                                     type="button"
                                     onClick={closeModal}
@@ -123,10 +128,11 @@ export default function AddToCart({
                                     Close
                                 </button>
                                 <button
+                                    disabled={processing}
                                     type="submit"
                                     className="bg-blue-500 flex items-center gap-2 text-white px-4 py-2 rounded hover:bg-blue-600"
                                 >
-                                    {!submitting ? (
+                                    {!processing ? (
                                         "Add to cart"
                                     ) : (
                                         <SpinnerLoading loadingInfo="Adding to cart" />

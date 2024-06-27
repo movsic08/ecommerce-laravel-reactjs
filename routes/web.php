@@ -32,7 +32,7 @@ Route::get('/messages', function () {
 Route::get('/cart', [CartController::class, 'currentCartList'])->middleware(['auth'])->name('user-cart');
 
 
-Route::get('/shop/view={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
+Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
 Route::post('/store-to-cart', [CartController::class, 'addToCart'])->middleware(['auth'])->name('store-to-cart');
 
 
