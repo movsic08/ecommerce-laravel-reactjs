@@ -34,6 +34,7 @@ Route::get('/cart', [CartController::class, 'currentCartList'])->middleware(['au
 
 Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
 Route::post('/store-to-cart', [CartController::class, 'addToCart'])->middleware(['auth'])->name('store-to-cart');
+Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
 
 
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
@@ -12,6 +12,37 @@ import Logo from "@/assets/icons/Logo.svg";
 export default function UserAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const [cartNumber, setCartNumber] = useState(0);
+
+    const countCartItems = async () => {
+        try {
+            const response = await fetch("/cart-count", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setCartNumber(data.count);
+            } else {
+                console.error(
+                    "Failed to fetch cart count:",
+                    response.statusText
+                );
+            }
+        } catch (error) {
+            console.error("Failed to fetch cart count:", error);
+        }
+    };
+
+    useEffect(() => {
+        countCartItems();
+    }, []);
+
+    console.log(cartNumber);
 
     return (
         <div className="min-h-screen bg-white">
@@ -79,7 +110,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                             <NavLink href={route("user-cart")}>
                                 <div className=" relative">
                                     <span className=" absolute -top-2 -right-2 text-sm font-bold">
-                                        2
+                                        {cartNumber == 0 ? "" : cartNumber}
                                     </span>
                                     <img
                                         className=" h-6 "

@@ -40,4 +40,11 @@ class CartController extends Controller
       ]);
     };
   }
+
+  public function cartCount(Request $request)
+  {
+    $user = $request->user();
+    $count = CartItem::where('user_id', $user->id)->count();
+    return response()->json(['count' => $count]);
+  }
 }
