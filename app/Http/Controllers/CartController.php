@@ -9,10 +9,12 @@ use Inertia\Inertia;
 
 class CartController extends Controller
 {
-  public function currentCartList()
+  public function currentCartList(Request $request)
   {
-    $currentUserId = Auth::id();
-    $cartsItem = CartItem::where('user_id', $currentUserId)->get();
+    $currentUser = $request->user();
+    $cartsItem = CartItem::where('user_id', $currentUser->id)
+      ->with('product')
+      ->get();
     return Inertia::render('User/Cart', [
       'cartsItem' => $cartsItem
     ]);
