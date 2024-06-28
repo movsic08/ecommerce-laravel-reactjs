@@ -20,14 +20,14 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Home" />
-            <div className="-mt-[5rem] h-screen w-full  -z-20 flex items-center justify-center ">
+            <div className="-mt-[5rem] h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">
                 <img
                     className=" w-full h-full object-cover"
                     src={frame_1}
                     alt=""
                 />
             </div>
-            <div className=" bg-[#FEF3F0] flex flex-col items-center justify-center h-screen w-screen p-6s">
+            <div className=" bg-[#FEF3F0] flex flex-col items-center justify-center h-screen w-full p-6s">
                 <h1 className=" font-bold  text-4xl py-8">
                     Artist of the Month
                 </h1>
@@ -68,7 +68,7 @@ export default function Dashboard({ auth }) {
                     {" "}
                     <Link
                         href=""
-                        className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
+                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden"
                     >
                         <img
                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
@@ -85,7 +85,7 @@ export default function Dashboard({ auth }) {
                     </Link>
                     <Link
                         href=""
-                        className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
+                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden"
                     >
                         <img
                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
