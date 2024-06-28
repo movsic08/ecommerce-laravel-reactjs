@@ -5,6 +5,8 @@ import { Head, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import defaultImgIcon from "../../assets/img/Image-Placeholder.svg";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Cart({ auth }) {
     const { props } = usePage();
@@ -35,27 +37,31 @@ export default function Cart({ auth }) {
         return checkedItems.length; // Count the number of checked items
     };
 
-    const itemsList = [
-        {
-            id: 1,
-            name: "Wood Car",
-            image: "https://my-test-11.slatic.net/p/7baf0d1de165ee94a44efc319a5798ea.jpg",
-            quantity: 1,
-            price: 230.0,
-        },
-        {
-            id: 2,
-            name: "Shell Chandeliers",
-            image: "https://m.media-amazon.com/images/I/31fEusvQBML._AC_SY580_.jpg",
-            quantity: 4,
-            price: 230.0,
-        },
-    ];
-
     const { setData } = useForm();
     const items = props.cartsItem;
     const handleQuantityChange = (newQuantity) => {
         setData("quantity", newQuantity);
+    };
+
+    const deleteItem = async (id) => {
+        try {
+            await Inertia.delete(`/cart/${id}`, {
+                onSuccess: () => {
+                    toast.success("Item removed successfully!");
+                    // Optionally, update the state to reflect the deletion
+                    // For example, you might want to fetch the updated cart items
+                    // or remove the item from the local state
+                    // setCheckedItems((prevCheckedItems) =>
+                    //     prevCheckedItems.filter((itemId) => itemId !== id)
+                    // );
+                },
+                onError: () => {
+                    toast.error("Something went wrong, try again!");
+                },
+            });
+        } catch (error) {
+            toast.error("Failed to remove from cart.");
+        }
     };
 
     return (
@@ -126,9 +132,15 @@ export default function Cart({ auth }) {
                                                 ₱{" "}
                                                 {item.product.price.toFixed(2)}
                                             </p>
-                                            <div className="text-lg  text-red-600 font-semibold">
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    deleteItem(item.id)
+                                                }
+                                                className="text-lg  text-red-600 font-semibold"
+                                            >
                                                 <FaTrash />
-                                            </div>
+                                            </button>
                                         </div>
                                     </div>
                                 ))}

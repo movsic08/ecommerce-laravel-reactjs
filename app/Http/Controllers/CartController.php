@@ -49,4 +49,8 @@ class CartController extends Controller
     $count = CartItem::where('user_id', $user->id)->count();
     return response()->json(['count' => $count]);
   }
+
+  public function destroy()
+  {
+  }
 }
