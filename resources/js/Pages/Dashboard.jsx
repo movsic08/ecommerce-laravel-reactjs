@@ -21,6 +21,18 @@ export default function Dashboard({ auth }) {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Home" />
             <div className="-mt-[5rem] h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">
+                <div className=" absolute left-[10rem]  flex items-center h-full">
+                    <div className="flex-col text-8xl flex text-[#403E3E]">
+                        <h1>Shell </h1>
+                        <h1> Chandeliers</h1>
+                        <Link
+                            href={route("shop")}
+                            className="text-3xl mt-4 hover:bg-slate-800 duration-300 rounded-full px-3 capitalize font-bold py-2 bg-[#403E3E] w-fit text-white"
+                        >
+                            Shop now
+                        </Link>
+                    </div>
+                </div>
                 <img
                     className=" w-full h-full object-cover"
                     src={frame_1}
