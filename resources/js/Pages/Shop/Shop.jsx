@@ -5,9 +5,10 @@ import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
 import { Link, Head, usePage } from "@inertiajs/react";
 import { useState, useEffect, React } from "react";
+import Pagination from "@/Components/Pagination";
 
 export default function Shop({ auth }) {
-    const { products } = usePage().props;
+    const { products = [] } = usePage().props;
 
     return (
         <UserAuthenticatedLayout user={auth.user}>
@@ -17,6 +18,7 @@ export default function Shop({ auth }) {
                 src={shopImage}
                 alt="Shop Page Asset"
             />
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="container mx-auto p-4">
@@ -147,7 +149,7 @@ export default function Shop({ auth }) {
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {products.map((product) => (
+                                    {products.data.map((product) => (
                                         <Link
                                             key={product.id}
                                             href={route(
@@ -180,6 +182,7 @@ export default function Shop({ auth }) {
                                         </Link>
                                     ))}
                                 </div>
+                                <Pagination links={products.links} />
                             </div>
                         </div>
                     </div>

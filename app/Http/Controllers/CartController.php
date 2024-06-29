@@ -15,7 +15,7 @@ class CartController extends Controller
     $cartsItem = CartItem::where('user_id', $currentUser->id)
       ->with('product')
       ->get();
-    return Inertia::render('User/Cart', [
+    return Inertia::render('Shop/Cart', [
       'cartsItem' => $cartsItem
     ]);
   }

@@ -11,10 +11,11 @@ class ProductsController extends Controller
 {
   public function allProducts()
   {
-    $products = Products::all();
+    $query = Products::query();
+    $products = $query->paginate(5)->onEachSide(1);
 
-    // dd($products);
-    return Inertia::render('User/Shop', [
+    // return  $products;
+    return Inertia::render('Shop/Shop', [
       'products' => $products,
     ]);
   }
@@ -22,15 +23,11 @@ class ProductsController extends Controller
   {
     try {
       $product = Products::findOrFail($productid);
-      return Inertia::render('User/ViewProduct', [
+      return Inertia::render('Shop/ViewProduct', [
         'product' => $product
       ]);
     } catch (ModelNotFoundException $e) {
       return response()->json(['message' => 'Product not found.']);
     }
-
   }
-
-
-
 }
