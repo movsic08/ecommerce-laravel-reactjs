@@ -50,7 +50,15 @@ class CartController extends Controller
     return response()->json(['count' => $count]);
   }
 
-  public function destroy()
+  public function destroy($id)
   {
+    try {
+      $cartItem = CartItem::where('id', $id)->where('user_id', Auth()->id());
+      $cartItem->delete();
+
+      return response()->json(['message' => 'Item removed successfully!'], 200);
+    } catch (\Exception $e) {
+      return response()->json(['message' => 'Failed to remove item from cart.'], 500);
+    }
   }
 }

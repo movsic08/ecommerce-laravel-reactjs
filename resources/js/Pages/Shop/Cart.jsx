@@ -2,14 +2,17 @@ import Checkbox from "@/Components/Checkbox";
 import Quantity from "@/Components/Quantity";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import defaultImgIcon from "../../assets/img/Image-Placeholder.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 export default function Cart({ auth }) {
     const { props } = usePage();
+    const [items, setItems] = useState(props.cartsItem);
+    // const items = props.cartsItem;
     // console.log(props.cartsItem);
     const [checkedItems, setCheckedItems] = useState([]);
     // console.log(checkedItems);
@@ -38,39 +41,38 @@ export default function Cart({ auth }) {
     };
 
     const { setData } = useForm();
-    const items = props.cartsItem;
+
     const handleQuantityChange = (newQuantity) => {
         setData("quantity", newQuantity);
     };
 
     const deleteItem = async (id) => {
         try {
-            await Inertia.delete(`/cart/${id}`, {
-                onSuccess: () => {
-                    toast.success("Item removed successfully!");
-                    // Optionally, update the state to reflect the deletion
-                    // For example, you might want to fetch the updated cart items
-                    // or remove the item from the local state
-                    // setCheckedItems((prevCheckedItems) =>
-                    //     prevCheckedItems.filter((itemId) => itemId !== id)
-                    // );
-                },
-                onError: () => {
-                    toast.error("Something went wrong, try again!");
-                },
-            });
+            const response = await axios.delete(`/cart/${id}`);
+
+            if (response.status === 200) {
+                // Handle success
+                toast.success("Item deleted successfully");
+                setItems(props.cartsItem);
+                // Optionally update your component state or fetch updated data
+            } else {
+                // Handle error
+                toast.error("Failed to delete item");
+            }
         } catch (error) {
-            toast.error("Failed to remove from cart.");
+            // Handle network error or server error
+            alert("Failed to delete item");
         }
     };
 
     return (
         <>
             <UserAuthenticatedLayout user={auth.user}>
+                <ToastContainer />
                 <Head title="Cart" />
                 <div className="py-12  h-full ">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        {props.cartsItem == null ? (
+                        {props.cartsItem == 0 ? (
                             <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
                                 Cart is empty.
                             </div>
