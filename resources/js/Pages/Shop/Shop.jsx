@@ -3,12 +3,49 @@ import shopImage from "../../assets/shop_page_asset.jpg";
 import StarRating from "@/Components/StarRating";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
-import { Link, Head, usePage } from "@inertiajs/react";
+import { Link, Head, usePage, router } from "@inertiajs/react";
 import { useState, useEffect, React } from "react";
 import Pagination from "@/Components/Pagination";
+import TextInput from "@/Components/TextInput";
+import { FaSearch } from "react-icons/fa";
 
-export default function Shop({ auth }) {
+export default function Shop({ auth, queryParams = null }) {
     const { products = [] } = usePage().props;
+    queryParams = queryParams || {};
+
+    const [filterTrends, setFilterTrends] = useState("Trending");
+
+    const filterByTrends = (filterTrendValue) => {
+        setFilterTrends(filterTrendValue);
+    };
+
+    const searchFieldProduct = (name, value) => {
+        if (value) {
+            queryParams[name] = value;
+        } else {
+            delete queryParams[name];
+        }
+        router.get(route("shop"), queryParams);
+    };
+    const onSortChange = (e) => {
+        const value = e.target.value;
+        queryParams["trends"] = value;
+        router.get(route("shop"), queryParams);
+    };
+
+    const onKeyPress = (name, e) => {
+        if (e.key == "Enter") {
+            searchFieldProduct(name, e.target.value);
+        }
+    };
+
+    useEffect(() => {
+        console.log(filterTrends);
+    }, [filterByTrends]);
+
+    // useEffect(() => {
+    //     console.log(filterTrends);
+    // }, [filterByTrends]);
 
     return (
         <UserAuthenticatedLayout user={auth.user}>
@@ -126,7 +163,28 @@ export default function Shop({ auth }) {
                                 </div>
                             </div>
 
-                            <div className="w-full md:w-2/3 lg:w-3/4 bg-white p-4 ">
+                            <div className="w-full md:w-2/3 lg:w-3/4 bg-white px-4 pb-4 ">
+                                <div className="w-full flex items-center mb-3 gap-2">
+                                    <span className=" font-bold">Search</span>{" "}
+                                    <TextInput
+                                        defaultValue={queryParams.name}
+                                        // onChange={(e) => {
+                                        //     searchFieldProduct(
+                                        //         "name",
+                                        //         e.target.value
+                                        //     );
+                                        // }}
+                                        onKeyPress={(e) => {
+                                            onKeyPress("name", e);
+                                        }}
+                                        className="w-full "
+                                        placeholder="Look for product..."
+                                    />
+                                    <button className=" bg-secondaryColor text-white p-3 rounded-lg duration-300 hover:bg-orange-500">
+                                        <FaSearch />
+                                    </button>
+                                </div>
+
                                 <div className=" flex w-full  justify-between items-center mb-2">
                                     <div className="  flex items-center gap-2">
                                         <BsGrid3X3GapFill size={30} />
@@ -137,14 +195,24 @@ export default function Shop({ auth }) {
                                             Sort by:
                                         </span>
                                         <select
+                                            defaultValue={queryParams.status}
+                                            onChange={(e) => {
+                                                searchFieldProduct(
+                                                    "trends",
+                                                    e.target.value
+                                                );
+                                            }}
                                             className="appearance-none rounded-md border border-gray-300 bg-white px-3 py-1 text-sm focus:outline-none focus:ring focus:border-blue-300 w-auto"
-                                            defaultValue="trending"
                                         >
-                                            <option value="trending">
-                                                Trending
+                                            <option value="Latest">
+                                                Latest
                                             </option>
-                                            <option value="a-z">A-Z</option>
-                                            <option value="new">New</option>
+                                            <option value="highes-rating">
+                                                Highest Rating
+                                            </option>
+                                            <option value="lowest-price">
+                                                Lowest Price
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -182,7 +250,10 @@ export default function Shop({ auth }) {
                                         </Link>
                                     ))}
                                 </div>
-                                <Pagination links={products.links} />
+                                <Pagination
+                                    links={products.links}
+                                    className="pb-4"
+                                />
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 
 export default function Pagination({ links }) {
     return (
-        <div className="flex items-center justify-center mt-8">
+        <div className="flex items-center justify-center my-8">
             <nav aria-label="Page navigation example">
                 <ul className="inline-flex -space-x-px">
                     {links.map((link, index) => (

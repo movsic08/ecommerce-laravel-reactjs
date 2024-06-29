@@ -42,8 +42,6 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
         countCartItems();
     }, []);
 
-    console.log(cartNumber);
-
     return (
         <div className="min-h-screen bg-white">
             <nav className="  shadow drop-shadow-md border-b bg-white border-gray-100">

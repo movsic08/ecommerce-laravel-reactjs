@@ -12,11 +12,16 @@ class ProductsController extends Controller
   public function allProducts()
   {
     $query = Products::query();
-    $products = $query->paginate(5)->onEachSide(1);
+    if (request('name')) {
+      $query->where('product_name', 'like', '%' . request('name') . '%');
+    }
+
+    $products = $query->paginate(15);
 
     // return  $products;
     return Inertia::render('Shop/Shop', [
       'products' => $products,
+      'queryParams' => request()->query() ?: null
     ]);
   }
   public function viewProduct($productid)
