@@ -219,7 +219,7 @@ export default function Shop({ auth, queryParams = null }) {
                                         </SelectInput>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 py-4 md:grid-cols-3 lg:grid-cols-4 gap-5">
                                     {products.data.map((product) => (
                                         <Link
                                             key={product.id}
@@ -227,7 +227,7 @@ export default function Shop({ auth, queryParams = null }) {
                                                 "view-product",
                                                 product.id
                                             )}
-                                            className="bg-gray-100 drop-shadow-lg rounded relative overflow-hidden"
+                                            className="bg-gray-100  duration-700 hover:bg-gray-200 ease-in-out hover:-top-2 drop-shadow-lg rounded relative overflow-hidden"
                                         >
                                             <img
                                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
