@@ -142,13 +142,15 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
-                                    <Dropdown.Content>
+                                    <Dropdown.Content className="z-40">
                                         <Dropdown.Link
+                                            className="z-40"
                                             href={route("profile.edit")}
                                         >
                                             Profile
                                         </Dropdown.Link>
                                         <Dropdown.Link
+                                            className="z-40"
                                             href={route("logout")}
                                             method="post"
                                             as="button"

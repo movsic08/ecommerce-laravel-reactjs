@@ -69,18 +69,18 @@ export default function Cart({ auth }) {
             <UserAuthenticatedLayout user={auth.user}>
                 <ToastContainer />
                 <Head title="Cart" />
-                <div className="py-12  h-full ">
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="py-12 h-full -z-30">
+                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 -z-30">
                         {props.cartsItem == 0 ? (
-                            <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
+                            <div className="container mx-auto p-4 bg-slate-50 -z-50 rounded-lg drop-shadow-md">
                                 Cart is empty.
                             </div>
                         ) : (
-                            <div className="container mx-auto p-4 bg-slate-50 rounded-lg drop-shadow-md">
+                            <div className="container mx-auto p-4 bg-slate-50 -z-50 rounded-lg shadow-md ">
                                 {items.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="flex items-center justify-between p-4 border-b border-gray-200"
+                                        className="flex items-center -z-50 justify-between p-4 border-b border-gray-200"
                                     >
                                         <div className="flex items-center">
                                             <Checkbox
