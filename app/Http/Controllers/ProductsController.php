@@ -15,6 +15,19 @@ class ProductsController extends Controller
     if (request('name')) {
       $query->where('product_name', 'like', '%' . request('name') . '%');
     }
+    switch (request('filterProducts')) {
+      case  'filterProducts':
+        $query->orderBy('created_at', 'asc');
+        break;
+
+      case 'top-selling':
+        $query->orderBy('sold', 'desc');
+        break;
+
+      case 'highest-rating':
+        $query->orderBy('rating', 'desc');
+        break;
+    }
 
     $products = $query->paginate(15);
 

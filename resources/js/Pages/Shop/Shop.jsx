@@ -8,16 +8,11 @@ import { useState, useEffect, React } from "react";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import { FaSearch } from "react-icons/fa";
+import SelectInput from "@/Components/SelectInput";
 
 export default function Shop({ auth, queryParams = null }) {
     const { products = [] } = usePage().props;
     queryParams = queryParams || {};
-
-    const [filterTrends, setFilterTrends] = useState("Trending");
-
-    const filterByTrends = (filterTrendValue) => {
-        setFilterTrends(filterTrendValue);
-    };
 
     const searchFieldProduct = (name, value) => {
         if (value) {
@@ -25,11 +20,7 @@ export default function Shop({ auth, queryParams = null }) {
         } else {
             delete queryParams[name];
         }
-        router.get(route("shop"), queryParams);
-    };
-    const onSortChange = (e) => {
-        const value = e.target.value;
-        queryParams["trends"] = value;
+
         router.get(route("shop"), queryParams);
     };
 
@@ -38,14 +29,6 @@ export default function Shop({ auth, queryParams = null }) {
             searchFieldProduct(name, e.target.value);
         }
     };
-
-    useEffect(() => {
-        console.log(filterTrends);
-    }, [filterByTrends]);
-
-    // useEffect(() => {
-    //     console.log(filterTrends);
-    // }, [filterByTrends]);
 
     return (
         <UserAuthenticatedLayout user={auth.user}>
@@ -191,29 +174,49 @@ export default function Shop({ auth, queryParams = null }) {
                                         <TbListDetails size={30} />
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span className="text-gray-500">
-                                            Sort by:
-                                        </span>
-                                        <select
-                                            defaultValue={queryParams.status}
+                                        <span
+                                            className="text-gray-500 whitespace-nowrap"
                                             onChange={(e) => {
                                                 searchFieldProduct(
-                                                    "trends",
+                                                    "filterProducts",
                                                     e.target.value
                                                 );
                                             }}
-                                            className="appearance-none rounded-md border border-gray-300 bg-white px-3 py-1 text-sm focus:outline-none focus:ring focus:border-blue-300 w-auto"
                                         >
-                                            <option value="Latest">
-                                                Latest
+                                            Sort by:
+                                        </span>
+
+                                        <SelectInput
+                                            className="w-full"
+                                            defaultValue={
+                                                queryParams.filterProducts
+                                            }
+                                            onChange={(e) =>
+                                                searchFieldProduct(
+                                                    "filterProducts",
+                                                    e.target.value
+                                                )
+                                            }
+                                        >
+                                            <option
+                                                className="text-slate-900"
+                                                value="product-posted"
+                                            >
+                                                Product Posted
                                             </option>
-                                            <option value="highes-rating">
+                                            <option
+                                                className="text-slate-900"
+                                                value="top-selling"
+                                            >
+                                                Top Selling
+                                            </option>
+                                            <option
+                                                className="text-slate-900"
+                                                value="highest-rating"
+                                            >
                                                 Highest Rating
                                             </option>
-                                            <option value="lowest-price">
-                                                Lowest Price
-                                            </option>
-                                        </select>
+                                        </SelectInput>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
