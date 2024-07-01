@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
   /**
    * Run the migrations.
    */
@@ -14,6 +15,7 @@ return new class extends Migration {
       $table->id();
       $table->string('product_name');
       $table->float('rating')->default(0);
+      $table->bigInteger('sold')->default(0);
       $table->integer('quantity')->unsigned()->default(0);
       $table->integer('price')->unsigned()->default(0);
       $table->string('description');

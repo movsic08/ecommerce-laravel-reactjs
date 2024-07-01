@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
   public function run(): void
   {
     User::factory(50)->create();
-    $this->call([
-      CategoriesSeeder::class,
-    ]);
+    // $this->call([
+    //   CategoriesSeeder::class,
+    // ]);
 
     $this->call([
-        // Other seeders...
+      // Other seeders...
       ProductsSeeder::class,
     ]);
 
