@@ -4,7 +4,7 @@ import StarRating from "@/Components/StarRating";
 import { BsGrid3X3GapFill } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
 import { Link, Head, usePage, router } from "@inertiajs/react";
-import { useState, useEffect, React } from "react";
+import { useState, useEffect, React, useRef } from "react";
 import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import { FaSearch } from "react-icons/fa";
@@ -151,21 +151,19 @@ export default function Shop({ auth, queryParams = null }) {
                                     <span className=" font-bold">Search</span>{" "}
                                     <TextInput
                                         defaultValue={queryParams.name}
-                                        // onChange={(e) => {
-                                        //     searchFieldProduct(
-                                        //         "name",
-                                        //         e.target.value
-                                        //     );
-                                        // }}
                                         onKeyPress={(e) => {
                                             onKeyPress("name", e);
                                         }}
                                         className="w-full "
-                                        placeholder="Look for product..."
+                                        placeholder="Enter to search product..."
                                     />
-                                    <button className=" bg-secondaryColor text-white p-3 rounded-lg duration-300 hover:bg-orange-500">
+                                    {/* <button
+                                        type="button"
+                                        onClick={handleButtonClick}
+                                        className=" bg-secondaryColor text-white p-3 rounded-lg duration-300 hover:bg-orange-500"
+                                    >
                                         <FaSearch />
-                                    </button>
+                                    </button> */}
                                 </div>
 
                                 <div className=" flex w-full  justify-between items-center mb-2">
