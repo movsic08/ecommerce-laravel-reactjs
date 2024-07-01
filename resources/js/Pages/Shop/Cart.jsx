@@ -1,7 +1,7 @@
 import Checkbox from "@/Components/Checkbox";
 import Quantity from "@/Components/Quantity";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import defaultImgIcon from "../../assets/img/Image-Placeholder.svg";
@@ -12,8 +12,7 @@ import axios from "axios";
 export default function Cart({ auth }) {
     const { props } = usePage();
     const [items, setItems] = useState(props.cartsItem);
-    // const items = props.cartsItem;
-    // console.log(props.cartsItem);
+
     const [checkedItems, setCheckedItems] = useState([]);
     // console.log(checkedItems);
 
@@ -51,9 +50,10 @@ export default function Cart({ auth }) {
             const response = await axios.delete(`/cart/${id}`);
 
             if (response.status === 200) {
-                // Handle success
                 toast.success("Item deleted successfully");
-                setItems(props.cartsItem);
+                setItems((prevItems) =>
+                    prevItems.filter((item) => item.id !== id)
+                );
             } else {
                 // Handle error
                 toast.error("Failed to delete item");
@@ -117,9 +117,6 @@ export default function Cart({ auth }) {
                                         <div className="flex items-center">
                                             <div className="mr-6">
                                                 <div className="mt-1 relative rounded-md shadow-sm">
-                                                    {JSON.stringify(
-                                                        item.quantity + "  "
-                                                    )}
                                                     <Quantity
                                                         onQuantityChange={
                                                             handleQuantityChange
