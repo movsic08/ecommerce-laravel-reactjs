@@ -14,6 +14,7 @@ class CartController extends Controller
     $currentUser = $request->user();
     $cartsItem = CartItem::where('user_id', $currentUser->id)
       ->with('product')
+      ->orderBy('created_at', 'desc')
       ->get();
     return Inertia::render('Shop/Cart', [
       'cartsItem' => $cartsItem

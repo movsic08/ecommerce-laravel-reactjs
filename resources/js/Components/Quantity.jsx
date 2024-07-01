@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 export default function Quantity({ quantity, currentStock, onQuantityChange }) {
-    const [currentQuantity, setCurrentQuantity] = useState(1);
+    const [currentQuantity, setCurrentQuantity] = useState(quantity);
 
     const handleAdd = () => {
         if (currentQuantity < currentStock) {

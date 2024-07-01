@@ -54,7 +54,6 @@ export default function Cart({ auth }) {
                 // Handle success
                 toast.success("Item deleted successfully");
                 setItems(props.cartsItem);
-                // Optionally update your component state or fetch updated data
             } else {
                 // Handle error
                 toast.error("Failed to delete item");
@@ -118,6 +117,9 @@ export default function Cart({ auth }) {
                                         <div className="flex items-center">
                                             <div className="mr-6">
                                                 <div className="mt-1 relative rounded-md shadow-sm">
+                                                    {JSON.stringify(
+                                                        item.quantity + "  "
+                                                    )}
                                                     <Quantity
                                                         onQuantityChange={
                                                             handleQuantityChange
