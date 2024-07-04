@@ -147,7 +147,10 @@ export default function Register() {
                     </div>
 
                     <div className=" text-mainText text-sm  border-t-2 border-gray-200 flex items-center justify-center w-full mt-6 pt-4 ">
-                        <Link className="hover:text-slate-700 duration-200 ease-in-out hover:font-medium">
+                        <Link
+                            href="/create-seller-account"
+                            className="hover:text-slate-700 duration-200 ease-in-out hover:font-medium"
+                        >
                             Become a seller
                         </Link>
                     </div>

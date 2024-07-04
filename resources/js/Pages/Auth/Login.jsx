@@ -113,7 +113,10 @@ export default function Login({ status, canResetPassword }) {
                     </div>
                 </form>
                 <div className=" text-mainText text-sm  border-t-2 border-gray-200 flex items-center justify-between w-full mt-6 pt-6 ">
-                    <Link className="hover:text-slate-700 duration-200 ease-in-out hover:font-medium">
+                    <Link
+                        href={route("seller.signup")}
+                        className="hover:text-slate-700 duration-200 ease-in-out hover:font-medium"
+                    >
                         Become a seller
                     </Link>
                     <Link
