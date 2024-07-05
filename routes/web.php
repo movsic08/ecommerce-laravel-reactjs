@@ -57,8 +57,10 @@ Route::get('/seller/home', function () {
 })->middleware(['auth', 'seller'])
   ->name('seller.index');
 
-
-
+//FOR TESTING ONLY
+Route::get('/test', function () {
+  return Inertia::render('Admin/Index');
+});
 
 
 Route::get('/about', function () {
