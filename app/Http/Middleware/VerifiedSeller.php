@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class NotVerfiedSeller
+class VerifiedSeller
 {
   /**
    * Handle an incoming request.
@@ -17,12 +17,11 @@ class NotVerfiedSeller
    */
   public function handle(Request $request, Closure $next): Response
   {
-
     if (Auth::check()) {
       $user = Auth::user();
       $sellerData = Seller::where('seller_id', $user->id)->first();
       // return $sellerData;
-      if ($sellerData->is_verified == false && $user->is_seller == true) {
+      if ($sellerData->is_verified == true && $user->is_seller == true) {
         // Proceed to the next request if the user is not admin and not seller
         return $next($request);
       } else {

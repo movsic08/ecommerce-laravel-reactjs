@@ -54,7 +54,8 @@ Route::get('/seller-account-on-the-process', function () {
 //seller pages
 Route::get('/seller/home', function () {
   return Inertia::render('Seller/Index');
-})->name('seller.index');
+})->middleware(['auth', 'seller'])
+  ->name('seller.index');
 
 
 
