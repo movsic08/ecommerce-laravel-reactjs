@@ -27,12 +27,12 @@ class SellerController extends Controller
       'proof_of_membership_path' => ['required'],
       'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
       'password' => ['required', 'confirmed', Password::defaults()],
-      'has_permit' => ['required'],
-      'has_dti' => ['required'],
-      'has_mayors_business_permit' => ['required'],
-      'has_paid_org_fee' => ['required'],
-      'has_barangay_clearance' => ['required'],
-      'has_bir' => ['required']
+      'has_permit' => ['required', 'booelan'],
+      'has_dti' => ['required', 'boolean'],
+      'has_mayors_business_permit' => ['required', 'boolean'],
+      'has_paid_org_fee' => ['required', 'boolean'],
+      'has_barangay_clearance' => ['required', 'boolean'],
+      'has_bir' => ['required', 'boolean']
     ], [
       'has_permit.required' => "Permit is required.",
       'proof_of_membership_path.required' => 'The proof of membership is required.',
@@ -42,7 +42,28 @@ class SellerController extends Controller
       'has_barangay_clearance.required' => 'The Barangay Clearance is required.',
       'has_bir.required' => 'The BIR Registration is required.'
     ]);
-    return dd($request);
+    $user = User::create([
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
+      'address' => $request->address,
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+    ]);
+
+    $sellerDetails = Seller::create([
+      'user_id',
+      'seller_id' => $user->id,
+      'address' => $request->address,
+      'shop_name',
+      'years_in_selling',
+      'has_permit',
+      'has_DTI',
+      'has_mayors_business_permit',
+      'has_paid_organizational_fee',
+      'has_barangay_clearance',
+      'proof_of_membership_path',
+    ]);
+    // return dd('done');
   }
 
   /**
