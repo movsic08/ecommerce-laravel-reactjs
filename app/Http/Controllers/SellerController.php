@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class SellerController extends Controller
 {
@@ -19,7 +20,7 @@ class SellerController extends Controller
     //
   }
 
-  public function createSellerAccoount(Request $request): RedirectResponse
+  public function createSellerAccoount(Request $request)
   {
     $request->validate([
       'first_name' => ['required', 'string', 'max:255'],
@@ -27,12 +28,12 @@ class SellerController extends Controller
       'proof_of_membership_path' => ['required'],
       'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
       'password' => ['required', 'confirmed', Password::defaults()],
-      'has_permit' => ['required', 'booelan'],
-      'has_dti' => ['required', 'boolean'],
-      'has_mayors_business_permit' => ['required', 'boolean'],
-      'has_paid_org_fee' => ['required', 'boolean'],
-      'has_barangay_clearance' => ['required', 'boolean'],
-      'has_bir' => ['required', 'boolean']
+      'has_permit' => ['required'],
+      'has_dti' => ['required'],
+      'has_mayors_business_permit' => ['required'],
+      'has_paid_org_fee' => ['required'],
+      'has_barangay_clearance' => ['required'],
+      'has_bir' => ['required']
     ], [
       'has_permit.required' => "Permit is required.",
       'proof_of_membership_path.required' => 'The proof of membership is required.',
@@ -54,16 +55,17 @@ class SellerController extends Controller
       'user_id',
       'seller_id' => $user->id,
       'address' => $request->address,
-      'shop_name',
-      'years_in_selling',
-      'has_permit',
-      'has_DTI',
-      'has_mayors_business_permit',
-      'has_paid_organizational_fee',
-      'has_barangay_clearance',
-      'proof_of_membership_path',
+      'years_in_selling' => $request->years_in_selling,
+      'has_permit' => $request->has_permit == 'on' ? true : false,
+      'has_DTI' => $request->has_dti  == 'on' ? true : false,
+      'has_mayors_business_permit' => $request->has_mayors_business_permit  == 'on' ? true : false,
+      'has_paid_organizational_fee' => $request->has_paid_org_fee  == 'on' ? true : false,
+      'has_barangay_clearance' => $request->has_barangay_clearance  == 'on' ? true : false,
+      'proof_of_membership_path' => $request->has_bir,
     ]);
-    // return dd('done');
+
+
+    return Inertia::render('StatusPages/SuccessSellerAccount');
   }
 
   /**

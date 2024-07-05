@@ -5,9 +5,9 @@ import { GrLinkPrevious } from "react-icons/gr";
 export default function SuccessSellerAccount({}) {
     return (
         <>
-            <SellerGuestLayout>
+            <SellerGuestLayout className="h-fit">
                 <Head title="Pending Account" />
-                <div className="text-center mt-10">
+                <div className="text-center mt-10 px-4">
                     <h1 className="text-3xl font-bold text-green-800 mb-4">
                         Account Created Successfully
                     </h1>
@@ -21,7 +21,7 @@ export default function SuccessSellerAccount({}) {
                         You will receive an email notification once your account
                         has been reviewed and approved.
                     </p>
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center mb-10">
                         <Link
                             className="px-3 flex duration-300 hover:bg-orange-500 items-center gap-1 w-fit py-2 bg-themeColor rounded-md text-white"
                             href={route("login")}

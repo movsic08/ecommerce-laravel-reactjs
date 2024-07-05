@@ -17,7 +17,7 @@ return new class extends Migration
       $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
       $table->string('address')->nullable();
       $table->string('shop_name')->nullable();
-      $table->integer('years_in_selling');
+      $table->string('years_in_selling');
       $table->string('profile_picture_path')->nullable();
       $table->string('store_name')->nullable();
       $table->string("motto")->nullable();

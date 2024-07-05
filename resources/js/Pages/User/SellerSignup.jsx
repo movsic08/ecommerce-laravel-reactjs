@@ -2,6 +2,7 @@ import Checkbox from "@/Components/Checkbox";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
+import SpinnerLoading from "@/Components/SpinnerLoading";
 import TextInput from "@/Components/TextInput";
 import GuestFooter from "@/Layouts/GuestFooter";
 import GuestLayout from "@/Layouts/GuestLayout";
@@ -18,7 +19,7 @@ export default function SellerSignup() {
         password: "",
         password_confirmation: "",
         years_in_selling: "below 11 months",
-        has_permit: "",
+        has_permit: false,
         proof_of_membership_path: "",
         has_dti: "",
         has_mayors_business_permit: "",
@@ -94,7 +95,7 @@ export default function SellerSignup() {
                                 />
                             </div>
                         </div>
-                        <div className="mt-4 w-full md:w-1/2">
+                        <div className="mt-4 w-full lg:w-1/2">
                             <InputLabel htmlFor="email" value="Email" />
                             <TextInput
                                 type="email"
@@ -226,7 +227,10 @@ export default function SellerSignup() {
                                     more than 3 years
                                 </option>
                             </SelectInput>
-                            <InputError message="" className="mt-1" />
+                            <InputError
+                                message={errors.years_in_selling}
+                                className="mt-1"
+                            />
                         </div>
                         <div className="mt-4 flex flex-col lg:flex-row items-start w-full gap-2">
                             <div className=" w-full">
@@ -400,10 +404,16 @@ export default function SellerSignup() {
                                 Cancel
                             </Link>
                             <button
+                                disabled={processing}
                                 className=" px-2 py-1 duration-200 hover:bg-orange-600 text-white bg-themeColor rounded"
                                 type="submit"
                             >
-                                Create an account
+                                {" "}
+                                {processing ? (
+                                    <SpinnerLoading />
+                                ) : (
+                                    "Create an account"
+                                )}
                             </button>
                         </div>
                     </form>

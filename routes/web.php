@@ -41,9 +41,9 @@ Route::post('/store-to-cart', [CartController::class, 'addToCart'])->middleware(
 Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
 Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
 
-Route::get('/test', function () {
-  return Inertia::render('StatusPages/PendingSellerAccount');
-});
+Route::get('/created-success-pending', function () {
+  return Inertia::render('StatusPages/SuccessSellerAccount');
+})->name('seller.created.success');
 
 
 Route::get('/about', function () {
