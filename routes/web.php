@@ -3,6 +3,7 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\NotVerfiedSeller;
 use App\Models\CartItem;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,9 +42,22 @@ Route::post('/store-to-cart', [CartController::class, 'addToCart'])->middleware(
 Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
 Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
 
+//unverified seller account
 Route::get('/created-success-pending', function () {
   return Inertia::render('StatusPages/SuccessSellerAccount');
 })->name('seller.created.success');
+Route::get('/seller-account-on-the-process', function () {
+  return Inertia::render('StatusPages/PendingSellerAccount');
+})->middleware(NotVerfiedSeller::class)
+  ->name('seller.pending.account');
+
+//seller pages
+Route::get('/seller/home', function () {
+  return Inertia::render('Seller/Index');
+})->name('seller.index');
+
+
+
 
 
 Route::get('/about', function () {
