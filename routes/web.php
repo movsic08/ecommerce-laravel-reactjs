@@ -57,11 +57,17 @@ Route::get('/seller/home', function () {
 })->middleware(['auth', 'seller'])
   ->name('seller.index');
 
-//FOR TESTING ONLY
+//FOR TESTING
 Route::get('/test', function () {
   return Inertia::render('Admin/Index');
 });
 
+// Admin
+Route::prefix('admin')->group(function () {
+  Route::get('/sellers-list', function () {
+    return Inertia::render('Admin/SellersList');
+  })->name('admin.sellers');
+});
 
 Route::get('/about', function () {
   return Inertia::render('About');

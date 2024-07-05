@@ -37,16 +37,18 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                         Home
                                     </NavLink>
                                     <NavLink
-                                        // href={route("dashboard")}
-                                        active={route().current("dashboard")}
+                                        href={route("admin.sellers")}
+                                        active={route().current(
+                                            "admin.sellers"
+                                        )}
                                     >
-                                        SELLERS
-                                    </NavLink>
+                                        Sellers
+                                    </NavLink>{" "}
                                     <NavLink
-                                        href={route("dashboard")}
+                                        // href={route("admin.sellers")}
                                         active={route().current("dashboard")}
                                     >
-                                        PERMISSIONS
+                                        Permission
                                     </NavLink>
                                 </div>
                             </div>
