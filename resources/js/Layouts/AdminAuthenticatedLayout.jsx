@@ -31,8 +31,8 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
 
                                 <div className="hidden uppercase space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink
-                                        href={route("dashboard")}
-                                        active={route().current("dashboard")}
+                                        href={route("admin.index")}
+                                        active={route().current("admin.index")}
                                     >
                                         Home
                                     </NavLink>
@@ -45,8 +45,10 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                         Sellers
                                     </NavLink>{" "}
                                     <NavLink
-                                        // href={route("admin.sellers")}
-                                        active={route().current("dashboard")}
+                                        href={route("admin.permission")}
+                                        active={route().current(
+                                            "admin.permission"
+                                        )}
                                     >
                                         Permission
                                     </NavLink>
@@ -149,8 +151,8 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                     >
                         <div className="pt-2 pb-3 space-y-1">
                             <ResponsiveNavLink
-                                href={route("dashboard")}
-                                active={route().current("dashboard")}
+                                href={route("admin.index")}
+                                active={route().current("admin.index")}
                             >
                                 Dashboard
                             </ResponsiveNavLink>
@@ -190,7 +192,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                     </header>
                 )}
 
-                <main>{children}</main>
+                <main className=" mx-auto container p-4">{children}</main>
             </div>
         </>
     );

@@ -64,9 +64,18 @@ Route::get('/test', function () {
 
 // Admin
 Route::prefix('admin')->group(function () {
+
+  Route::get('/', function () {
+    return Inertia::render('Admin/Index');
+  })->name('admin.index');
+
   Route::get('/sellers-list', function () {
     return Inertia::render('Admin/SellersList');
   })->name('admin.sellers');
+
+  Route::get('/permission', function () {
+    return Inertia::render('Admin/PermissionPanel');
+  })->name('admin.permission');
 });
 
 Route::get('/about', function () {
