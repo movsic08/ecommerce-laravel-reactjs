@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
@@ -62,6 +63,8 @@ Route::get('/test', function () {
   return Inertia::render('Admin/Index');
 });
 
+
+
 // Admin
 Route::prefix('admin')->group(function () {
 
@@ -69,14 +72,14 @@ Route::prefix('admin')->group(function () {
     return Inertia::render('Admin/Index');
   })->name('admin.index');
 
-  Route::get('/sellers-list', function () {
-    return Inertia::render('Admin/SellersList');
-  })->name('admin.sellers');
+  Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
 
   Route::get('/permission', function () {
     return Inertia::render('Admin/PermissionPanel');
   })->name('admin.permission');
 });
+
+
 
 Route::get('/about', function () {
   return Inertia::render('About');
