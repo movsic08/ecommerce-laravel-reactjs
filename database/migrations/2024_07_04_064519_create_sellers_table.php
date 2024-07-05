@@ -15,8 +15,8 @@ return new class extends Migration
       $table->id();
       $table->unsignedBigInteger('seller_id');
       $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
-      $table->string('address');
-      $table->string('shop_name');
+      $table->string('address')->nullable();
+      $table->string('shop_name')->nullable();
       $table->integer('years_in_selling');
       $table->string('profile_picture_path')->nullable();
       $table->string('store_name')->nullable();
