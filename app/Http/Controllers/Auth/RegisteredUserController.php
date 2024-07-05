@@ -15,39 +15,43 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(): Response
-    {
-        return Inertia::render('Auth/Register');
-    }
+  /**
+   * Display the registration view.
+   */
+  public function create(): Response
+  {
+    return Inertia::render('Auth/Register');
+  }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'fname' => ['required', 'string', 'max:255'],
-            'lname' => ['required', 'string', 'max:255'],
-            'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+  /**
+   * Handle an incoming registration request.
+   *
+   * @throws \Illuminate\Validation\ValidationException
+   */
+  public function store(Request $request): RedirectResponse
+  {
 
-        $user = User::create([
-            'fname' => $request->fname,
-            'lname' => $request->lname,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $request->validate([
+      'first_name' => ['required', 'string', 'max:255'],
+      'last_name' => ['required', 'string', 'max:255'],
+      'address' => ['required', 'string', 'min:5'],
+      'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
+      'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
+    // return dd($request->first_name);
 
-        event(new Registered($user));
+    $user = User::create([
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
+      'address' => $request->address,
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+    ]);
 
-        Auth::login($user);
+    event(new Registered($user));
 
-        return redirect(route('dashboard', absolute: false));
-    }
+    Auth::login($user);
+
+    return redirect(route('dashboard', absolute: false));
+  }
 }

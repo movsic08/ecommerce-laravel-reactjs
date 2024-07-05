@@ -9,8 +9,9 @@ import GuestFooter from "@/Layouts/GuestFooter";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        fname: "",
-        lname: "",
+        first_name: "",
+        last_name: "",
+        address: "",
         email: "",
         password: "",
         password_confirmation: "",
@@ -41,28 +42,35 @@ export default function Register() {
 
                         <TextInput
                             id="fname"
-                            name="fname"
-                            value={data.fname}
+                            name="first_name"
+                            value={data.first_name}
                             className="mt-1 block w-full"
-                            autoComplete="fname"
+                            autoComplete="first_name"
                             isFocused={true}
-                            onChange={(e) => setData("fname", e.target.value)}
+                            onChange={(e) =>
+                                setData("first_name", e.target.value)
+                            }
                             required
                         />
 
-                        <InputError message={errors.fname} className="mt-2" />
+                        <InputError
+                            message={errors.first_name}
+                            className="mt-2"
+                        />
                     </div>
                     <div className=" mt-2">
                         <InputLabel htmlFor="lname" value="Last name" />
 
                         <TextInput
                             id="lname"
-                            name="lname"
-                            value={data.lname}
+                            name="last_name"
+                            value={data.last_name}
                             className="mt-1 block w-full"
-                            autoComplete="lname"
+                            autoComplete="last_name"
                             isFocused={true}
-                            onChange={(e) => setData("lname", e.target.value)}
+                            onChange={(e) =>
+                                setData("last_name", e.target.value)
+                            }
                             required
                         />
 
@@ -85,7 +93,22 @@ export default function Register() {
 
                         <InputError message={errors.email} className="mt-2" />
                     </div>
+                    <div className=" mt-2">
+                        <InputLabel htmlFor="address" value="Address" />
 
+                        <TextInput
+                            id="address"
+                            name="address"
+                            value={data.address}
+                            className="mt-1 block w-full"
+                            autoComplete="address"
+                            isFocused={true}
+                            onChange={(e) => setData("address", e.target.value)}
+                            required
+                        />
+
+                        <InputError message={errors.lname} className="mt-2" />
+                    </div>
                     <div className="mt-2">
                         <InputLabel htmlFor="password" value="Password" />
 
