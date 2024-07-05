@@ -48,6 +48,7 @@ class SellerController extends Controller
       'last_name' => $request->last_name,
       'address' => $request->address,
       'email' => $request->email,
+      'is_seller' => true,
       'password' => Hash::make($request->password),
     ]);
 

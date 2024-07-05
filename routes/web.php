@@ -26,7 +26,7 @@ Route::get('/create-seller-account', function () {
 
 Route::get('/dashboard', function () {
   return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'user'])->name('dashboard');
 
 Route::get('/shop', [ProductsController::class, 'allProducts'])->middleware(['auth'])->name('shop');
 
