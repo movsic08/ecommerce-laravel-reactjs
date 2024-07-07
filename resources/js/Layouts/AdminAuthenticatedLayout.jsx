@@ -161,10 +161,12 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                         <div className="pt-4 pb-1 border-t border-gray-200">
                             <div className="px-4">
                                 <div className="font-medium text-base text-gray-800">
-                                    {user.first_name}
+                                    {/* {user.first_name == null
+                                        ? user.first_name
+                                        : "Admin"} */}
                                 </div>
                                 <div className="font-medium text-sm text-gray-500">
-                                    {user.email}
+                                    {/* {user.email} */}
                                 </div>
                             </div>
 

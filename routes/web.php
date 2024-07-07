@@ -67,8 +67,11 @@ Route::get('/test', function () {
 
 // Admin
 Route::prefix('admin')->group(function () {
-
   Route::get('/', function () {
+    return Inertia::render('Admin/Login');
+  });
+
+  Route::get('/index', function () {
     return Inertia::render('Admin/Index');
   })->name('admin.index');
 
