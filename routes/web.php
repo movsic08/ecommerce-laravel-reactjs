@@ -63,13 +63,13 @@ Route::get('/test', function () {
   return Inertia::render('Admin/Index');
 });
 
+Route::get('/admin', function () {
+  return Inertia::render('Admin/Login');
+})->name('admin.login');
 
 
 // Admin
-Route::prefix('admin')->group(function () {
-  Route::get('/', function () {
-    return Inertia::render('Admin/Login');
-  });
+Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 
   Route::get('/index', function () {
     return Inertia::render('Admin/Index');

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EnsureNotAdminOrSeller;
 use App\Http\Middleware\VerifiedSeller;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,7 @@ return Application::configure(basePath: dirname(__DIR__))
     $middleware->alias([
       'user' => EnsureNotAdminOrSeller::class,
       'seller' => VerifiedSeller::class,
+      'admin' => AdminMiddleware::class
     ]);
   })
   ->withExceptions(function (Exceptions $exceptions) {
