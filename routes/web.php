@@ -63,9 +63,7 @@ Route::get('/test', function () {
   return Inertia::render('Admin/Index');
 });
 
-Route::get('/admin', function () {
-  return Inertia::render('Admin/Login');
-})->name('admin.login');
+
 
 
 // Admin

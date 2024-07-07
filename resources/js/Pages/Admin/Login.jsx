@@ -5,10 +5,22 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import Guest from "@/Layouts/GuestLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useEffect } from "react";
 
 export default function Login() {
-    const { data, setData, errors, processing } = useForm();
-    const submit = (e) => {};
+    const { data, setData, errors, processing, reset, post } = useForm();
+
+    useEffect(() => {
+        return () => {
+            reset("password");
+        };
+    }, []);
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        return post(route("adminLogin"));
+    };
     return (
         <>
             <Guest>

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\SellerController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
   Route::get('register', [RegisteredUserController::class, 'create'])
@@ -37,6 +38,13 @@ Route::middleware('guest')->group(function () {
 
   Route::post('create-seller', [SellerController::class, 'createSellerAccoount'])
     ->name('create.seller');
+
+  Route::get('/admin', function () {
+    return Inertia::render('Admin/Login');
+  })->name('admin.login');
+
+  Route::post('adminLogin', [AuthenticatedSessionController::class, 'adminLogin'])
+    ->name('adminLogin');
 });
 
 Route::middleware('auth')->group(function () {
