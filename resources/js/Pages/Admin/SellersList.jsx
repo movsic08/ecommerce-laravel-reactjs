@@ -1,6 +1,9 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 import Index from "./Index";
+import DefaultPicture from "../../assets/img/default_user_profile.png";
+import { MdRemoveRedEye } from "react-icons/md";
+import { BsTrash2Fill } from "react-icons/bs";
 
 export default function SellersList({ auth }) {
     const { users = [] } = usePage().props;
@@ -34,19 +37,24 @@ export default function SellersList({ auth }) {
                                 >
                                     <td className="px-4 py-2">
                                         <img
-                                            // src={seller.profile}
-                                            // alt={seller.name}
+                                            src={DefaultPicture}
+                                            alt={user.first_name}
                                             className="w-12 h-12 rounded-full mx-auto"
                                         />
                                     </td>
+                                    <td className="px-4 py-2">{user.name}</td>
                                     <td className="px-4 py-2">
-                                        {user.first_name}
+                                        {user.address}
                                     </td>
-                                    <td className="px-4 py-2">address</td>
-                                    <td className="px-4 py-2">joined</td>
                                     <td className="px-4 py-2">
-                                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-                                            action
+                                        {user.created_at}
+                                    </td>
+                                    <td className="px-4 py-2">
+                                        <button className=" p-2 text-white rounded bg-blue-800 hover:bg-blue-900 mr-2 duration-200 ease-in-out">
+                                            <BsTrash2Fill />
+                                        </button>
+                                        <button className=" p-2 text-white rounded bg-red-800 hover:bg-red-900  duration-200 ease-in-out">
+                                            <MdRemoveRedEye />
                                         </button>
                                     </td>
                                 </tr>

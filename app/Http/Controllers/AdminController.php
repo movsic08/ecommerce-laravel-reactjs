@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AdminResourceOfSellers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,7 +18,7 @@ class AdminController extends Controller
     $users = $query->paginate(15);
 
     return Inertia::render('Admin/SellersList', [
-      'users' => $users
+      'users' => AdminResourceOfSellers::collection($users),
     ]);
   }
 

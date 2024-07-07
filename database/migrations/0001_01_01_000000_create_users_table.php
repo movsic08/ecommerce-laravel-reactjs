@@ -19,6 +19,7 @@ return new class extends Migration
       $table->boolean('is_seller')->default(false);
       $table->boolean('is_admin')->default(false);
       $table->string('email')->unique();
+      $table->string('profile_picture_path')->nullable();
       $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
       $table->rememberToken();
