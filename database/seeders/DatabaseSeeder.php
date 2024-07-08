@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
       'last_name' => 'Main',
       'email' => 'admin@gmail.com',
       'address' => 'Alaminos City, Pangasinan',
+      'is_admin' => true,
       'password' => Hash::make('password')
     ]);
   }
