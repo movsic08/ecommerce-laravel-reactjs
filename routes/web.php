@@ -86,9 +86,7 @@ Route::get('/about', function () {
   return Inertia::render('About');
 })->middleware(['auth'])->name('about');
 
-Route::get('/blog', function () {
-  return Inertia::render('Blog');
-})->middleware(['auth'])->name('blog');
+
 
 Route::get('/contact', function () {
   return Inertia::render('Contact');

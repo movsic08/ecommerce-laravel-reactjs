@@ -73,12 +73,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                             >
                                 About
                             </NavLink>
-                            <NavLink
-                                href={route("blog")}
-                                active={route().current("blog")}
-                            >
-                                Blog
-                            </NavLink>
+
                             <NavLink
                                 href={route("contact")}
                                 active={route().current("contact")}
@@ -88,23 +83,6 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                         </div>
 
                         <div className=" gap-3 flex sm:items-center sm:ms-6">
-                            <img
-                                className=" h-6 "
-                                src={SearchIcon}
-                                alt="search icon"
-                            />
-                            <img
-                                className=" h-6 "
-                                src={HeartIcon}
-                                alt="heart icon"
-                            />
-                            <NavLink href={route("user-messages")}>
-                                <img
-                                    className=" h-6 "
-                                    src={UserChatIcon}
-                                    alt="chat icon"
-                                />
-                            </NavLink>
                             <NavLink href={route("user-cart")}>
                                 <div className=" relative">
                                     <span className=" absolute -top-2 -right-2 text-sm font-bold">
@@ -117,6 +95,14 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                                     />
                                 </div>
                             </NavLink>
+                            <NavLink href={route("user-messages")}>
+                                <img
+                                    className=" h-6 "
+                                    src={UserChatIcon}
+                                    alt="chat icon"
+                                />
+                            </NavLink>
+
                             <div className=" relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>
