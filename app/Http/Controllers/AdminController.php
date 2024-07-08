@@ -70,4 +70,16 @@ class AdminController extends Controller
   {
     //
   }
+
+  public function viewSellerData(Request $request)
+  {
+    $seller = User::with('seller')
+      ->where('id', $request->id)
+      ->where('is_seller', true)
+      ->first();
+
+    return Inertia::render('Admin/ViewSellersData', [
+      'seller' => $seller
+    ]);
+  }
 }

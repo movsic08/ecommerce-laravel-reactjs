@@ -78,6 +78,8 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('/permission', function () {
     return Inertia::render('Admin/PermissionPanel');
   })->name('admin.permission');
+
+  Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
 });
 
 

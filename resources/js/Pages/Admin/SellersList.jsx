@@ -1,5 +1,5 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import Index from "./Index";
 import DefaultPicture from "../../assets/img/default_user_profile.png";
 import { MdRemoveRedEye } from "react-icons/md";
@@ -50,11 +50,18 @@ export default function SellersList({ auth }) {
                                         {user.created_at}
                                     </td>
                                     <td className="px-4 py-2">
-                                        <button className=" p-2 text-white rounded bg-blue-800 hover:bg-blue-900 mr-2 duration-200 ease-in-out">
-                                            <BsTrash2Fill />
-                                        </button>
+                                        <Link
+                                            href={route(
+                                                "admin.view-seller",
+                                                user.id
+                                            )}
+                                        >
+                                            <button className=" p-2 text-white rounded bg-blue-800 hover:bg-blue-900 mr-1 duration-200 ease-in-out">
+                                                <MdRemoveRedEye />
+                                            </button>
+                                        </Link>
                                         <button className=" p-2 text-white rounded bg-red-800 hover:bg-red-900  duration-200 ease-in-out">
-                                            <MdRemoveRedEye />
+                                            <BsTrash2Fill />
                                         </button>
                                     </td>
                                 </tr>
