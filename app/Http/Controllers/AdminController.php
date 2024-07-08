@@ -15,6 +15,7 @@ class AdminController extends Controller
   public function index()
   {
     $query = User::query();
+    $query = $query->where('is_seller', true);
     $users = $query->paginate(15);
 
     return Inertia::render('Admin/SellersList', [
