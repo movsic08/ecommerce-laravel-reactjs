@@ -1,26 +1,42 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { Head, useForm, usePage, Link } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import { IoIosArrowForward } from "react-icons/io";
 import DefaultShopProfile from "../../assets/img/default_shop_profile.png";
-
+import SpinnerLoading from "@/Components/SpinnerLoading";
+import InputError from "@/Components/InputError";
+import "react-toastify/dist/ReactToastify.css";
 export default function ViewSellersData({ auth }) {
-    const { seller } = usePage().props;
+    const { seller, flash } = usePage().props;
+    console.log(flash);
+    const { data, processing, setData, errors, put } = useForm({
+        shop_name: seller.seller.shop_name,
+        shop_address: seller.seller.shop_address,
+        first_name: seller.first_name,
+        last_name: seller.last_name,
+        seller_address: seller.address,
+        motto: seller.seller.motto,
+    });
 
     const [isEditing, setIsEditing] = useState(false);
-    const [sellerData, setSellerData] = useState({ ...seller });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setSellerData({ ...sellerData, [name]: value });
-    };
-
-    const handleEditClick = () => {
+    const handleEditClick = (e) => {
+        e.preventDefault();
         setIsEditing(true);
     };
 
-    const handleSaveClick = () => {
-        setIsEditing(false);
-        // Add logic to save changes, e.g., making an API call
+    useEffect(() => {
+        if (flash.message) {
+            toast.success(flash.message);
+        }
+    }, [flash]);
+
+    const handleChange = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+        });
     };
 
     function formatDate(dateString) {
@@ -29,17 +45,36 @@ export default function ViewSellersData({ auth }) {
         return date.toLocaleDateString("en-US", options);
     }
 
+    const submit = (e) => {
+        e.preventDefault();
+
+        put(route("admin.update-seller", seller.id, data), {
+            onSuccess: () => {
+                setIsEditing(false);
+            },
+
+            onError: () => toast.error("Something went wrong"),
+        });
+    };
+
     return (
         <>
             <AdminAuthenticatedLayout user={auth}>
                 <Head title="Seller data" />
-                <pre className="bg-gray-100 p-4 rounded-md">
-                    {JSON.stringify(seller, null, 2)}
-                </pre>
+
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="py-8">
-                        <h2 className="text-2xl font-semibold leading-tight mb-6">
-                            Seller Data
+                    {" "}
+                    <ToastContainer />
+                    <form className="py-8" onSubmit={submit}>
+                        <h2 className="text-xl flex items-center font-semibold leading-tight mb-6">
+                            <Link
+                                href={route("admin.sellers")}
+                                className="duration-400 hover:text-mainText hover:underline"
+                            >
+                                Sellers List
+                            </Link>{" "}
+                            <IoIosArrowForward />
+                            {seller.id}
                         </h2>
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -61,14 +96,17 @@ export default function ViewSellersData({ auth }) {
                                     <div className="w-full flex gap-4">
                                         <div className=" w-full">
                                             <div className=" flex flex-col items-start">
-                                                <label className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="shop_name"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Shop name
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="first_name"
-                                                    value="Shop name "
-                                                    onChange={handleInputChange}
+                                                    name="shop_name"
+                                                    value={data.shop_name || ""}
+                                                    onChange={handleChange}
                                                     disabled={!isEditing}
                                                     className={`mt-1 block w-full rounded-md ${
                                                         isEditing
@@ -76,16 +114,31 @@ export default function ViewSellersData({ auth }) {
                                                             : "border-none bg-gray-100"
                                                     }`}
                                                 />
+                                                <InputError>asfarfa</InputError>
+                                                {errors.shop_name && (
+                                                    <InputError
+                                                        className="mt-1"
+                                                        message={
+                                                            errors.shop_name
+                                                        }
+                                                    />
+                                                )}
                                             </div>
                                             <div className=" flex flex-col items-start mt-4">
-                                                <label className="block text-sm font-medium text-gray-700">
+                                                <label
+                                                    htmlFor="shop_address"
+                                                    className="block text-sm font-medium text-gray-700"
+                                                >
                                                     Shop Address
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="first_name"
-                                                    value="Shop address "
-                                                    onChange={handleInputChange}
+                                                    name="shop_address"
+                                                    id="shop_address"
+                                                    value={
+                                                        data.shop_address || ""
+                                                    }
+                                                    onChange={handleChange}
                                                     disabled={!isEditing}
                                                     className={`mt-1 block w-full rounded-md ${
                                                         isEditing
@@ -93,6 +146,14 @@ export default function ViewSellersData({ auth }) {
                                                             : "border-none bg-gray-100"
                                                     }`}
                                                 />
+                                                {errors.shop_address && (
+                                                    <InputError
+                                                        className="mt-1"
+                                                        message={
+                                                            errors.shop_address
+                                                        }
+                                                    />
+                                                )}
                                             </div>
                                         </div>
                                         <div className="flex gap-2 flex-col">
@@ -102,17 +163,15 @@ export default function ViewSellersData({ auth }) {
                                                 </label>
                                                 <input
                                                     type="text"
-                                                    name="first_name"
                                                     value={
                                                         seller.seller
-                                                            .is_verified
+                                                            .is_verified == 1
+                                                            ? "Verified"
+                                                            : "Not Verified"
                                                     }
-                                                    disabled={!isEditing}
-                                                    className={`mt-1 block w-full rounded-md ${
-                                                        isEditing
-                                                            ? "border-gray-300"
-                                                            : "border-none bg-gray-100"
-                                                    }`}
+                                                    disabled
+                                                    className="mt-1 block w-full rounded-md 
+                                                            border-none bg-gray-100"
                                                 />
                                             </div>
                                             <div>
@@ -140,8 +199,8 @@ export default function ViewSellersData({ auth }) {
                                     <input
                                         type="text"
                                         name="first_name"
-                                        value={seller.first_name}
-                                        onChange={handleInputChange}
+                                        value={data.first_name}
+                                        onChange={handleChange}
                                         disabled={!isEditing}
                                         className={`mt-1 block w-full rounded-md ${
                                             isEditing
@@ -149,6 +208,12 @@ export default function ViewSellersData({ auth }) {
                                                 : "border-none bg-gray-100"
                                         }`}
                                     />
+                                    {errors.first_name && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.first_name}
+                                        />
+                                    )}
                                 </div>
 
                                 <div>
@@ -158,8 +223,8 @@ export default function ViewSellersData({ auth }) {
                                     <input
                                         type="text"
                                         name="last_name"
-                                        value={seller.last_name}
-                                        onChange={handleInputChange}
+                                        value={data.last_name}
+                                        onChange={handleChange}
                                         disabled={!isEditing}
                                         className={`mt-1 block w-full rounded-md ${
                                             isEditing
@@ -167,17 +232,27 @@ export default function ViewSellersData({ auth }) {
                                                 : "border-none bg-gray-100"
                                         }`}
                                     />
+                                    {errors.last_name && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.last_name}
+                                        />
+                                    )}
                                 </div>
 
                                 <div className="col-span-1 sm:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700">
+                                    <label
+                                        htmlFor="seller_address"
+                                        className="block text-sm font-medium text-gray-700"
+                                    >
                                         Seller Address
                                     </label>
                                     <input
                                         type="text"
-                                        name="address"
-                                        value={seller.address}
-                                        onChange={handleInputChange}
+                                        name="seller_address"
+                                        id="sellerAddress"
+                                        value={seller.seller.address}
+                                        onChange={handleChange}
                                         disabled={!isEditing}
                                         className={`mt-1 block w-full rounded-md ${
                                             isEditing
@@ -185,39 +260,43 @@ export default function ViewSellersData({ auth }) {
                                                 : "border-none bg-gray-100"
                                         }`}
                                     />
+                                    {errors.seller_address && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.seller_address}
+                                        />
+                                    )}
                                 </div>
                                 <div className="flex gap-4 col-span-1 sm:col-span-2">
-                                    {" "}
                                     <div className=" w-1/2">
-                                        <div className="">
+                                        <div>
                                             <label className="block text-sm font-medium text-gray-700">
                                                 Years in selling
                                             </label>
                                             <input
                                                 type="text"
-                                                name="address"
                                                 value={
                                                     seller.seller
                                                         .years_in_selling
                                                 }
-                                                onChange={handleInputChange}
-                                                disabled={!isEditing}
-                                                className={`mt-1 block w-full rounded-md ${
-                                                    isEditing
-                                                        ? "border-gray-300"
-                                                        : "border-none bg-gray-100"
-                                                }`}
+                                                disabled
+                                                className="mt-1 block w-full rounded-md border-none bg-gray-100 "
                                             />
                                         </div>
                                         <div className="mt-4">
-                                            <label className="block text-sm font-medium text-gray-700">
+                                            <label
+                                                htmlFor="motto"
+                                                className="block text-sm font-medium text-gray-700"
+                                            >
                                                 Motto
                                             </label>
 
                                             <textarea
                                                 name="motto"
-                                                value={seller.seller.motto}
-                                                onChange={handleInputChange}
+                                                value={
+                                                    seller.seller.motto || ""
+                                                }
+                                                onChange={handleChange}
                                                 disabled={!isEditing}
                                                 className={`mt-1 block w-full rounded-md ${
                                                     isEditing
@@ -330,16 +409,30 @@ export default function ViewSellersData({ auth }) {
                                 </div>
                             </div>
 
-                            <div className="mt-6 flex justify-end space-x-4">
+                            <div className="mt-6 flex justify-end space-x-2">
+                                <button
+                                    type="button"
+                                    className=" bg-orange-700 text-white px-4 py-2 rounded-md"
+                                >
+                                    Change status
+                                </button>
                                 {isEditing ? (
                                     <button
-                                        onClick={handleSaveClick}
+                                        disabled={processing}
+                                        type="submit"
                                         className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
                                     >
-                                        Save
+                                        {processing ? (
+                                            <div className="flex items-center gap-1">
+                                                Saving <SpinnerLoading />
+                                            </div>
+                                        ) : (
+                                            "Save"
+                                        )}
                                     </button>
                                 ) : (
                                     <button
+                                        type="button"
                                         onClick={handleEditClick}
                                         className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                                     >
@@ -348,7 +441,7 @@ export default function ViewSellersData({ auth }) {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </AdminAuthenticatedLayout>
         </>

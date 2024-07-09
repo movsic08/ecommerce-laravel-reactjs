@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AdminResourceOfSellers;
+use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -61,6 +62,38 @@ class AdminController extends Controller
   public function update(Request $request, string $id)
   {
     //
+  }
+
+  public function updateSeller(Request $request, string $id)
+  {
+
+    $request->validate([
+      'shop_name' => 'required',
+      'shop_address' => 'required',
+      'first_name' => 'required| min:2',
+      'last_name' => 'required| min:2',
+      'seller_address' => 'required',
+    ]);
+
+    $user = User::with('seller')->findorFail($id);
+    $seller = $user->seller;
+
+    $user->update([
+
+      'first_name' => $request->first_name,
+      'last_name' => $request->last_name,
+      'seller_address' => $request->seller_address,
+    ]);
+
+    $seller->update([
+      'shop_name' => $request->shop_name,
+      'shop_address' => $request->shop_address,
+      'motto' => $request->motto
+    ]);
+
+    // return response()->json(['message' => 'Update success']);
+    return redirect()->route('admin.view-seller', $id)->with('message', 'Updating ' . $seller->shop_name . ' success');
+    // dd($id, $request->all());
   }
 
   /**

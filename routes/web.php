@@ -80,6 +80,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   })->name('admin.permission');
 
   Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
+  Route::put('/view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
 });
 
 
