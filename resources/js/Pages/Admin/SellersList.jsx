@@ -42,7 +42,17 @@ export default function SellersList({ auth }) {
                                             className="w-12 h-12 rounded-full mx-auto"
                                         />
                                     </td>
-                                    <td className="px-4 py-2">{user.name}</td>
+                                    <td className="px-4 py-2">
+                                        <Link
+                                            className="duration-200 hover:underline"
+                                            href={route(
+                                                "admin.view-seller",
+                                                user.id
+                                            )}
+                                        >
+                                            {user.name}
+                                        </Link>
+                                    </td>
                                     <td className="px-4 py-2">
                                         {user.address}
                                     </td>
