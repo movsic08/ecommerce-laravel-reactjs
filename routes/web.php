@@ -75,6 +75,8 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
 
+  Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');
+
   Route::get('/permission', function () {
     return Inertia::render('Admin/PermissionPanel');
   })->name('admin.permission');

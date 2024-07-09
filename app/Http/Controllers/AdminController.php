@@ -24,6 +24,19 @@ class AdminController extends Controller
     ]);
   }
 
+  public function indexUsers()
+  {
+    $query = User::query();
+    $query = $query->where('is_seller', false);
+    $query = $query->where('is_admin', false);
+
+    $users = $query->paginate(15);
+
+    return Inertia::render('Admin/UsersList', [
+      "users" => $users
+    ]);
+  }
+
   /**
    * Show the form for creating a new resource.
    */
