@@ -6,6 +6,7 @@ use App\Http\Resources\AdminResourceOfSellers;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -116,6 +117,42 @@ class AdminController extends Controller
   {
     //
   }
+
+  public function destroySellerData(string $id)
+  {
+    DB::beginTransaction();
+
+    try {
+      $user = User::with('seller')->findOrFail($id);
+      $seller = $user->seller;
+
+      if ($user && $seller) {
+        $seller->delete();
+        $user->delete();
+
+        DB::commit();
+
+        return redirect()->route('admin.sellers')->with([
+          'message' => 'Seller deleted successfully!',
+          'status' => 'success',
+        ]);
+      } else {
+        DB::rollBack();
+        return redirect()->route('admin.sellers')->with([
+          'message' => 'Seller not found, DB Error!',
+          'status' => 'error',
+        ]);
+      }
+    } catch (\Exception $e) {
+      DB::rollBack();
+
+      return redirect()->route('admin.sellers')->with([
+        'message' => 'Failed to delete seller',
+        'status' => 'error',
+      ]);
+    }
+  }
+
 
   public function viewSellerData(Request $request)
   {

@@ -1,16 +1,45 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import Index from "./Index";
 import DefaultPicture from "../../assets/img/default_user_profile.png";
 import { MdRemoveRedEye } from "react-icons/md";
 import { BsTrash2Fill } from "react-icons/bs";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 export default function SellersList({ auth }) {
-    const { users = [] } = usePage().props;
+    const { users, flash } = usePage().props;
+
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else if (flash.status == "error") {
+            toast.error(flash.message);
+        } else {
+            toast.info(flash.message);
+        }
+    }, [flash]);
+
+    const deleteSellerData = (e, id, name) => {
+        e.preventDefault();
+
+        if (
+            !window.confirm(
+                "Are you sure you want to delete this seller named " +
+                    name +
+                    "?"
+            )
+        ) {
+            return;
+        }
+        router.delete(route("admin.destroy.sellerdata", id));
+    };
 
     return (
         <>
             <AdminAuthenticatedLayout user={auth.user}>
+                <ToastContainer />
                 <Head title="Sellers List" />
                 <h2
                     className=" text-center uppercase font-bold bg-header  p-4 rounded-lg
@@ -70,7 +99,17 @@ export default function SellersList({ auth }) {
                                                 <MdRemoveRedEye />
                                             </button>
                                         </Link>
-                                        <button className=" p-2 text-white rounded bg-red-800 hover:bg-red-900  duration-200 ease-in-out">
+                                        <button
+                                            type="button"
+                                            onClick={(e) =>
+                                                deleteSellerData(
+                                                    e,
+                                                    user.id,
+                                                    user.name
+                                                )
+                                            }
+                                            className=" p-2 text-white rounded bg-red-800 hover:bg-red-900  duration-200 ease-in-out"
+                                        >
                                             <BsTrash2Fill />
                                         </button>
                                     </td>

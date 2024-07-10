@@ -81,6 +81,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 
   Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
   Route::put('/view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
+  Route::delete('/view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
 });
 
 
