@@ -22,9 +22,7 @@ Route::get('/', function () {
 //     ]);
 // });
 
-Route::get('/create-seller-account', function () {
-  return Inertia::render('User/SellerSignup');
-})->name('seller.signup');
+
 
 Route::get('/dashboard', function () {
   return Inertia::render('Dashboard');
