@@ -13,9 +13,11 @@ export default function SuccessSellerAccount({}) {
                     </h1>
                     <p className="text-gray-600 mb-6">
                         Thank you for applying as a seller. Your account has
-                        been created successfully. Our Administrative Team will
+                        been successfully created. Our Administrative Team will
                         review your details shortly. We appreciate your patience
-                        during this process.
+                        during this process. Please note that the email you
+                        provided will receive notifications regarding your
+                        application status.
                     </p>
                     <p className="text-gray-600 mb-6">
                         You will receive an email notification once your account
