@@ -7,6 +7,7 @@ use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -127,6 +128,8 @@ class AdminController extends Controller
       $seller = $user->seller;
 
       if ($user && $seller) {
+        $filePath = $seller->proof_of_membership_path;
+        Storage::disk('public')->delete($filePath);
         $seller->delete();
         $user->delete();
 
@@ -139,7 +142,7 @@ class AdminController extends Controller
       } else {
         DB::rollBack();
         return redirect()->route('admin.sellers')->with([
-          'message' => 'Seller not found, DB Error!',
+          'message' => 'Seller not found/Deletion DB Error!',
           'status' => 'error',
         ]);
       }
