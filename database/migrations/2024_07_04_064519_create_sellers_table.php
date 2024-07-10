@@ -26,6 +26,7 @@ return new class extends Migration
       $table->boolean('has_mayors_business_permit');
       $table->boolean('has_paid_organizational_fee');
       $table->boolean('has_barangay_clearance');
+      $table->boolean('has_bir');
       $table->string('proof_of_membership_path');
       $table->boolean('is_verified')->default(false);
       $table->date("verified_at")->nullable();

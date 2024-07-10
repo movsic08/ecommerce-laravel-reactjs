@@ -20,6 +20,7 @@ class Seller extends Model
     'has_mayors_business_permit',
     'has_paid_organizational_fee',
     'has_barangay_clearance',
+    'has_bir',
     'proof_of_membership_path',
   ];
 
