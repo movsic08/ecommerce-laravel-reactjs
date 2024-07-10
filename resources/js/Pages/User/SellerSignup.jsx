@@ -7,10 +7,19 @@ import TextInput from "@/Components/TextInput";
 import GuestFooter from "@/Layouts/GuestFooter";
 import GuestLayout from "@/Layouts/GuestLayout";
 import SellerGuestLayout from "@/Layouts/SellerGuestLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function SellerSignup() {
+    const { flash } = usePage().props;
+    useEffect(() => {
+        if (flash.message) {
+            toast.error(flash.message);
+        }
+    }, [flash]);
+    console.log(flash);
     const { data, processing, setData, errors, post, reset } = useForm({
         first_name: "",
         last_name: "",
@@ -36,11 +45,11 @@ export default function SellerSignup() {
 
     const createSellerAccount = (e) => {
         e.preventDefault();
-        // console.log(data);
         post(route("create.seller"));
     };
     return (
         <>
+            <ToastContainer />
             <SellerGuestLayout className="py-4 md:py-6 lg:py-8">
                 <Head title="Become a seller" />
                 <h1 className=" font-bold text-3xl text-center py-4  uppercase text-mainText">
@@ -268,11 +277,10 @@ export default function SellerSignup() {
                                         className="w-full bg-themeColor text-white rounded-r"
                                         type="file"
                                         name="proof_file_path"
-                                        value={data.proof_of_membership_path}
                                         onChange={(e) =>
                                             setData(
                                                 "proof_of_membership_path",
-                                                e.target.value
+                                                e.target.files[0]
                                             )
                                         }
                                     />
