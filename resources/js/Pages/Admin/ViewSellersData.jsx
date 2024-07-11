@@ -6,7 +6,6 @@ import { IoIosArrowForward } from "react-icons/io";
 import DefaultShopProfile from "../../assets/img/default_shop_profile.png";
 import SpinnerLoading from "@/Components/SpinnerLoading";
 import InputError from "@/Components/InputError";
-import "react-toastify/dist/ReactToastify.css";
 import PermitPictureViewer from "@/Components/PermitPictureViewer";
 
 export default function ViewSellersData({ auth }) {

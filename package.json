@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "react-icons": "^5.2.1",
+        "react-modal-image": "^2.6.0",
         "react-rating": "^2.0.5",
         "react-responsive-carousel": "^3.2.23",
         "react-toastify": "^10.0.5"

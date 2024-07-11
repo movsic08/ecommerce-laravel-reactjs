@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ModalImage from "react-modal-image";
 
 export default function PermitPictureViewer({ imageUrl, onClose }) {
     const closeModal = () => {
@@ -10,7 +11,7 @@ export default function PermitPictureViewer({ imageUrl, onClose }) {
             className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50`}
         >
             <div className="bg-white rounded-lg overflow-hidden shadow-lg w-full md:max-w-md mx-auto">
-                <div className="flex justify-end px-4 py-2">
+                <div className="flex relative justify-end items-center px-4 py-2">
                     <button
                         onClick={closeModal}
                         className="text-gray-500 hover:text-gray-600 focus:outline-none"
@@ -32,11 +33,10 @@ export default function PermitPictureViewer({ imageUrl, onClose }) {
                 </div>
 
                 <div className="px-4 py-2">
-                    <img
-                        src={imageUrl}
-                        alt="Permit"
-                        className="w-full h-auto rounded-lg"
-                    />
+                    <p className="w-full text-center mb-4 rounded bg-blue-100 text-blue-800 p-2">
+                        Click the image to view in bigger size
+                    </p>
+                    <ModalImage small={imageUrl} large={imageUrl} />
                 </div>
             </div>
         </div>
