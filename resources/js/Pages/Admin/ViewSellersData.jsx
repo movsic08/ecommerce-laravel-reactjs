@@ -7,7 +7,7 @@ import DefaultShopProfile from "../../assets/img/default_shop_profile.png";
 import SpinnerLoading from "@/Components/SpinnerLoading";
 import InputError from "@/Components/InputError";
 import PermitPictureViewer from "@/Components/PermitPictureViewer";
-
+import "react-toastify/dist/ReactToastify.css";
 export default function ViewSellersData({ auth }) {
     const { seller, flash } = usePage().props;
 
@@ -66,7 +66,7 @@ export default function ViewSellersData({ auth }) {
         <>
             <AdminAuthenticatedLayout user={auth}>
                 <Head title="Seller data" />
-
+                <ToastContainer />
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     {isPermitViewerOpen && (
                         <PermitPictureViewer
@@ -77,7 +77,6 @@ export default function ViewSellersData({ auth }) {
                         />
                     )}
 
-                    <ToastContainer />
                     <form className="py-8" onSubmit={submit}>
                         <h2 className="text-xl flex items-center font-semibold leading-tight mb-6">
                             <Link
