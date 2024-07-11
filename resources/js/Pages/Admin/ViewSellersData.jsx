@@ -7,19 +7,25 @@ import DefaultShopProfile from "../../assets/img/default_shop_profile.png";
 import SpinnerLoading from "@/Components/SpinnerLoading";
 import InputError from "@/Components/InputError";
 import "react-toastify/dist/ReactToastify.css";
+import PermitPictureViewer from "@/Components/PermitPictureViewer";
+
 export default function ViewSellersData({ auth }) {
     const { seller, flash } = usePage().props;
-    console.log(flash);
-    const { data, processing, setData, errors, put } = useForm({
-        shop_name: seller.seller.shop_name,
-        shop_address: seller.seller.shop_address,
-        first_name: seller.first_name,
-        last_name: seller.last_name,
-        seller_address: seller.address,
-        motto: seller.seller.motto,
-    });
 
+    const { data, processing, setData, errors, put } = useForm({
+        shop_name: seller.seller.shop_name || "",
+        shop_address: seller.seller.shop_address || "",
+        first_name: seller.first_name || "",
+        last_name: seller.last_name || "",
+        seller_address: seller.address || "",
+        motto: seller.seller.motto || "",
+    });
     const [isEditing, setIsEditing] = useState(false);
+    const [isPermitViewerOpen, setIsPermitViewerOpen] = useState(false);
+
+    const togglePermitViewer = () => {
+        setIsPermitViewerOpen(!isPermitViewerOpen);
+    };
 
     const handleEditClick = (e) => {
         e.preventDefault();
@@ -63,7 +69,15 @@ export default function ViewSellersData({ auth }) {
                 <Head title="Seller data" />
 
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                    {" "}
+                    {isPermitViewerOpen && (
+                        <PermitPictureViewer
+                            onClose={() => {
+                                setIsPermitViewerOpen(false);
+                            }}
+                            imageUrl={seller.seller.proof_of_membership_path}
+                        />
+                    )}
+
                     <ToastContainer />
                     <form className="py-8" onSubmit={submit}>
                         <h2 className="text-xl flex items-center font-semibold leading-tight mb-6">
@@ -364,8 +378,12 @@ export default function ViewSellersData({ auth }) {
                                                 <label className="block text-sm font-medium text-gray-700">
                                                     Permit file
                                                 </label>
-                                                <button className="ml-2 bg-blue-500 px-2 py-1 rounded text-white">
-                                                    View Permit{" "}
+                                                <button
+                                                    onClick={togglePermitViewer}
+                                                    type="button"
+                                                    className="ml-2 bg-blue-500 px-2 py-1 rounded text-white"
+                                                >
+                                                    View Permit
                                                 </button>
                                             </div>{" "}
                                             <div className="mt-4">

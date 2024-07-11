@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AdminResourceOfSellers;
+use App\Http\Resources\SellerDataResource;
 use App\Models\Seller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -162,10 +163,15 @@ class AdminController extends Controller
     $seller = User::with('seller')
       ->where('id', $request->id)
       ->where('is_seller', true)
-      ->first();
+      ->firstOrFail();
+    // dd($seller->seller->proof_of_membership_path);
+    // Transform the fetched data using SellerResource
+    $sellerResource = new SellerDataResource($seller);
 
+
+    // Return the view using Inertia with the transformed seller data
     return Inertia::render('Admin/ViewSellersData', [
-      'seller' => $seller
+      'seller' => $sellerResource->toArray($request), // Flatten the resource data
     ]);
   }
 }
