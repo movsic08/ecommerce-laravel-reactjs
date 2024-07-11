@@ -8,7 +8,7 @@ export default function PermitPictureViewer({ imageUrl, onClose }) {
 
     return (
         <div
-            className={`fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-900 bg-opacity-50`}
+            className={`fixed top-0 left-0 w-full h-full bg-opacity-25 backdrop-blur-md flex items-center justify-center bg-gray-900 `}
         >
             <div className="bg-white rounded-lg overflow-hidden shadow-lg w-full md:max-w-md mx-auto">
                 <div className="flex relative justify-end items-center px-4 py-2">
