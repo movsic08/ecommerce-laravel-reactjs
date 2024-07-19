@@ -24,7 +24,7 @@ const TextArea = ({ value, onChange, placeholder }) => {
             value={textareaValue}
             onChange={handleChange}
             placeholder={placeholder}
-            className="resize-none overflow-hidden px-3 py-2 border rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            className="resize-none overflow-hidden px-3 w-full py-2 border rounded-lg border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
         />
     );
 };
