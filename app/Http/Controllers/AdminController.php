@@ -40,6 +40,11 @@ class AdminController extends Controller
     ]);
   }
 
+  public function updateSellerStatus(Request $request)
+  {
+    return redirect()->route('admin.view-seller', $request->id)->with('message', 'Change status success');
+  }
+
   /**
    * Show the form for creating a new resource.
    */

@@ -1,0 +1,102 @@
+import { router, useForm } from "@inertiajs/react";
+
+import { toast } from "react-toastify";
+import SelectInput from "./SelectInput";
+import InputError from "./InputError";
+import TextArea from "./TextArea";
+import { useState } from "react";
+
+export default function VerifyUser({ id, status, onClose }) {
+    const { errors, data, setData, processing } = useForm({
+        status: status,
+        is_verified: status,
+    });
+
+    const closeModal = (e) => {
+        e.preventDefault();
+        onClose(); // This will set isPermitViewerOpen to false in the parent component
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        router.put(route("admin.update.seller.status", id), {
+            onSuccess: () => {
+                closeModal;
+            },
+            onError: () => toast.error("Something went wrong"),
+        });
+    };
+    const [showSendEmail, setShowSendEmail] = useState(false);
+    return (
+        <>
+            <div className="fixed top-0 left-0 w-full z-10 h-full bg-opacity-25 backdrop-blur-md flex justify-start bg-gray-900">
+                <div className="bg-white h-fit mt-10 rounded-lg px-6 py-4 overflow-hidden shadow-lg w-full md:max-w-md mx-auto">
+                    <form onSubmit={submit}>
+                        <h2 className="text-center"> Seller Status</h2>
+                        <div>
+                            <label className=" mr-2">Change status</label>
+                            <SelectInput
+                                className="my-2"
+                                defaultValue={status === 0 ? "0" : "1"}
+                                onChange={(e) =>
+                                    setData("is_verified", e.target.value)
+                                }
+                            >
+                                <option className="text-slate-900" value="0">
+                                    Not Verified
+                                </option>
+                                <option className="text-slate-900" value="1">
+                                    Verified
+                                </option>
+                            </SelectInput>
+                        </div>
+
+                        <InputError
+                            message={errors.is_verified}
+                            className="mt-1"
+                        />
+
+                        <div className="flex flex-col gap-1">
+                            <p className=" px-2 py-1 rounded-md bg-green-200 text-green-900 text-sm text-center">
+                                Does the seller require any revisions to their
+                                requirements?. Click the send email button
+                            </p>
+                            {showSendEmail && (
+                                <TextArea
+                                    className="mt-1"
+                                    placeholder={"Enter your message here..."}
+                                />
+                            )}
+
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setShowSendEmail(!showSendEmail);
+                                }}
+                                className="px-2 w-fit rounded bg-orange-800 text-white my-2"
+                            >
+                                {showSendEmail ? "Cancel" : "Send an email"}
+                            </button>
+                        </div>
+
+                        <div className="flex gap-2 pt-2 items-center justify-end mt-2 border-t-2 ">
+                            <button
+                                className="text-red-800 border-2 hover:bg-red-800 hover:text-white broder-red-800 px-2 py-1 rounded"
+                                onClick={closeModal}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="bg-blue-800 text-white px-2 py-1 rounded"
+                                type="submit"
+                                disabled={processing}
+                            >
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </>
+    );
+}
