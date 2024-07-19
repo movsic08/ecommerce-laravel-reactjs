@@ -57,7 +57,6 @@ export default function ViewSellersData({ auth }) {
         });
     };
 
-    console.log(flash);
     const [openChangeStatusModal, setOpenChangeStatusModal] = useState(true);
     const openChangeStatus = () => {
         setOpenChangeStatusModal(!openChangeStatusModal);
@@ -66,7 +65,7 @@ export default function ViewSellersData({ auth }) {
     // const openChangeStatusSeller = () => {
     //     setOpenVerifySellerModal(!openVerifySellerModal);
     // };    useEffect(() => {
-    console.log(flash);
+
     useEffect(() => {
         if (flash.message) {
             if (flash.message === "Change status success") {
@@ -204,8 +203,12 @@ export default function ViewSellersData({ auth }) {
                                                             : "Not Verified"
                                                     }
                                                     disabled
-                                                    className="mt-1 block w-full rounded-md 
-                                                            border-none bg-gray-100"
+                                                    className={`mt-1 block w-full uppercase font-bold text-center rounded-md border-none  ${
+                                                        seller.seller
+                                                            .is_verified
+                                                            ? "text-green-900 bg-green-100"
+                                                            : "bg-red-100 text-red-800"
+                                                    }`}
                                                 />
                                             </div>
                                             <div>
