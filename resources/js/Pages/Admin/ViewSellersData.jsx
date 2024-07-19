@@ -8,6 +8,7 @@ import SpinnerLoading from "@/Components/SpinnerLoading";
 import InputError from "@/Components/InputError";
 import PermitPictureViewer from "@/Components/PermitPictureViewer";
 import "react-toastify/dist/ReactToastify.css";
+import VerifyUser from "@/Components/VerifyUser";
 export default function ViewSellersData({ auth }) {
     const { seller, flash } = usePage().props;
 
@@ -30,12 +31,6 @@ export default function ViewSellersData({ auth }) {
         e.preventDefault();
         setIsEditing(true);
     };
-
-    useEffect(() => {
-        if (flash.message) {
-            toast.success(flash.message);
-        }
-    }, [flash]);
 
     const handleChange = (e) => {
         setData({
@@ -62,12 +57,40 @@ export default function ViewSellersData({ auth }) {
         });
     };
 
+    console.log(flash);
+    const [openChangeStatusModal, setOpenChangeStatusModal] = useState(true);
+    const openChangeStatus = () => {
+        setOpenChangeStatusModal(!openChangeStatusModal);
+    };
+    // const [openVerifySellerModal, setOpenVerifySellerModal] = useState(false);
+    // const openChangeStatusSeller = () => {
+    //     setOpenVerifySellerModal(!openVerifySellerModal);
+    // };    useEffect(() => {
+    console.log(flash);
+    useEffect(() => {
+        if (flash.message) {
+            if (flash.message === "Change status success") {
+                setOpenChangeStatusModal(false);
+            }
+            toast.success(flash.message);
+        }
+    }, [flash]);
     return (
         <>
             <AdminAuthenticatedLayout user={auth}>
                 <Head title="Seller data" />
                 <ToastContainer />
+
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    {openChangeStatusModal && (
+                        <VerifyUser
+                            onClose={() => {
+                                setOpenChangeStatusModal(false);
+                            }}
+                            id={seller.id}
+                            status={seller.seller.is_verified}
+                        />
+                    )}
                     {isPermitViewerOpen && (
                         <PermitPictureViewer
                             onClose={() => {
@@ -76,7 +99,6 @@ export default function ViewSellersData({ auth }) {
                             imageUrl={seller.seller.proof_of_membership_path}
                         />
                     )}
-
                     <form className="py-8" onSubmit={submit}>
                         <h2 className="text-xl flex items-center font-semibold leading-tight mb-6">
                             <Link
@@ -427,10 +449,11 @@ export default function ViewSellersData({ auth }) {
 
                             <div className="mt-6 flex justify-end space-x-2">
                                 <button
+                                    onClick={openChangeStatus}
                                     type="button"
                                     className=" bg-orange-700 text-white px-4 py-2 rounded-md"
                                 >
-                                    Change status
+                                    Verify Seller
                                 </button>
                                 {isEditing ? (
                                     <button
