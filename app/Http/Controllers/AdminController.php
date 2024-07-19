@@ -6,6 +6,7 @@ use App\Http\Resources\AdminResourceOfSellers;
 use App\Http\Resources\SellerDataResource;
 use App\Models\Seller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -40,8 +41,21 @@ class AdminController extends Controller
     ]);
   }
 
-  public function updateSellerStatus(Request $request)
+  public function updateSellerStatus(Request $request, string $id)
   {
+
+    $request->validate([
+      'is_verified' => 'required',
+    ]);
+    $user = User::with('seller')->findorFail($id);
+    $seller = $user->seller;
+    // dd($request->all());
+    $seller->update([
+      'is_verified' => $request->is_verified,
+      'verified_at' => Carbon::now()
+    ]);
+
+
     return redirect()->route('admin.view-seller', $request->id)->with('message', 'Change status success');
   }
 

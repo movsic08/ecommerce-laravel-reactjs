@@ -8,8 +8,9 @@ import { useState } from "react";
 
 export default function VerifyUser({ id, status, onClose }) {
     const { errors, data, setData, processing } = useForm({
-        status: status,
+        // status: status,
         is_verified: status,
+        message: "",
     });
 
     const closeModal = (e) => {
@@ -19,7 +20,7 @@ export default function VerifyUser({ id, status, onClose }) {
 
     const submit = (e) => {
         e.preventDefault();
-        router.put(route("admin.update.seller.status", id), {
+        router.put(route("admin.update.seller.status", id), data, {
             onSuccess: () => {
                 closeModal;
             },
@@ -27,6 +28,7 @@ export default function VerifyUser({ id, status, onClose }) {
         });
     };
     const [showSendEmail, setShowSendEmail] = useState(false);
+
     return (
         <>
             <div className="fixed top-0 left-0 w-full z-10 h-full bg-opacity-25 backdrop-blur-md flex justify-start bg-gray-900">
@@ -51,21 +53,33 @@ export default function VerifyUser({ id, status, onClose }) {
                             </SelectInput>
                         </div>
 
-                        <InputError
-                            message={errors.is_verified}
-                            className="mt-1"
-                        />
-
+                        {errors.is_verified && (
+                            <InputError
+                                message={errors.is_verified}
+                                className="mt-1"
+                            />
+                        )}
                         <div className="flex flex-col gap-1">
                             <p className=" px-2 py-1 rounded-md bg-green-200 text-green-900 text-sm text-center">
                                 Does the seller require any revisions to their
                                 requirements?. Click the send email button
                             </p>
                             {showSendEmail && (
-                                <TextArea
-                                    className="mt-1"
-                                    placeholder={"Enter your message here..."}
-                                />
+                                <div className="w-full">
+                                    {" "}
+                                    <TextArea
+                                        value={data.message} // Ensure you pass the current value
+                                        onChange={(e) =>
+                                            setData("message", e.target.value)
+                                        }
+                                        className="mt-1 w-full"
+                                        placeholder="Enter your message here..."
+                                    />
+                                    <InputError
+                                        message={errors.is_verified}
+                                        className="mt-1"
+                                    />
+                                </div>
                             )}
 
                             <button
