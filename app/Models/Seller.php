@@ -22,6 +22,8 @@ class Seller extends Model
     'has_barangay_clearance',
     'has_bir',
     'proof_of_membership_path',
+    'is_verified',
+    'verified_at'
   ];
 
   public function user()
