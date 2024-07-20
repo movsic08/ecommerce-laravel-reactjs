@@ -308,6 +308,17 @@ export default function ViewSellersData({ auth }) {
                                     <div className=" w-1/2">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700">
+                                                Email
+                                            </label>
+                                            <input
+                                                type="email"
+                                                value={seller.email}
+                                                disabled
+                                                className="mt-1 block w-full rounded-md border-none bg-gray-100 "
+                                            />
+                                        </div>
+                                        <div className="mt-4">
+                                            <label className="block text-sm font-medium text-gray-700">
                                                 Years in selling
                                             </label>
                                             <input
