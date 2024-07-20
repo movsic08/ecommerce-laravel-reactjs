@@ -1,33 +1,39 @@
 import { router, useForm } from "@inertiajs/react";
-
 import { toast } from "react-toastify";
 import SelectInput from "./SelectInput";
 import InputError from "./InputError";
 import TextArea from "./TextArea";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import SpinnerLoading from "./SpinnerLoading";
 
-export default function VerifyUser({ id, status, onClose }) {
-    const { errors, data, setData, processing } = useForm({
-        // status: status,
+export default function VerifyUser({ id, status, verified_at, onClose }) {
+    const { errors, data, setData } = useForm({
         is_verified: status,
         message: "",
+        verified_at: verified_at,
     });
 
     const closeModal = (e) => {
         e.preventDefault();
-        onClose(); // This will set isPermitViewerOpen to false in the parent component
+        onClose();
     };
+    const [processing, setProcessing] = useState(false);
 
     const submit = (e) => {
         e.preventDefault();
+
         router.put(route("admin.update.seller.status", id), data, {
-            onSuccess: () => {
-                closeModal;
+            onProgress: () => {
+                setProcessing(true);
             },
-            onError: () => toast.error("Something went wrong"),
+            onSuccess: () => {
+                setProcessing(false), onClose();
+            },
+            onError: () => {
+                toast.error("Something went wrong"), setProcessing(false);
+            },
         });
     };
-    const [showSendEmail, setShowSendEmail] = useState(false);
 
     return (
         <>
@@ -36,7 +42,7 @@ export default function VerifyUser({ id, status, onClose }) {
                     <form onSubmit={submit}>
                         <h2 className="text-center"> Seller Status</h2>
                         <div>
-                            <label className=" mr-2">Change status</label>
+                            <label className="mr-2">Change status</label>
                             <SelectInput
                                 className="my-2"
                                 defaultValue={status === 0 ? "0" : "1"}
@@ -59,16 +65,27 @@ export default function VerifyUser({ id, status, onClose }) {
                                 className="mt-1"
                             />
                         )}
-                        <div className="flex flex-col gap-1">
-                            <p className=" px-2 py-1 rounded-md bg-green-200 text-green-900 text-sm text-center">
-                                Does the seller require any revisions to their
-                                requirements?. Click the send email button
+                        {status && data.is_verified == 1 ? (
+                            <p className="m-2 py-2 text-sm bg-green-200 text-green-900 text-center">
+                                This account is currently <b>VERIFIED</b>. If
+                                you wish to unverify this account, please
+                                provide a reason for doing so by adding a
+                                message below after changing the status to
+                                unverified.
                             </p>
-                            {showSendEmail && (
-                                <div className="w-full">
-                                    {" "}
+                        ) : (
+                            ""
+                        )}
+
+                        {data.is_verified == 0 && (
+                            <div className="flex flex-col gap-1">
+                                <p className="px-2 py-1 rounded-md bg-green-200 text-green-900 text-sm text-center">
+                                    Does the seller require any revisions to
+                                    their requirements? Add your message below.
+                                </p>
+                                <div className="w-full mt-2">
                                     <TextArea
-                                        value={data.message} // Ensure you pass the current value
+                                        value={data.message}
                                         onChange={(e) =>
                                             setData("message", e.target.value)
                                         }
@@ -76,36 +93,36 @@ export default function VerifyUser({ id, status, onClose }) {
                                         placeholder="Enter your message here..."
                                     />
                                     <InputError
-                                        message={errors.is_verified}
+                                        message={errors.message}
                                         className="mt-1"
                                     />
                                 </div>
-                            )}
-
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setShowSendEmail(!showSendEmail);
-                                }}
-                                className="px-2 w-fit rounded bg-orange-800 text-white my-2"
-                            >
-                                {showSendEmail ? "Cancel" : "Send an email"}
-                            </button>
-                        </div>
+                            </div>
+                        )}
 
                         <div className="flex gap-2 pt-2 items-center justify-end mt-2 border-t-2 ">
                             <button
-                                className="text-red-800 border-2 hover:bg-red-800 hover:text-white broder-red-800 px-2 py-1 rounded"
+                                className="text-red-800 border-2 hover:bg-red-800 hover:text-white border-red-800 px-2 py-1 rounded"
                                 onClick={closeModal}
                             >
                                 Cancel
                             </button>
+
                             <button
                                 className="bg-blue-800 text-white px-2 py-1 rounded"
                                 type="submit"
-                                disabled={processing}
+                                disabled={
+                                    processing ||
+                                    (data.is_verified == "1" && status == "1")
+                                }
                             >
-                                Update
+                                {processing ? (
+                                    <div className="flex items-center gap-1">
+                                        Processing <SpinnerLoading />
+                                    </div>
+                                ) : (
+                                    "Update"
+                                )}
                             </button>
                         </div>
                     </form>

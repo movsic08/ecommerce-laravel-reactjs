@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\VerifiedSeller;
 use App\Http\Resources\AdminResourceOfSellers;
 use App\Http\Resources\SellerDataResource;
+use App\Mail\SellerUnverified;
+use App\Mail\SellerVerified;
 use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -41,23 +46,50 @@ class AdminController extends Controller
     ]);
   }
 
+
   public function updateSellerStatus(Request $request, string $id)
   {
 
     $request->validate([
       'is_verified' => 'required',
     ]);
-    $user = User::with('seller')->findorFail($id);
-    $seller = $user->seller;
-    // dd($request->all());
-    $seller->update([
-      'is_verified' => $request->is_verified,
-      'verified_at' => Carbon::now()
-    ]);
+
+    if ($request->is_verified == 0) {
+      $request->validate([
+        'message' => 'required',
+      ]);
+    }
+
+    try {
+
+      $user = User::with('seller')->findorFail($id);
+      $seller = $user->seller;
+      DB::beginTransaction();
+      $seller->update([
+        'is_verified' => $request->is_verified,
+        'verified_at' => Carbon::now()
+      ]);
 
 
-    return redirect()->route('admin.view-seller', $request->id)->with('message', 'Change status success');
+      if ($request->is_verified == 1) {
+
+        Mail::to($user->email)->send(new SellerVerified((object) $request->all()));
+      }
+
+      if ($request->is_verified == 0) {
+        Mail::to($user->email)->send(new SellerUnverified((object) $request->all()));
+      }
+
+      DB::commit();
+      Log::alert('email sent success');
+      return redirect()->route('admin.view-seller', $request->id)->with('message', 'Change status success');
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error('Failed to update seller status or send email: ' . $e->getMessage());
+      return redirect()->route('admin.view-seller', $request->id)->with('error', 'Failed to send email');
+    }
   }
+
 
   /**
    * Show the form for creating a new resource.

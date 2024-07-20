@@ -5,8 +5,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\NotVerfiedSeller;
+use App\Http\Middleware\VerifiedSeller;
+use App\Mail\SellerVerified;
 use App\Models\CartItem;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -91,7 +94,15 @@ Route::get('/about', function () {
   return Inertia::render('About');
 })->middleware(['auth'])->name('about');
 
+Route::get('/testemail', function () {
+  $data = [
+    'is_verified' => true,
+  ];
 
+  Mail::to('lejero08@gmail.com')->send(new SellerVerified((object) $data));
+
+  return 'Email sent!';
+});
 
 Route::get('/contact', function () {
   return Inertia::render('Contact');

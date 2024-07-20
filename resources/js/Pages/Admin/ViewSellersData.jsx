@@ -57,7 +57,7 @@ export default function ViewSellersData({ auth }) {
         });
     };
 
-    const [openChangeStatusModal, setOpenChangeStatusModal] = useState(true);
+    const [openChangeStatusModal, setOpenChangeStatusModal] = useState(false);
     const openChangeStatus = () => {
         setOpenChangeStatusModal(!openChangeStatusModal);
     };
@@ -87,6 +87,7 @@ export default function ViewSellersData({ auth }) {
                                 setOpenChangeStatusModal(false);
                             }}
                             id={seller.id}
+                            verified_at={seller.seller.verified_at}
                             status={seller.seller.is_verified}
                         />
                     )}
@@ -462,6 +463,14 @@ export default function ViewSellersData({ auth }) {
                             </div>
 
                             <div className="mt-6 flex justify-end space-x-2">
+                                {isEditing && (
+                                    <button
+                                        className="text-red-800 border-2 hover:bg-red-800 hover:text-white border-red-800 px-2 py-1 rounded"
+                                        onClick={() => setIsEditing(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                )}
                                 <button
                                     onClick={openChangeStatus}
                                     type="button"
@@ -470,19 +479,21 @@ export default function ViewSellersData({ auth }) {
                                     Verify Seller
                                 </button>
                                 {isEditing ? (
-                                    <button
-                                        disabled={processing}
-                                        type="submit"
-                                        className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-                                    >
-                                        {processing ? (
-                                            <div className="flex items-center gap-1">
-                                                Saving <SpinnerLoading />
-                                            </div>
-                                        ) : (
-                                            "Save"
-                                        )}
-                                    </button>
+                                    <div className="flex gap-2">
+                                        <button
+                                            disabled={processing}
+                                            type="submit"
+                                            className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+                                        >
+                                            {processing ? (
+                                                <div className="flex items-center gap-1">
+                                                    Saving <SpinnerLoading />
+                                                </div>
+                                            ) : (
+                                                "Save"
+                                            )}
+                                        </button>
+                                    </div>
                                 ) : (
                                     <button
                                         type="button"
