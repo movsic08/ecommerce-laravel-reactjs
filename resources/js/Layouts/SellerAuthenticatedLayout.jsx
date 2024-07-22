@@ -14,7 +14,7 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
         useState(false);
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-slate-50">
             <nav className="  shadow drop-shadow-md border-b bg-white border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -195,7 +195,7 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className=" mx-auto container p-4">{children}</main>
         </div>
     );
 }
