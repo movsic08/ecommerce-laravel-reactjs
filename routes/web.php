@@ -81,8 +81,14 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 //seller pages
 Route::prefix('seller')->middleware('auth')->group(function () {
   Route::get('/index', function () {
-    return Inertia::render('Seller/Index');
-  })->name('seller.index');
+    return Inertia::render('Seller/Dashboard');
+  })->name('seller.dashboard');
+  Route::get('/shop', function () {
+    return Inertia::render('Seller/Shop');
+  })->name('seller.shop');
+  Route::get('/products', function () {
+    return Inertia::render('Seller/Products');
+  })->name('seller.products');
 });
 
 
