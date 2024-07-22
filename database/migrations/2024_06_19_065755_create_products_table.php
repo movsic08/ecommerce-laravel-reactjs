@@ -19,6 +19,7 @@ return new class extends Migration
       $table->integer('quantity')->unsigned()->default(0);
       $table->integer('price')->unsigned()->default(0);
       $table->string('description');
+      $table->string('is_verified')->default(0);
       $table->unsignedBigInteger('seller_id');
       $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
       $table->unsignedBigInteger('category_id');
