@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SellerProductList;
 use App\Models\Categories;
 use App\Models\Products;
 use App\Models\ProductsImages;
@@ -24,9 +25,15 @@ class SellerController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function products()
   {
-    //
+    $products = Products::with('images')->where('seller_id', auth()->id())->get();
+    // dd(new SellerProductList($products));
+
+    return Inertia::render('Seller/Products', [
+
+      'products' => (object) SellerProductList::collection($products)
+    ]);
   }
 
   public function createSellerAccoount(Request $request)

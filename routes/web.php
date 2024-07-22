@@ -87,9 +87,7 @@ Route::prefix('seller')->middleware('auth')->group(function () {
   Route::get('/shop', function () {
     return Inertia::render('Seller/Shop');
   })->name('seller.shop');
-  Route::get('/products', function () {
-    return Inertia::render('Seller/Products');
-  })->name('seller.products');
+  Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
   Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
   Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');
 });
