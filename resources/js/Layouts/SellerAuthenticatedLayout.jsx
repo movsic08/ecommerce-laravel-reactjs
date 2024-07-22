@@ -4,10 +4,9 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import UserChatIcon from "@/assets/icons/UserChatIcon.svg";
-import UserCartIcon from "@/assets/icons/UserCartIcon.svg";
-import SearchIcon from "@/assets/icons/SearchIcon.svg";
-import HeartIcon from "@/assets/icons/HeartIcon.svg";
+import { TbLogout } from "react-icons/tb";
 import Logo from "@/assets/icons/Logo.svg";
+import { FaUserGear } from "react-icons/fa6";
 
 export default function SellerAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -19,10 +18,7 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="shrink-0 flex items-center">
-                            <Link
-                                href={route("seller.dashboard")}
-                                className=" flex items-center gap-1"
-                            >
+                            <Link href="/" className=" flex items-center gap-1">
                                 <img className=" h-12" src={Logo} alt="Logo" />
                                 <h1>MADEBYHANDS</h1>
                             </Link>
@@ -36,20 +32,27 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                 Dashboard
                             </NavLink>
                             <NavLink
-                                href={route("seller.shop")}
-                                active={route().current("seller.shop")}
+                                href={route("shop")}
+                                active={route().current("shop")}
                             >
                                 Shop
                             </NavLink>
                             <NavLink
-                                href={route("seller.products")}
-                                active={route().current("seller.products")}
+                                href={route("about")}
+                                active={route().current("about")}
                             >
-                                Products
+                                About
+                            </NavLink>
+
+                            <NavLink
+                                href={route("contact")}
+                                active={route().current("contact")}
+                            >
+                                Contact
                             </NavLink>
                         </div>
 
-                        <div className=" gap-3 flex sm:items-center sm:ms-6">
+                        <div className="hidden  gap-2 md:flex sm:items-center sm:ms-6">
                             <NavLink href={route("user-messages")}>
                                 <img
                                     className=" h-6 "
@@ -57,50 +60,16 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                     alt="chat icon"
                                 />
                             </NavLink>
-
-                            <div className=" relative">
-                                <Dropdown>
-                                    <Dropdown.Trigger>
-                                        <span className="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                {/* user.name */}
-
-                                                <svg
-                                                    className="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </Dropdown.Trigger>
-                                    <Dropdown.Content className="z-40">
-                                        <Dropdown.Link
-                                            className="z-40"
-                                            href={route("profile.edit")}
-                                        >
-                                            Profile
-                                        </Dropdown.Link>
-                                        <Dropdown.Link
-                                            className="z-40"
-                                            href={route("logout")}
-                                            method="post"
-                                            as="button"
-                                        >
-                                            Log Out
-                                        </Dropdown.Link>
-                                    </Dropdown.Content>
-                                </Dropdown>
-                            </div>
+                            <NavLink href={route("profile.edit")}>
+                                <FaUserGear size={20} />
+                            </NavLink>
+                            <NavLink
+                                method="post"
+                                href={route("logout")}
+                                as="button"
+                            >
+                                <TbLogout size={22} />
+                            </NavLink>
                         </div>
 
                         <div className="-me-2 flex items-center sm:hidden">
@@ -195,7 +164,12 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                 </header>
             )}
 
-            <main className=" mx-auto container p-4">{children}</main>
+            <main
+                className="mx-auto
+            container p-4 -z-20"
+            >
+                {children}
+            </main>
         </div>
     );
 }
