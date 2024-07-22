@@ -32,23 +32,16 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                 Dashboard
                             </NavLink>
                             <NavLink
-                                href={route("shop")}
-                                active={route().current("shop")}
+                                href={route("seller.shop")}
+                                active={route().current("seller.shop")}
                             >
                                 Shop
                             </NavLink>
                             <NavLink
-                                href={route("about")}
-                                active={route().current("about")}
+                                href={route("seller.products")}
+                                active={route().current("seller.products")}
                             >
-                                About
-                            </NavLink>
-
-                            <NavLink
-                                href={route("contact")}
-                                active={route().current("contact")}
-                            >
-                                Contact
+                                Products
                             </NavLink>
                         </div>
 
