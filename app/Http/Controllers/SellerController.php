@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
+use App\Models\Products;
+use App\Models\ProductsImages;
 use App\Models\Seller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\File;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
@@ -102,7 +107,66 @@ class SellerController extends Controller
    */
   public function store(Request $request)
   {
-    //
+
+
+    $request->validate([
+      'product_name' => "required|min:2",
+      'quantity' => "required|min:1|integer|gt:0",
+      'description' => 'required|min:10',
+      'category' => 'required',
+      'images' => 'required|array|min:1',
+      'images.*' => 'image'
+    ]);
+
+
+    try {
+
+      DB::beginTransaction();
+
+      $product = Products::create([
+        'seller_id' => auth()->id(),
+        'product_name' => $request->product_name,
+        'quantity' => $request->quantity,
+        'description' => $request->description,
+        'type' => $request->category,
+        'category_id' => $request->category,
+      ]);
+
+      foreach ($request->file('images') as $image) {
+        $randomNumber = rand(100, 999);
+        $fileExtension = $image->getClientOriginalExtension();
+        $fileName = $request->product_name . '_' . $randomNumber . '.' . $fileExtension;
+        $directory = 'Photos/Product_Photos';
+        $path = $image->storeAs($directory, $fileName, 'public');
+
+        ProductsImages::create([
+          'product_id' => $product->id,
+          'image_path' => $path
+        ]);
+      }
+
+      DB::commit();
+      return redirect()->route('seller.showAddProduct')->with([
+        'message' => 'Product added succesfully',
+        'status' => 'success'
+      ]);
+    } catch (Exception $e) {
+      DB::rollBack();
+      Log::error('Failed to add product error in: ' . $e->getMessage());
+      return redirect()->route('seller.showAddProduct')->with([
+        'message' => 'Failed to add your product. Try Again.',
+        'status' => 'error'
+      ]);
+    }
+  }
+
+  public function showAddProduct(Request $request)
+  {
+    $categories = Categories::all();
+
+    return Inertia::render('Seller/Partials/AddProduct', [
+      'categories' => $categories
+    ]);
   }
 
   /**

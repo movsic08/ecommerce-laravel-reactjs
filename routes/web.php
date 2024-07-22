@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SellerController;
 use App\Http\Middleware\NotVerfiedSeller;
 use App\Http\Middleware\VerifiedSeller;
 use App\Mail\SellerVerified;
@@ -89,6 +90,8 @@ Route::prefix('seller')->middleware('auth')->group(function () {
   Route::get('/products', function () {
     return Inertia::render('Seller/Products');
   })->name('seller.products');
+  Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
+  Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');
 });
 
 

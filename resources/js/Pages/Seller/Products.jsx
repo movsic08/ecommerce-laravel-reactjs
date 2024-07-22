@@ -1,5 +1,5 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import defaultProduct1 from "../../assets/img/product_1.png";
 import InputLabel from "@/Components/InputLabel";
 
@@ -26,9 +26,12 @@ export default function Products() {
                             </select>
                         </div>
 
-                        <button className=" text-white bg-themeColor px-2 text-sm rounded-lg py-3">
+                        <Link
+                            href={route("seller.showAddProduct")}
+                            className=" text-white bg-themeColor px-2 text-sm rounded-lg py-3"
+                        >
                             Add prodcut
-                        </button>
+                        </Link>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                         <div className="bg-white shadow-md rounded-lg p-4 flex flex-col">
