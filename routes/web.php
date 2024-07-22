@@ -53,11 +53,7 @@ Route::get('/seller-account-on-the-process', function () {
 })->middleware(NotVerfiedSeller::class)
   ->name('seller.pending.account');
 
-//seller pages
-Route::get('/seller/home', function () {
-  return Inertia::render('Seller/Index');
-})->middleware(['auth', 'seller'])
-  ->name('seller.index');
+
 
 //FOR TESTING
 Route::get('/test', function () {
@@ -69,21 +65,24 @@ Route::get('/test', function () {
 
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
-
   Route::get('/index', [AdminController::class, 'adminDashboard'])->name('admin.index');
-
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
-
   Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');
-
   Route::get('/permission', function () {
     return Inertia::render('Admin/PermissionPanel');
   })->name('admin.permission');
-
   Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
   Route::put('/view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
   Route::delete('/view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
   Route::put('/view-seller-status/{id}', [AdminController::class, 'updateSellerStatus'])->name('admin.update.seller.status');
+});
+
+
+//seller pages
+Route::prefix('seller')->middleware('auth')->group(function () {
+  Route::get('/index', function () {
+    return Inertia::render('Seller/Index');
+  })->name('seller.index');
 });
 
 

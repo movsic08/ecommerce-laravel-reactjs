@@ -29,11 +29,16 @@ class AuthenticatedSessionController extends Controller
    */
   public function store(LoginRequest $request): RedirectResponse
   {
-    $request->authenticate();
+    $currentUser = $request->authenticate();
 
     $request->session()->regenerate();
+    if (auth()->user()->is_seller == 1) {
 
-    return redirect()->intended(route('dashboard', absolute: false));
+      return redirect()->intended(route('seller.index', absolute: false));
+    } else {
+
+      return redirect()->intended(route('dashboard', absolute: false));
+    }
   }
   // Incoming Admin authentication request
   public function adminLogin(LoginRequest $request): RedirectResponse
