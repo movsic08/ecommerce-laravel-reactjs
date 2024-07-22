@@ -70,9 +70,7 @@ Route::get('/test', function () {
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 
-  Route::get('/index', function () {
-    return Inertia::render('Admin/Index');
-  })->name('admin.index');
+  Route::get('/index', [AdminController::class, 'adminDashboard'])->name('admin.index');
 
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
 

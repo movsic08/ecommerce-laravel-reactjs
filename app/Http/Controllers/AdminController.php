@@ -7,6 +7,7 @@ use App\Http\Resources\AdminResourceOfSellers;
 use App\Http\Resources\SellerDataResource;
 use App\Mail\SellerUnverified;
 use App\Mail\SellerVerified;
+use App\Models\Products;
 use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
@@ -88,6 +89,17 @@ class AdminController extends Controller
       Log::error('Failed to update seller status or send email: ' . $e->getMessage());
       return redirect()->route('admin.view-seller', $request->id)->with('error', 'Failed to send email');
     }
+  }
+
+
+  public function adminDashboard()
+  {
+    $products = Products::orderBy('sold', 'desc')->limit(5)->get();
+    // $products = Products::with('images')->orderBy('sold', 'desc')->get();
+    // dump($products);
+    return Inertia::render('Admin/Index', [
+      'products' => $products
+    ]);
   }
 
 
