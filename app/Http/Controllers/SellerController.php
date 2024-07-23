@@ -122,7 +122,8 @@ class SellerController extends Controller
       'description' => 'required|min:10',
       'category' => 'required',
       'images' => 'required|array|min:1',
-      'images.*' => 'image'
+      'images.*' => 'image',
+      'price' => 'required|integer|min:1'
     ]);
 
 
@@ -137,6 +138,7 @@ class SellerController extends Controller
         'description' => $request->description,
         'type' => $request->category,
         'category_id' => $request->category,
+        'price' => $request->price
       ]);
 
       foreach ($request->file('images') as $image) {

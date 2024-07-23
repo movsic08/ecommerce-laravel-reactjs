@@ -71,9 +71,17 @@ export default function Products() {
                                             Amount: Php {item.price}
                                         </p>
                                         <p className="text-gray-700">
-                                            Status:{" "}
-                                            <span className="text-green-500">
-                                                Available
+                                            Status:
+                                            <span
+                                                className={
+                                                    item.is_verified == 0
+                                                        ? "text-red-700"
+                                                        : "text-green-700"
+                                                }
+                                            >
+                                                {item.is_verified == 0
+                                                    ? " Pending"
+                                                    : " Available"}
                                             </span>
                                         </p>
                                         <p className="text-gray-700">

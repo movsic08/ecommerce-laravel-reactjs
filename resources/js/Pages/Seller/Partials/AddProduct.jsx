@@ -12,6 +12,7 @@ export default function AddProduct({ auth }) {
     const { processing, setData, data, errors, post } = useForm({
         product_name: "",
         quantity: "",
+        price: "",
         description: "",
         category: "",
         images: [],
@@ -58,6 +59,7 @@ export default function AddProduct({ auth }) {
                         quantity: "",
                         description: "",
                         category: "",
+                        price: "",
                         images: [],
                     });
                 }, 100);
@@ -113,25 +115,47 @@ export default function AddProduct({ auth }) {
                                 )}
                             </div>
 
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Quantity
-                                </label>
-                                <input
-                                    value={data.quantity}
-                                    onChange={(e) =>
-                                        setData("quantity", e.target.value)
-                                    }
-                                    type="number"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                    required
-                                />
-                                {errors.quantity && (
-                                    <InputError
-                                        className="mt-1"
-                                        message={errors.quantity}
+                            <div className="md:flex gap-4">
+                                <div className="mb-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Price
+                                    </label>
+                                    <input
+                                        value={data.price}
+                                        onChange={(e) =>
+                                            setData("price", e.target.value)
+                                        }
+                                        type="number"
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        required
                                     />
-                                )}
+                                    {errors.price && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.price}
+                                        />
+                                    )}
+                                </div>
+                                <div className="mb-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Quantity
+                                    </label>
+                                    <input
+                                        value={data.quantity}
+                                        onChange={(e) =>
+                                            setData("quantity", e.target.value)
+                                        }
+                                        type="number"
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        required
+                                    />
+                                    {errors.quantity && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.quantity}
+                                        />
+                                    )}
+                                </div>
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-gray-700">
