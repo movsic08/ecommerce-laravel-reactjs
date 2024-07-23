@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Products() {
     const { products } = usePage().props;
-    console.log(products);
+    // console.log(products);
     return (
         <>
             <SellerAuthenticatedLayout>
