@@ -90,6 +90,7 @@ Route::prefix('seller')->middleware('auth')->group(function () {
   Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
   Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
   Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');
+  Route::get('/notification', [SellerController::class, 'showNotification'])->name('seller.showNotification');
 });
 
 

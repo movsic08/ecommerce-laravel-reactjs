@@ -178,6 +178,11 @@ class SellerController extends Controller
     ]);
   }
 
+  public function showNotification()
+  {
+    return Inertia::render('Seller/Notification');
+  }
+
   /**
    * Display the specified resource.
    */

@@ -6,6 +6,7 @@ import { Link } from "@inertiajs/react";
 import UserChatIcon from "@/assets/icons/UserChatIcon.svg";
 import { TbLogout } from "react-icons/tb";
 import Logo from "@/assets/icons/Logo.svg";
+import { IoNotifications } from "react-icons/io5";
 import { FaUserGear } from "react-icons/fa6";
 
 export default function SellerAuthenticatedLayout({ user, header, children }) {
@@ -46,6 +47,9 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                         </div>
 
                         <div className="hidden  gap-2 md:flex sm:items-center sm:ms-6">
+                            <NavLink href={route("seller.showNotification")}>
+                                <IoNotifications size={20} />
+                            </NavLink>
                             <NavLink href={route("user-messages")}>
                                 <img
                                     className=" h-6 "
