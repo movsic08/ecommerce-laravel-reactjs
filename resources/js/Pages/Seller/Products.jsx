@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Products() {
     const { products } = usePage().props;
-
+    console.log(products);
     return (
         <>
             <SellerAuthenticatedLayout>
@@ -36,7 +36,7 @@ export default function Products() {
                             Add prodcut
                         </Link>
                     </div>
-                    {products == null ? (
+                    {products.data == 0 ? (
                         <div className="flex justify-center w-full">
                             <div className="bg-white p-8  mt-10 rounded-lg shadow-lg text-center max-w-sm w-full">
                                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">
