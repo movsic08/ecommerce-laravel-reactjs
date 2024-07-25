@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SellerProductList;
 use App\Models\Categories;
+use App\Models\Notification;
 use App\Models\Products;
 use App\Models\ProductsImages;
 use App\Models\Seller;
@@ -178,10 +179,7 @@ class SellerController extends Controller
     ]);
   }
 
-  public function showNotification()
-  {
-    return Inertia::render('Seller/Notification');
-  }
+
 
   /**
    * Display the specified resource.

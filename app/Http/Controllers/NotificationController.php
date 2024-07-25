@@ -4,62 +4,125 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Nette\Utils\Strings;
 
 class NotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+  /**
+   * Display a listing of the resource.
+   */
+  public function index()
+  {
+    $notification = Notification::where('to_user_id', auth()->id())
+      ->orderBy('created_at', 'desc')
+      ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    return Inertia::render('Seller/Notification', [
+      'notifications' => $notification
+    ]);
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+  public function destroy($id)
+  {
+    $notification = Notification::findOrFail($id);
+    $notification->delete();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Notification $notification)
-    {
-        //
-    }
+    // Fetch the remaining notifications
+    $notifications = Notification::where('to_user_id', auth()->id())
+      ->orderBy('created_at', 'desc')
+      ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Notification $notification)
-    {
-        //
-    }
+    return Inertia::render('Seller/Notification', [
+      'notifications' => $notifications,
+      'message' => 'Notification deleted successfully'
+    ]);
+  }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Notification $notification)
-    {
-        //
-    }
+  public function markAsRead($id)
+  {
+    $notification = Notification::findOrFail($id);
+    $notification->update(['is_read' => true]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Notification $notification)
-    {
-        //
-    }
+    // Fetch the updated notifications
+    $notifications = Notification::where('to_user_id', auth()->id())
+      ->orderBy('created_at', 'desc')
+      ->get();
+
+    return redirect()->back();
+  }
+
+  public function markAsUnread($id)
+  {
+    $notification = Notification::findOrFail($id);
+    $notification->update(['is_read' => false]);
+
+    $notifications = Notification::where('to_user_id', auth()->id())
+      ->orderBy('created_at', 'desc')
+      ->get();
+
+    return redirect()->back();
+  }
+
+
+  /**
+   * Show the form for creating a new resource.
+   */
+  public function create()
+  {
+    //
+  }
+
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request)
+  {
+    //
+  }
+
+  /**
+   * Display the specified resource.
+   */
+  public function show(Notification $notification)
+  {
+    //
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   */
+  public function edit(Notification $notification)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, Notification $notification)
+  {
+    //
+  }
+
+  /**
+   * Remove the specified resource from storage.
+   */
+  // public function destroy(Strings $id)
+  // {
+
+  //   $isDeleted = $notification->delete();
+
+  //   if ($isDeleted) {
+  //     return response()->json([
+  //       'message' => 'Deleted Successfully!',
+  //       'status' => 'success'
+  //     ]);
+  //   } else {
+  //     return response()->json([
+  //       'message' => 'Error Deleting!',
+  //       'status' => 'error'
+  //     ]);
+  //   }
+  // }
 }

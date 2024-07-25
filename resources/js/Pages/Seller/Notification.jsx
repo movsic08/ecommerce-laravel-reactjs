@@ -1,90 +1,108 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Notification() {
-    const initialNotifications = [
-        {
-            id: 1,
-            title: "New Message",
-            description: "You have received a new message.",
-            timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 minutes ago
-            read: false,
-        },
-        {
-            id: 2,
-            title: "System Update",
-            description: "System update completed successfully.",
-            timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-            read: true,
-        },
-        {
-            id: 3,
-            title: "New Comment",
-            description: "Someone commented on your post.",
-            timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24), // 1 day ago
-            read: false,
-        },
-    ];
+    const { notifications, flash } = usePage().props;
+    const [notificationList, setNotificationList] = useState(notifications);
+    const [isDeleting, setIsDeleting] = useState(null);
 
-    const [notifications, setNotifications] = useState(initialNotifications);
+    const handleDelete = (id) => {
+        setIsDeleting(id);
+
+        router.delete(`/seller/notifications/${id}`, {
+            preserveScroll: true,
+            onSuccess: (page) => {
+                setNotificationList(page.props.notifications);
+                toast.success("Notification deleted successfully!");
+            },
+            onError: () => {
+                console.error("Failed to delete notification.");
+                toast.error("Failed to delete notification.");
+            },
+            onFinish: () => {
+                setIsDeleting(null);
+            },
+        });
+    };
 
     const handleMarkAsRead = (id) => {
-        setNotifications(
-            notifications.map((notification) =>
-                notification.id === id
-                    ? { ...notification, read: true }
-                    : notification
-            )
+        router.patch(
+            `/seller/notifications/${id}/mark-as-read`,
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    setNotificationList(page.props.notifications);
+                    toast.success("Notification marked as read!");
+                },
+                onError: () => {
+                    console.error("Failed to mark notification as read.");
+                    toast.error("Failed to mark notification as read.");
+                },
+            }
         );
     };
 
     const handleMarkAsUnread = (id) => {
-        setNotifications(
-            notifications.map((notification) =>
-                notification.id === id
-                    ? { ...notification, read: false }
-                    : notification
-            )
+        router.patch(
+            `/seller/notifications/${id}/mark-as-unread`,
+            {},
+            {
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    setNotificationList(page.props.notifications);
+                    toast.success("Notification marked as unread!");
+                },
+                onError: () => {
+                    console.error("Failed to mark notification as unread.");
+                    toast.error("Failed to mark notification as unread.");
+                },
+            }
         );
     };
 
-    const handleDelete = (id) => {
-        setNotifications(
-            notifications.filter((notification) => notification.id !== id)
-        );
-    };
     return (
         <>
             <SellerAuthenticatedLayout>
                 <Head title="Seller - Notification" />
+                <ToastContainer />
                 <div className="max-w-2xl mx-auto p-4">
                     <h2 className="text-2xl font-bold mb-4">Notifications</h2>
                     <div className="space-y-4">
-                        {notifications.length === 0 && (
+                        {notificationList.length === 0 && (
                             <p className="text-gray-500 text-center">
                                 No notifications available.
                             </p>
                         )}
 
-                        {notifications.map((notification) => (
+                        {notificationList.map((notification) => (
                             <div
                                 key={notification.id}
                                 className={`p-4 rounded shadow-lg ${
-                                    notification.read
-                                        ? " bg-white text-mainText"
+                                    notification.is_read
+                                        ? "bg-white text-mainText"
                                         : "bg-themeColor text-white"
                                 }`}
                             >
                                 <h3 className="text-lg font-semibold">
                                     {notification.title}
                                 </h3>
-                                <p className="0">{notification.description}</p>
+                                <small className="-my-2">
+                                    From:{" "}
+                                    {notification.created_by === "0"
+                                        ? "Not Admin TEMPORARY"
+                                        : "Admin"}
+                                </small>
+                                <p className="0">{notification.body}</p>
 
                                 <div className="mt-2 flex items-center justify-between space-x-2">
                                     <div className="flex space-x-2">
-                                        {notification.read ? (
+                                        {}
+                                        {notification.is_read ? (
                                             <button
                                                 onClick={() =>
                                                     handleMarkAsUnread(
@@ -111,15 +129,20 @@ export default function Notification() {
                                             onClick={() =>
                                                 handleDelete(notification.id)
                                             }
+                                            disabled={
+                                                isDeleting === notification.id
+                                            }
                                             className="px-2 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-700"
                                         >
-                                            Delete
+                                            {isDeleting === notification.id
+                                                ? "Deleting..."
+                                                : "Delete"}
                                         </button>
                                     </div>
 
                                     <small className="text-sm">
                                         {formatDistanceToNow(
-                                            new Date(notification.timestamp),
+                                            new Date(notification.created_at),
                                             { addSuffix: true }
                                         )}
                                     </small>

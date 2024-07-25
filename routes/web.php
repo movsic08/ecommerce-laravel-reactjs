@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
@@ -9,7 +10,9 @@ use App\Http\Middleware\NotVerfiedSeller;
 use App\Http\Middleware\VerifiedSeller;
 use App\Mail\SellerVerified;
 use App\Models\CartItem;
+use App\Models\Notification;
 use Illuminate\Foundation\Application;
+use Illuminate\Notifications\Notification as NotificationsNotification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -89,7 +92,10 @@ Route::prefix('seller')->middleware('auth')->group(function () {
   Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
   Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
   Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');
-  Route::get('/notification', [SellerController::class, 'showNotification'])->name('seller.showNotification');
+  Route::get('/notification', [NotificationController::class, 'index'])->name('seller.showNotification');
+  Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
+  Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+  Route::patch('/notifications/{id}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('notifications.markAsUnread');
 });
 
 
