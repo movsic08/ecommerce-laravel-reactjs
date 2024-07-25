@@ -70,9 +70,10 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
   Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');
   Route::get('/permission', [AdminController::class, 'viewAllProducts'])->name('admin.permission');
+  Route::delete('destroy-pending-product/{id}/{name}', [AdminController::class, 'destroyPendingProduct'])->name('admin.destroy.product');
   Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
-  Route::put('/view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
-  Route::delete('/view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
+  Route::put('view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
+  Route::delete('view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
   Route::put('/view-seller-status/{id}', [AdminController::class, 'updateSellerStatus'])->name('admin.update.seller.status');
 });
 

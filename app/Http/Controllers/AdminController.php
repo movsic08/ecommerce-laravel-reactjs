@@ -8,6 +8,7 @@ use App\Http\Resources\SellerDataResource;
 use App\Http\Resources\SellerProductList;
 use App\Mail\SellerUnverified;
 use App\Mail\SellerVerified;
+use App\Models\Notification;
 use App\Models\Products;
 use App\Models\Seller;
 use App\Models\User;
@@ -189,10 +190,52 @@ class AdminController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroyPendingProduct(string $id, string $name)
   {
-    //
+    DB::beginTransaction();
+
+    try {
+      $productData = Products::with('images')->findOrFail($id);
+      $imagesData = $productData->images;
+
+      if ($productData && $imagesData) {
+
+        foreach ($imagesData as $file) {
+          Storage::disk('public')->delete($file->image_path);
+        }
+
+        $productData->images()->delete();
+
+        $productData->delete();
+
+        Notification::create([
+          'title' => 'Product Deleted',
+          'body' => "Product named '{$name}' has been deleted by the admin.",
+          'is_read' => false,
+          'created_by' => auth()->id(),
+          'to_user_id' => $productData->seller_id,
+        ]);
+
+        DB::commit();
+
+        return redirect()->route('admin.permission')->with([
+          'message' => 'Product deleted successfully!',
+          'status' => 'success'
+        ]);
+      } else {
+        throw new \Exception("Product or images not found.");
+      }
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error('Failed to delete product: ' . $e->getMessage());
+
+      return redirect()->route('admin.permission')->with([
+        'message' => 'Failed to delete product. Please try again.',
+        'status' => 'error'
+      ]);
+    }
   }
+
 
   public function destroySellerData(string $id)
   {

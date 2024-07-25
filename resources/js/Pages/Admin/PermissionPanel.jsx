@@ -1,20 +1,28 @@
 import AdminPagination from "@/Components/AdminPagination";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, usePage } from "@inertiajs/react";
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { Head, router, usePage } from "@inertiajs/react";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function PermissionPanel({ auth }) {
-    const { products } = usePage().props;
+    const { products, flash } = usePage().props;
 
-    console.log(products.data);
     const [isVerified, setIsVerified] = useState("product.verified");
+    const [isDeleting, setIsDeleting] = useState(null);
 
     const toggleVerification = () => {
         setIsVerified(!isVerified);
         // You can add a call to your API here to update the verification status in your backend.
     };
+
+    useEffect(() => {
+        if (flash.status == "error") {
+            toast.error(flash.message);
+        } else {
+            toast.success(flash.message);
+        }
+    }, [flash]);
 
     const handleDelete = (e, id, name) => {
         e.preventDefault();
@@ -28,9 +36,17 @@ export default function PermissionPanel({ auth }) {
         ) {
             return;
         }
+        setIsDeleting(id);
+        router.delete(route("admin.destroy.product", { id: id, name: name }), {
+            onFinish: () => {
+                setIsDeleting(null);
+            },
+            onError: () => {
+                setIsDeleting(null);
+            },
+        });
     };
-    console.log(Array.isArray(products.links));
-    console.log(products.links);
+
     return (
         <>
             <AdminAuthenticatedLayout user={auth.user}>
@@ -91,17 +107,28 @@ export default function PermissionPanel({ auth }) {
                                             product.product_name
                                         )
                                     }
-                                    className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
+                                    disabled={isDeleting !== null}
+                                    className={`px-4 py-2 text-sm bg-red-500  text-white rounded ${
+                                        isDeleting !== null
+                                            ? "cursor-wait"
+                                            : "hover:bg-red-600 cursor-pointer"
+                                    }`}
                                 >
-                                    Delete
+                                    {isDeleting === product.id
+                                        ? "Deleting..."
+                                        : "Delete"}
                                 </button>
                             </div>
                         </div>
                     ))}
                 </div>
-                <div className=" mt-2 mb-6">
-                    <AdminPagination links={products.links} />
-                </div>
+                {products.links !== null ? (
+                    ""
+                ) : (
+                    <div className=" mt-2 mb-6">
+                        <AdminPagination links={products.links} />
+                    </div>
+                )}
             </AdminAuthenticatedLayout>
         </>
     );
