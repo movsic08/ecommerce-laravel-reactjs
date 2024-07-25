@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Middleware\VerifiedSeller;
 use App\Http\Resources\AdminResourceOfSellers;
 use App\Http\Resources\SellerDataResource;
+use App\Http\Resources\SellerProductList;
 use App\Mail\SellerUnverified;
 use App\Mail\SellerVerified;
 use App\Models\Products;
@@ -173,6 +174,16 @@ class AdminController extends Controller
     // return response()->json(['message' => 'Update success']);
     return redirect()->route('admin.view-seller', $id)->with('message', 'Updating ' . $seller->shop_name . ' success');
     // dd($id, $request->all());
+  }
+
+  public function viewAllProducts()
+  {
+    $query = Products::query();
+    $products = $query->with('images')->paginate(3);
+    // return dd((object) SellerProductList::collection($products));
+    return Inertia::render('Admin/PermissionPanel', [
+      'products' =>  SellerProductList::collection($products)
+    ]);
   }
 
   /**

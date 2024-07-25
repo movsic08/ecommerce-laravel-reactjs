@@ -69,9 +69,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('/index', [AdminController::class, 'adminDashboard'])->name('admin.index');
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
   Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');
-  Route::get('/permission', function () {
-    return Inertia::render('Admin/PermissionPanel');
-  })->name('admin.permission');
+  Route::get('/permission', [AdminController::class, 'viewAllProducts'])->name('admin.permission');
   Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
   Route::put('/view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
   Route::delete('/view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');

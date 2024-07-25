@@ -1,12 +1,107 @@
+import AdminPagination from "@/Components/AdminPagination";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
+import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function PermissionPanel({ auth }) {
+    const { products } = usePage().props;
+
+    console.log(products.data);
+    const [isVerified, setIsVerified] = useState("product.verified");
+
+    const toggleVerification = () => {
+        setIsVerified(!isVerified);
+        // You can add a call to your API here to update the verification status in your backend.
+    };
+
+    const handleDelete = (e, id, name) => {
+        e.preventDefault();
+
+        if (
+            !window.confirm(
+                "Are you sure you want to delete this seller named " +
+                    name +
+                    "?"
+            )
+        ) {
+            return;
+        }
+    };
+    console.log(Array.isArray(products.links));
+    console.log(products.links);
     return (
         <>
             <AdminAuthenticatedLayout user={auth.user}>
                 <Head title="Admin permission" />
-                <h2>permision list</h2>
+                <ToastContainer />
+
+                <h2
+                    className=" text-center uppercase font-bold bg-header  p-4 rounded-lg
+                "
+                >
+                    Permission List
+                </h2>
+
+                <div className="mt-3 flex flex-col gap-6">
+                    {products.data.map((product) => (
+                        <div
+                            key={product.id}
+                            className="bg-slate-100 rounded-lg shadow-lg p-4 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4"
+                        >
+                            <img
+                                src={
+                                    product.images && product.images.length > 0
+                                        ? product.images[0].image_path
+                                        : ""
+                                }
+                                alt={product.name}
+                                className="w-32 h-32 object-cover rounded"
+                            />
+                            <div className="flex-1">
+                                <h2 className="text-xl font-semibold">
+                                    {product.product_name}
+                                </h2>
+                                <p className="text-gray-500">
+                                    Seller: {product.sellerName}
+                                </p>
+                                <p className="text-gray-500">
+                                    Date Created: {product.created_at}
+                                </p>
+                            </div>
+                            <div className="flex space-x-2">
+                                <button
+                                    onClick={toggleVerification}
+                                    className={`px-4 py-2 text-sm rounded ${
+                                        product.is_verified
+                                            ? "bg-green-500 hover:bg-green-600"
+                                            : "bg-yellow-500 hover:bg-yellow-600"
+                                    } text-white`}
+                                >
+                                    {product.is_verified
+                                        ? "Mark as Unverified"
+                                        : "Mark as Verified"}
+                                </button>
+                                <button
+                                    onClick={(e) =>
+                                        handleDelete(
+                                            e,
+                                            product.id,
+                                            product.product_name
+                                        )
+                                    }
+                                    className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className=" mt-2 mb-6">
+                    <AdminPagination links={products.links} />
+                </div>
             </AdminAuthenticatedLayout>
         </>
     );
