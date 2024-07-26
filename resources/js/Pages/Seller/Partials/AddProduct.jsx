@@ -3,7 +3,7 @@ import SelectInput from "@/Components/SelectInput";
 import SpinnerLoading from "@/Components/SpinnerLoading";
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -22,6 +22,9 @@ export default function AddProduct({ auth }) {
     // State to manage selected images
     const [images, setImages] = useState([]);
 
+    // Create a ref for the file input field
+    const fileInputRef = useRef(null);
+
     // Handle file input change
     const handleFileChange = (event) => {
         const files = Array.from(event.target.files);
@@ -38,7 +41,9 @@ export default function AddProduct({ auth }) {
             data.images.filter((_, i) => i !== index)
         );
     };
+
     const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         if (flash?.status === "success") {
             toast.success(flash.message);
@@ -62,6 +67,11 @@ export default function AddProduct({ auth }) {
                         price: "",
                         images: [],
                     });
+
+                    // Reset the file input field
+                    if (fileInputRef.current) {
+                        fileInputRef.current.value = "";
+                    }
                 }, 100);
             },
             onError: (errors) => {
@@ -218,6 +228,7 @@ export default function AddProduct({ auth }) {
                                     Images
                                 </label>
                                 <input
+                                    ref={fileInputRef} // Attach the ref to the input
                                     maxLength={5}
                                     type="file"
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
@@ -269,45 +280,14 @@ export default function AddProduct({ auth }) {
                                 >
                                     {processing ? (
                                         <div className="flex flex-row items-center gap-1">
-                                            Processinig <SpinnerLoading />
+                                            Processing <SpinnerLoading />
                                         </div>
                                     ) : (
-                                        "  Create Product"
+                                        "Create Product"
                                     )}
                                 </button>
                             </div>
                         </form>
-                        {loading && (
-                            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 backdrop-blur-sm flex items-center justify-center">
-                                <div className="bg-white w-[40%] p-6 rounded-lg shadow-lg">
-                                    <p className="text-lg text-center font-semibold text-gray-800 mb-4">
-                                        Please wait, your product is being
-                                        added. This might take a few moments.
-                                    </p>
-                                    <div className="relative w-full h-2 bg-gray-200 rounded overflow-hidden">
-                                        <div className="absolute top-0 left-0 h-full w-[200%] bg-themeColor rounded loading-bar"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                        <style>{`
-                            @keyframes loadingAnimation {
-                                0% {
-                                    left: -100%;
-                                }
-                                50% {
-                                    left: 50%;
-                                }
-                                100% {
-                                    left: 100%;
-                                }
-                            }
-                            .loading-bar {
-                                width: 100%;
-                                animation: loadingAnimation 2s linear infinite;
-                            }
-                        `}</style>
                     </div>
                 </div>
             </SellerAuthenticatedLayout>
