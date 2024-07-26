@@ -92,6 +92,7 @@ Route::prefix('seller')->middleware('auth')->group(function () {
   Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
   Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
   Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');
+  Route::delete('destroyproduct/{id}', [SellerController::class, 'destroy'])->name('seller.destroy.product');
   Route::get('/notification', [NotificationController::class, 'index'])->name('seller.showNotification');
   Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
   Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');

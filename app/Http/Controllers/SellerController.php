@@ -10,6 +10,7 @@ use App\Models\ProductsImages;
 use App\Models\Seller;
 use App\Models\User;
 use Exception;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\File;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use PhpParser\Node\Stmt\TryCatch;
+use Ramsey\Uuid\Type\Integer;
 
 class SellerController extends Controller
 {
@@ -208,8 +210,39 @@ class SellerController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(Seller $seller)
+  public function destroy(int $id)
   {
-    //
+    DB::beginTransaction();
+
+    try {
+      $productData = Products::with('images')->findOrFail($id);
+      $imagesData = $productData->images;
+
+      if ($productData && $imagesData) {
+
+        foreach ($imagesData as $file) {
+          Storage::disk('public')->delete($file->image_path);
+        }
+
+        $productData->images()->delete();
+        $productData->delete();
+        DB::commit();
+
+        return to_route('seller.products')->with([
+          'message' => 'Deletion success',
+          'status' => 'success'
+        ]);
+      } else {
+        throw new \Exception("Product or images not found.");
+      }
+    } catch (\Exception $e) {
+      DB::rollBack();
+      Log::error('Failed to delete product: ' . $e->getMessage());
+
+      return to_route('seller.products')->with([
+        'message' => 'Deletion not success',
+        'status' => 'error'
+      ]);
+    }
   }
 }

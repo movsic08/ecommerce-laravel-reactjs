@@ -1,16 +1,39 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import defaultProduct1 from "../../assets/img/product_1.png";
 import InputLabel from "@/Components/InputLabel";
 import { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Products() {
-    const { products } = usePage().props;
-    // console.log(products);
+    const { products, flash } = usePage().props;
+    // console.log(products);\
+    console.log(flash);
+    const deleteSubmit = (e, id, name) => {
+        e.preventDefault();
+        if (
+            !window.confirm(
+                "Are you sure you want to delete this product '" + name + "'?"
+            )
+        ) {
+            return;
+        }
+        router.delete(route("seller.destroy.product", id), {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success("Delete Success");
+            },
+            onError: () => {
+                toast.error("Error deleting the product");
+            },
+        });
+    };
     return (
         <>
             <SellerAuthenticatedLayout>
                 <Head title="Seller - Products" />
+                <ToastContainer />
                 <div>
                     <div className=" flex items-center justify-between px-4">
                         <div className=" flex items-center gap-1">
@@ -93,7 +116,16 @@ export default function Products() {
                                             View
                                         </button>
 
-                                        <button className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                        <button
+                                            onClick={(e) =>
+                                                deleteSubmit(
+                                                    e,
+                                                    item.id,
+                                                    item.product_name
+                                                )
+                                            }
+                                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                        >
                                             Delete
                                         </button>
                                         <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
