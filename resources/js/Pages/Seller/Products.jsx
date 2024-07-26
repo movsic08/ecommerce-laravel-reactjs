@@ -112,9 +112,15 @@ export default function Products() {
                                         </p>
                                     </div>
                                     <div className="mt-4 flex justify-end space-x-2">
-                                        <button className="bg-themeColor text-white px-4 py-2 rounded hover:bg-orange-500">
+                                        <Link
+                                            href={route(
+                                                "seller.view.product",
+                                                item.id
+                                            )}
+                                            className="bg-themeColor text-white px-4 py-2 rounded hover:bg-orange-500"
+                                        >
                                             View
-                                        </button>
+                                        </Link>
 
                                         <button
                                             onClick={(e) =>

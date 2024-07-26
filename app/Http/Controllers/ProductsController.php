@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Seller\ViewProductResource;
 use Inertia\Inertia;
 use App\Models\Products;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -47,5 +48,14 @@ class ProductsController extends Controller
     } catch (ModelNotFoundException $e) {
       return response()->json(['message' => 'Product not found.']);
     }
+  }
+
+  public function sellerViewEditProduct(int $id)
+  {
+    $product = Products::with('images')->findOrFail($id);
+
+    return Inertia::render('Seller/Partials/ViewEditProduct', [
+      'product' => new ViewProductResource($product)
+    ]);
   }
 }
