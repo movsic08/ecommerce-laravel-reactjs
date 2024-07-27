@@ -1,12 +1,16 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StarRating from "@/Components/StarRating";
 import ModalImage from "react-modal-image";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import InputError from "@/Components/InputError";
 
 export default function ViewEditProduct({ auth }) {
-    const { product } = usePage().props;
-    const { data, setData, processing, errors, patch } = useForm({
+    const { product, flash } = usePage().props;
+    const { data, setData, processing, errors, post } = useForm({
+        id: product.id,
         product_name: product.product_name,
         price: product.price,
         quantity: product.quantity,
@@ -20,7 +24,7 @@ export default function ViewEditProduct({ auth }) {
     const [originalImages, setOriginalImages] = useState(product.images); // Keep track of original images
 
     // State to manage editing mode
-    const [isEditing, setIsEditing] = useState(true);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleEditToggle = () => {
         if (isEditing) {
@@ -58,17 +62,60 @@ export default function ViewEditProduct({ auth }) {
         }
         setData("newUploadedImages", [...data.newUploadedImages, ...files]);
     };
-
+    const [loading, setLoading] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Updated Product Data:", data);
+        setLoading(true);
+
+        post(route("seller.post.product", { data: data, id: product.id }), {
+            preserveScroll: true,
+            preserveState: false,
+            onSuccess: () => {
+                setTimeout(() => {
+                    setIsEditing(false);
+                    setData("images", product.images);
+                    setData("newUploadedImages", []);
+                    setIsolatedImages(product.images);
+                    setOriginalImages(product.images);
+                    setLoading(false);
+                }, 100);
+            },
+            onError: () => {
+                setTimeout(() => {
+                    setIsEditing(false);
+                    setLoading(false);
+                }, 100);
+            },
+        });
     };
+
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message);
+        }
+    }, [flash]);
 
     const isEditable = !product.is_verified;
 
     return (
         <SellerAuthenticatedLayout user={auth}>
             <Head title={"Product Name"} />
+            <ToastContainer />
+            {loading && (
+                <div className="fixed inset-0 z-50 bg-gray-500 bg-opacity-75 backdrop-blur-sm flex items-center justify-center">
+                    <div className="bg-white w-[40%] p-6 rounded-lg shadow-lg">
+                        <p className="text-lg text-center font-semibold text-gray-800 mb-4">
+                            Please wait, your product is being updated. This
+                            might take a few moments.
+                        </p>
+                        <div className="relative w-full h-2 bg-gray-200 rounded overflow-hidden">
+                            <div className="absolute top-0 left-0 h-full w-[200%] bg-themeColor rounded loading-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            )}
             <h1 className="-mb-4 text-xl font-bold text-mainText max-w-4xl mx-auto">
                 <Link href={route("seller.products")}>Go Back</Link>
             </h1>
@@ -102,20 +149,28 @@ export default function ViewEditProduct({ auth }) {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700">
                             Product Name
                         </label>
                         {isEditing && isEditable ? (
-                            <input
-                                value={data.product_name}
-                                onChange={handleChange}
-                                name="product_name"
-                                type="text"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                required
-                            />
+                            <div>
+                                <input
+                                    value={data.product_name}
+                                    onChange={handleChange}
+                                    name="product_name"
+                                    type="text"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                    required
+                                />
+                                {errors.product_name && (
+                                    <InputError
+                                        className="mt-1"
+                                        message={errors.product_name}
+                                    />
+                                )}
+                            </div>
                         ) : (
                             <p className="mt-1 text-gray-900">
                                 {product.product_name}
@@ -129,17 +184,25 @@ export default function ViewEditProduct({ auth }) {
                                 Price
                             </label>
                             {isEditing && isEditable ? (
-                                <input
-                                    value={data.price}
-                                    onChange={handleChange}
-                                    name="price"
-                                    type="number"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                    required
-                                />
+                                <div>
+                                    <input
+                                        value={data.price}
+                                        onChange={handleChange}
+                                        name="price"
+                                        type="number"
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        required
+                                    />
+                                    {errors.price && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.price}
+                                        />
+                                    )}
+                                </div>
                             ) : (
                                 <p className="mt-1 text-gray-900">
-                                    ${product.price}
+                                    {product.price}
                                 </p>
                             )}
                         </div>
@@ -148,14 +211,22 @@ export default function ViewEditProduct({ auth }) {
                                 Quantity
                             </label>
                             {isEditing && isEditable ? (
-                                <input
-                                    value={data.quantity}
-                                    onChange={handleChange}
-                                    name="quantity"
-                                    type="number"
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                    required
-                                />
+                                <div>
+                                    <input
+                                        value={data.quantity}
+                                        onChange={handleChange}
+                                        name="quantity"
+                                        type="number"
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                        required
+                                    />
+                                    {errors.quantity && (
+                                        <InputError
+                                            className="mt-1"
+                                            message={errors.quantity}
+                                        />
+                                    )}
+                                </div>
                             ) : (
                                 <p className="mt-1 text-gray-900">
                                     {product.quantity}
@@ -169,13 +240,21 @@ export default function ViewEditProduct({ auth }) {
                             Description
                         </label>
                         {isEditing && isEditable ? (
-                            <textarea
-                                value={data.description}
-                                name="description"
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                                required
-                                onChange={handleChange}
-                            ></textarea>
+                            <div>
+                                <textarea
+                                    value={data.description}
+                                    name="description"
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+                                    required
+                                    onChange={handleChange}
+                                ></textarea>
+                                {errors.description && (
+                                    <InputError
+                                        className="mt-1"
+                                        message={errors.description}
+                                    />
+                                )}
+                            </div>
                         ) : (
                             <p className="mt-1 text-gray-900">
                                 {product.description}
@@ -220,7 +299,6 @@ export default function ViewEditProduct({ auth }) {
                             <StarRating rating={product.rating} />
                         </div>
                     </div>
-
                     <div className="flex flex-col flex-wrap gap-4 mb-4 mt-2">
                         <label className="block text-sm font-medium text-gray-700">
                             Images
@@ -303,8 +381,22 @@ export default function ViewEditProduct({ auth }) {
                                         Please ensure that each image has a 1:1
                                         aspect ratio or is in a square format.
                                     </small>
+                                    <div>
+                                        {errors.newUploadedImages && (
+                                            <InputError
+                                                className="mt-1"
+                                                message={
+                                                    errors.newUploadedImages
+                                                }
+                                            />
+                                        )}
+                                    </div>
                                     <input
-                                        // maxLength={5}
+                                        maxLength={
+                                            data.images.length -
+                                            data.newUploadedImages.length -
+                                            5
+                                        }
                                         type="file"
                                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
                                         multiple
@@ -330,6 +422,7 @@ export default function ViewEditProduct({ auth }) {
                             </button>
                             {isEditing && (
                                 <button
+                                    disabled={processing}
                                     type="submit"
                                     className="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                 >
