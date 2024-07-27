@@ -87,6 +87,19 @@ export default function AddProduct({ auth }) {
             <SellerAuthenticatedLayout user={auth}>
                 <Head title="Seller - Add product" />
                 <ToastContainer />
+                {loading && (
+                    <div className="fixed inset-0 z-50 bg-gray-500 bg-opacity-75 backdrop-blur-sm flex items-center justify-center">
+                        <div className="bg-white w-[40%] p-6 rounded-lg shadow-lg">
+                            <p className="text-lg text-center font-semibold text-gray-800 mb-4">
+                                Please wait, your product is being added. This
+                                might take a few moments.
+                            </p>
+                            <div className="relative w-full h-2 bg-gray-200 rounded overflow-hidden">
+                                <div className="absolute top-0 left-0 h-full w-[200%] bg-themeColor rounded loading-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <div className="max-w-4xl mx-auto ">
                     <div className="my-2">
                         <Link
