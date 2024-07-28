@@ -29,24 +29,25 @@ Route::get('/', function () {
 //     ]);
 // });
 
+//Customer pages INSERT MIDDLEWARE FOR CUSTOMER ONLY
+Route::middleware('auth')->group(function () {
 
-
-Route::get('/dashboard', function () {
-  return Inertia::render('Dashboard');
-})->middleware(['auth', 'user'])->name('dashboard');
-
-Route::get('/shop', [ProductsController::class, 'allProducts'])->middleware(['auth'])->name('shop');
-
-Route::get('/messages', function () {
-  return Inertia::render('User/UserMessages');
-})->middleware(['auth'])->name('user-messages');
-Route::get('/cart', [CartController::class, 'currentCartList'])->middleware(['auth'])->name('user-cart');
-
-
-Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->middleware(['auth'])->name('view-product');
-Route::post('/store-to-cart', [CartController::class, 'addToCart'])->middleware(['auth'])->name('store-to-cart');
-Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
-Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
+  Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+  })->name('dashboard');
+  Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
+  Route::get('/messages', function () {
+    return Inertia::render('User/UserMessages');
+  })->name('user-messages');
+  Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
+  Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
+  Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('store-to-cart');
+  Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
+  Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
+  Route::get('/my-purchases', function () {
+    return Inertia::render('User/MyPurchases');
+  })->name('user.myPurchases');
+});
 
 //unverified seller account
 Route::get('/created-success-pending', function () {
@@ -57,15 +58,10 @@ Route::get('/seller-account-on-the-process', function () {
 })->middleware(NotVerfiedSeller::class)
   ->name('seller.pending.account');
 
-
-
 //FOR TESTING
 Route::get('/test', function () {
   return Inertia::render('Admin/Index');
 });
-
-
-
 
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {

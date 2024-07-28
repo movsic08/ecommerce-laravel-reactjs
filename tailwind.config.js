@@ -26,6 +26,9 @@ export default {
                 mainText: "#403E3E",
                 themeColor: "#FF914D",
             },
+            borderColor: {
+                themeColor: "#FF914D",
+            },
         },
     },
 

@@ -61,6 +61,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                             >
                                 Home
                             </NavLink>
+
                             <NavLink
                                 href={route("shop")}
                                 active={route().current("shop")}
@@ -68,17 +69,10 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                                 Shop
                             </NavLink>
                             <NavLink
-                                href={route("about")}
-                                active={route().current("about")}
+                                href={route("user.myPurchases")}
+                                active={route().current("user.myPurchases")}
                             >
-                                About
-                            </NavLink>
-
-                            <NavLink
-                                href={route("contact")}
-                                active={route().current("contact")}
-                            >
-                                Contact
+                                My Purchases
                             </NavLink>
                         </div>
 
