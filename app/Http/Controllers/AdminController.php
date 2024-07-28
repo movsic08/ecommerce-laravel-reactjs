@@ -314,7 +314,7 @@ class AdminController extends Controller
 
       Notification::create([
         'title' => "{$product->product_name} Status Changed",
-        'body' => "Product named '{$product->product_name}' has been {$statusMessage} by the admin.",
+        'body' => $statusMessage,
         'is_read' => false,
         'created_by' => auth()->id(),
         'to_user_id' => $product->seller_id,
