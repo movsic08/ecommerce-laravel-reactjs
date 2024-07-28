@@ -36,7 +36,7 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                 href={route("seller.shop")}
                                 active={route().current("seller.shop")}
                             >
-                                Shop
+                                Your Shop
                             </NavLink>
                             <NavLink
                                 href={route("seller.products")}
