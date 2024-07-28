@@ -17,9 +17,14 @@ import {
     Legend,
     ResponsiveContainer,
 } from "recharts";
+import { useState } from "react";
+import Modal from "@/Components/Modal";
+import ModalImage from "react-modal-image";
 
 export default function Index({ auth }) {
-    const { products } = usePage().props;
+    const { products, totalSellers, totalCustomer } = usePage().props;
+    const [dataProduct, setDataProduct] = useState([products.data]);
+    console.log(Array.isArray(dataProduct));
     const data = [
         {
             name: "January",
@@ -143,15 +148,17 @@ export default function Index({ auth }) {
                             <h1 className="font-semibold">
                                 Top Selling Products
                             </h1>
+
                             <div className="mt-2 flex gap-5 flex-col">
-                                {products.map((product) => (
+                                {products.data.map((product) => (
                                     <div
                                         key={product.id}
                                         className="flex gap-4 items-center"
                                     >
-                                        <img
-                                            className="w-10"
-                                            src={DefaultPicture}
+                                        <ModalImage
+                                            className="w-10 h-10 object-cover"
+                                            small={product.images[0].image_path}
+                                            large={product.images[0].image_path}
                                             alt="product_img"
                                         />
                                         <h1>{product.product_name}</h1>
@@ -166,9 +173,12 @@ export default function Index({ auth }) {
                                     <FaUsers size={80} />
                                     <div>
                                         <strong className=" text-4xl">
-                                            122
+                                            {totalSellers}
                                         </strong>
-                                        <div>Sellers</div>
+                                        <div>
+                                            Seller
+                                            {totalSellers.length < 1 ? "" : "s"}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,9 +187,14 @@ export default function Index({ auth }) {
                                     <FaUser size={60} />
                                     <div>
                                         <strong className=" text-4xl">
-                                            243
+                                            {totalCustomer}
                                         </strong>
-                                        <div>Customers</div>
+                                        <div>
+                                            Customer
+                                            {totalCustomer.length < 1
+                                                ? ""
+                                                : "s"}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

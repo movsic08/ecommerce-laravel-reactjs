@@ -97,11 +97,16 @@ class AdminController extends Controller
 
   public function adminDashboard()
   {
-    $products = Products::orderBy('sold', 'desc')->limit(5)->get();
-    // $products = Products::with('images')->orderBy('sold', 'desc')->get();
-    // dump($products);
+    $products = Products::with('images')->orderBy('sold', 'desc')->limit(5)->get();
+    $totalSellers = User::where('is_seller', true)->count();
+    $totalCustomer = User::where('is_seller', false)
+      ->where('is_admin', false)
+      ->count();
+
     return Inertia::render('Admin/Index', [
-      'products' => $products
+      'products' => SellerProductList::collection($products),
+      'totalSellers' => $totalSellers,
+      'totalCustomer' => $totalCustomer
     ]);
   }
 
