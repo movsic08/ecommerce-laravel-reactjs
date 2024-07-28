@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
   /**
    * Run the migrations.
    */
@@ -15,6 +17,24 @@ return new class extends Migration {
       $table->string('category_name');
       $table->timestamps();
     });
+
+    $categories = [
+      'Shells',
+      'Souvenirs',
+      'Lampshades',
+      'Resin',
+      'E-Kawayan',
+      'Keychains',
+      'Bags',
+      'Clocks',
+      'T-shirts',
+      'Chandeliers',
+      'Accessories',
+    ];
+
+    foreach ($categories as $category) {
+      Category::create(['category_name' => $category]);
+    }
   }
 
   /**
@@ -22,6 +42,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('products');
+    Schema::dropIfExists('categories');
   }
 };
