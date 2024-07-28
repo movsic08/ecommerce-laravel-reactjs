@@ -126,7 +126,7 @@ export default function ViewEditProduct({ auth }) {
                 </h2>
                 <div className="w-full pb-2 flex items-center justify-center">
                     <div
-                        className={`text-center text-xs rounded flex p-2 w-[70%] ${
+                        className={`text-center text-xs rounded flex p-2 w-fit ${
                             product.is_verified
                                 ? "text-green-500 bg-green-50"
                                 : "text-red-500 bg-red-50"
