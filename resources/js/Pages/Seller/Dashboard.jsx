@@ -209,11 +209,11 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
                             right
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </SellerAuthenticatedLayout>
         </>
