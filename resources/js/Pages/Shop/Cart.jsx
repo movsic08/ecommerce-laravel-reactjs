@@ -4,7 +4,7 @@ import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import defaultImgIcon from "../../assets/img/Image-Placeholder.svg";
+import defaultImgIcon from "../../assets/img/Default-Product-Placeholder.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
