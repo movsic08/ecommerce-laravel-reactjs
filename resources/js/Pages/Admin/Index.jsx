@@ -24,7 +24,7 @@ import ModalImage from "react-modal-image";
 export default function Index({ auth }) {
     const { products, totalSellers, totalCustomer } = usePage().props;
     const [dataProduct, setDataProduct] = useState([products.data]);
-    console.log(Array.isArray(dataProduct));
+    console.log(products);
     const data = [
         {
             name: "January",
@@ -157,8 +157,18 @@ export default function Index({ auth }) {
                                     >
                                         <ModalImage
                                             className="w-10 h-10 object-cover"
-                                            small={product.images[0].image_path}
-                                            large={product.images[0].image_path}
+                                            small={
+                                                product.images.length == 0
+                                                    ? DefaultPicture
+                                                    : product.images[0]
+                                                          .image_path
+                                            }
+                                            large={
+                                                product.images.length == 0
+                                                    ? DefaultPicture
+                                                    : product.images[0]
+                                                          .image_path
+                                            }
                                             alt="product_img"
                                         />
                                         <h1>{product.product_name}</h1>
