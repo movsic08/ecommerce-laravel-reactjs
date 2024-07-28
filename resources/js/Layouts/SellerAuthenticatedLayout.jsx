@@ -47,9 +47,16 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                         </div>
 
                         <div className="hidden  gap-2 md:flex sm:items-center sm:ms-6">
-                            <NavLink href={route("seller.showNotification")}>
-                                <IoNotifications size={20} />
-                            </NavLink>
+                            <div className="relative flex items-center justify-center">
+                                <NavLink
+                                    href={route("seller.showNotification")}
+                                >
+                                    <IoNotifications size={20} />
+                                </NavLink>
+                                {/* <div className="absolute -top-1 -right-1 p-0.5 bg-slate-600 rounded-full text-xs text-white">
+                                    23
+                                </div> */}
+                            </div>
                             <NavLink href={route("user-messages")}>
                                 <img
                                     className=" h-6 "
