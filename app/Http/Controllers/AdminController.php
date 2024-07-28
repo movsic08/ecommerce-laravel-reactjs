@@ -13,6 +13,7 @@ use App\Models\Products;
 use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -181,7 +182,7 @@ class AdminController extends Controller
   {
     $query = Products::query();
     $products = $query->with('images')->paginate(3);
-    // return dd((object) SellerProductList::collection($products));
+
     return Inertia::render('Admin/PermissionPanel', [
       'products' =>  SellerProductList::collection($products)
     ]);
@@ -290,5 +291,43 @@ class AdminController extends Controller
     return Inertia::render('Admin/ViewSellersData', [
       'seller' => $sellerResource->toArray($request), // Flatten the resource data
     ]);
+  }
+
+  public function toggleProductVerification(int $id)
+  {
+    try {
+      $product = Products::where('id', $id)->firstOrFail();
+      DB::beginTransaction();
+
+      $product->update([
+        'is_verified' => !$product->is_verified
+      ]);
+
+      $statusMessage = $product->is_verified
+        ? 'Product has been verified and is now visible to buyers.'
+        : 'Product has been marked as pending and is not visible to buyers.';
+
+      Notification::create([
+        'title' => "{$product->product_name} Status Changed",
+        'body' => "Product named '{$product->product_name}' has been {$statusMessage} by the admin.",
+        'is_read' => false,
+        'created_by' => auth()->id(),
+        'to_user_id' => $product->seller_id,
+      ]);
+
+      DB::commit();
+
+      return redirect()->route('admin.permission')->with([
+        'message' => 'Changing status success',
+        'status' => 'success'
+      ]);
+    } catch (Exception $e) {
+      DB::rollBack();
+      Log::error('Something went wrong: ' . $e->getMessage());
+      return redirect()->route('admin.permission')->with([
+        'status' => 'error',
+        'message' => 'Something went wrong. Contact Dev.'
+      ]);
+    }
   }
 }

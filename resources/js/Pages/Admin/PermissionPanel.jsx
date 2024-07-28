@@ -8,19 +8,16 @@ import "react-toastify/dist/ReactToastify.css";
 export default function PermissionPanel({ auth }) {
     const { products, flash } = usePage().props;
 
-    const [isVerified, setIsVerified] = useState("product.verified");
+    const [isProcessing, setIsProcessing] = useState(null);
     const [isDeleting, setIsDeleting] = useState(null);
-
-    const toggleVerification = () => {
-        setIsVerified(!isVerified);
-        // You can add a call to your API here to update the verification status in your backend.
-    };
 
     useEffect(() => {
         if (flash.status == "error") {
             toast.error(flash.message);
+            setIsProcessing(null);
         } else {
             toast.success(flash.message);
+            setIsProcessing(null);
         }
     }, [flash]);
 
@@ -38,15 +35,42 @@ export default function PermissionPanel({ auth }) {
         }
         setIsDeleting(id);
         router.delete(route("admin.destroy.product", { id: id, name: name }), {
-            onFinish: () => {
-                setIsDeleting(null);
-            },
-            onError: () => {
-                setIsDeleting(null);
-            },
+            preserveState: true,
+            preserveScroll: true,
         });
     };
 
+    const toggleVerification = (e, id, status, name) => {
+        e.preventDefault();
+        if (
+            !window.confirm(
+                `Are you sure you want to ${
+                    status ? "unverify" : "verify"
+                } ${name}?`
+            )
+        ) {
+            return;
+        }
+        setIsProcessing(id);
+        router.patch(route("admin.permission.toggleVerification", id), {
+            preserveState: true,
+            preserveScroll: true,
+            onFinish: () => {
+                setIsProcessing(null);
+                console.log("onfinish" + isProcessing);
+            },
+            onSuccess: () => {
+                setIsProcessing(null);
+                console.log("onsuccess" + isProcessing);
+            },
+            onError: () => {
+                console.log("error");
+                setIsProcessing(null);
+                console.log("onerror" + isProcessing);
+            },
+        });
+    };
+    console.log("default " + isProcessing);
     return (
         <>
             <AdminAuthenticatedLayout user={auth.user}>
@@ -85,13 +109,35 @@ export default function PermissionPanel({ auth }) {
                                 <p className="text-gray-500">
                                     Date Created: {product.created_at}
                                 </p>
+                                <p className="text-gray-500">
+                                    Status:
+                                    <span
+                                        className={
+                                            product.is_verified
+                                                ? "text-green-500"
+                                                : "text-red-500"
+                                        }
+                                    >
+                                        {product.is_verified
+                                            ? " Verified"
+                                            : " Pending"}
+                                    </span>
+                                </p>
                             </div>
                             <div className="flex space-x-2">
                                 <button
-                                    onClick={toggleVerification}
-                                    className={`px-4 py-2 text-sm rounded ${
+                                    disabled={isProcessing != null}
+                                    onClick={(e) =>
+                                        toggleVerification(
+                                            e,
+                                            product.id,
+                                            product.is_verified,
+                                            product.product_name
+                                        )
+                                    }
+                                    className={`px-4 py-2 text-sm rounded  ${
                                         product.is_verified
-                                            ? "bg-green-500 hover:bg-green-600"
+                                            ? "bg-green-500 hover:bg-green-600 "
                                             : "bg-yellow-500 hover:bg-yellow-600"
                                     } text-white`}
                                 >
@@ -122,7 +168,7 @@ export default function PermissionPanel({ auth }) {
                         </div>
                     ))}
                 </div>
-                {products.links !== null ? (
+                {products.links == null ? (
                     ""
                 ) : (
                     <div className=" mt-2 mb-6">

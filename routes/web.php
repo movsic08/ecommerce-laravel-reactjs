@@ -73,6 +73,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
   Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');
   Route::get('/permission', [AdminController::class, 'viewAllProducts'])->name('admin.permission');
+  Route::patch('permission/toggle-verification/{id}', [AdminController::class, 'toggleProductVerification'])->name('admin.permission.toggleVerification');
   Route::delete('destroy-pending-product/{id}/{name}', [AdminController::class, 'destroyPendingProduct'])->name('admin.destroy.product');
   Route::get('/view-seller/{id}', [AdminController::class, 'viewSellerData'])->name('admin.view-seller');
   Route::put('view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
