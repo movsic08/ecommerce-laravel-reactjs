@@ -34,7 +34,7 @@ export default function Shop({ auth, queryParams = null }) {
         <UserAuthenticatedLayout user={auth.user}>
             <Head title="Shop" />
             <img
-                className="  object-cover  h-36 w-full "
+                className="object-cover h-36 w-full"
                 src={shopImage}
                 alt="Shop Page Asset"
             />
@@ -42,65 +42,54 @@ export default function Shop({ auth, queryParams = null }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="container mx-auto p-4">
-                        <div className="flex flex-col md:flex-row h-screen">
-                            <div className="w-full md:w-1/3 lg:w-1/4 bg-white p-4 overflow-y-auto">
+                        <div className="flex flex-col md:flex-row">
+                            <div className="w-full md:w-1/3 lg:w-1/4 bg-white p-4 overflow-y-auto md:overflow-hidden">
                                 <div className="mb-4">
                                     <h2 className="font-semibold text-lg mb-1">
                                         Categories
                                     </h2>
-                                    <ul className=" text-mainText">
-                                        {categories.map((category) => (
-                                            <li className=" mb-1">
-                                                <a
-                                                    href="#"
-                                                    className="  hover:underline"
+                                    <div className="flex md:block overflow-x-scroll md:overflow-x-hidden space-x-2 md:space-x-0 md:space-y-2">
+                                        <ul className="flex md:flex-col gap-2 lg:gap-0 text-mainText">
+                                            {categories.map((category) => (
+                                                <li
+                                                    key={category.id}
+                                                    className="mb-1 whitespace-nowrap p-2 lg:bg-gray-50 bg-gray-50 rounded-lg"
                                                 >
-                                                    {category.category_name}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                                    <a
+                                                        href="#"
+                                                        className="hover:underline"
+                                                    >
+                                                        {category.category_name}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="w-full md:w-2/3 lg:w-3/4 bg-white px-4 pb-4 ">
+                            <div className="w-full md:w-2/3 lg:w-3/4 bg-white px-4 pb-4">
                                 <div className="w-full flex items-center mb-3 gap-2">
-                                    <span className=" font-bold">Search</span>{" "}
+                                    <span className="font-bold">Search</span>
                                     <TextInput
                                         defaultValue={queryParams.name}
                                         onKeyPress={(e) => {
                                             onKeyPress("name", e);
                                         }}
-                                        className="w-full "
+                                        className="w-full"
                                         placeholder="Enter to search product..."
                                     />
-                                    {/* <button
-                                        type="button"
-                                        onClick={handleButtonClick}
-                                        className=" bg-secondaryColor text-white p-3 rounded-lg duration-300 hover:bg-orange-500"
-                                    >
-                                        <FaSearch />
-                                    </button> */}
                                 </div>
 
-                                <div className=" flex w-full  justify-between items-center mb-2">
-                                    <div className="  flex items-center gap-2">
+                                <div className="flex w-full justify-between items-center mb-2">
+                                    <div className="flex items-center gap-2">
                                         <BsGrid3X3GapFill size={30} />
                                         <TbListDetails size={30} />
                                     </div>
                                     <div className="flex items-center space-x-2">
-                                        <span
-                                            className="text-gray-500 whitespace-nowrap"
-                                            onChange={(e) => {
-                                                searchFieldProduct(
-                                                    "filterProducts",
-                                                    e.target.value
-                                                );
-                                            }}
-                                        >
+                                        <span className="text-gray-500 whitespace-nowrap">
                                             Sort by:
                                         </span>
-
                                         <SelectInput
                                             className="w-full"
                                             defaultValue={
@@ -134,7 +123,7 @@ export default function Shop({ auth, queryParams = null }) {
                                         </SelectInput>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 py-4 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                                     {products.data.map((product) => (
                                         <Link
                                             key={product.id}
@@ -142,21 +131,23 @@ export default function Shop({ auth, queryParams = null }) {
                                                 "view-product",
                                                 product.id
                                             )}
-                                            className="bg-gray-100  duration-700 hover:bg-gray-200 ease-in-out hover:-top-2 drop-shadow-lg rounded relative overflow-hidden"
+                                            className="bg-gray-100 duration-700 hover:bg-gray-200 ease-in-out hover:-top-2 drop-shadow-lg rounded relative overflow-hidden"
                                         >
-                                            <img
-                                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                                                alt={
-                                                    product.product_name +
-                                                    " Image"
-                                                }
-                                                className="mx-auto h-48 w-full object-cover"
-                                            />
+                                            <div className="w-full h-48 relative">
+                                                <img
+                                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                                                    alt={
+                                                        product.product_name +
+                                                        " Image"
+                                                    }
+                                                    className="w-full h-full object-cover absolute"
+                                                />
+                                            </div>
                                             <div className="p-4 text-center h-fit flex flex-col">
-                                                <p className="line-clamp-2 h-[5vw] grow ">
+                                                <p className="line-clamp-2 h-[5vw] grow">
                                                     {product.product_name}
                                                 </p>
-                                                <div className="flex  flex-none flex-col ">
+                                                <div className="flex flex-none flex-col">
                                                     <StarRating
                                                         rating={product.rating}
                                                     />
