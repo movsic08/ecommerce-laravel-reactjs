@@ -11,7 +11,7 @@ import { FaSearch } from "react-icons/fa";
 import SelectInput from "@/Components/SelectInput";
 
 export default function Shop({ auth, queryParams = null }) {
-    const { products = [] } = usePage().props;
+    const { products = [], categories } = usePage().props;
     queryParams = queryParams || {};
 
     const searchFieldProduct = (name, value) => {
@@ -45,103 +45,20 @@ export default function Shop({ auth, queryParams = null }) {
                         <div className="flex flex-col md:flex-row h-screen">
                             <div className="w-full md:w-1/3 lg:w-1/4 bg-white p-4 overflow-y-auto">
                                 <div className="mb-4">
-                                    <input
-                                        type="text"
-                                        placeholder="Search..."
-                                        className="w-full p-2 border border-gray-300 rounded"
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <h2 className="font-semibold text-lg mb-2">
+                                    <h2 className="font-semibold text-lg mb-1">
                                         Categories
                                     </h2>
                                     <ul className=" text-mainText">
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Category 1
-                                            </a>
-                                        </li>
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Category 2
-                                            </a>
-                                        </li>
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Category 3
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="mb-4">
-                                    <h2 className="font-semibold text-lg mb-2">
-                                        Vendors
-                                    </h2>
-                                    <ul className=" text-mainText">
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Vendor 1
-                                            </a>
-                                        </li>
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Vendor 2
-                                            </a>
-                                        </li>
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Vendor 3
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div className="mb-4">
-                                    <h2 className="font-semibold text-lg mb-2">
-                                        Product Type
-                                    </h2>
-                                    <ul className=" text-mainText">
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Type 1
-                                            </a>
-                                        </li>
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Type 2
-                                            </a>
-                                        </li>
-                                        <li className=" mb-1">
-                                            <a
-                                                href="#"
-                                                className="  hover:underline"
-                                            >
-                                                Type 3
-                                            </a>
-                                        </li>
+                                        {categories.map((category) => (
+                                            <li className=" mb-1">
+                                                <a
+                                                    href="#"
+                                                    className="  hover:underline"
+                                                >
+                                                    {category.category_name}
+                                                </a>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                             </div>

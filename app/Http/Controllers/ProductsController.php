@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Seller\ViewProductResource;
+use App\Models\Category;
 use Inertia\Inertia;
 use App\Models\Products;
 use App\Models\ProductsImages;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Type\Integer;
+
 
 class ProductsController extends Controller
 {
@@ -37,11 +38,13 @@ class ProductsController extends Controller
     }
 
     $products = $query->paginate(15);
+    $categories = Category::all();
 
     // return  $products;
     return Inertia::render('Shop/Shop', [
       'products' => $products,
-      'queryParams' => request()->query() ?: null
+      'queryParams' => request()->query() ?: null,
+      'categories' => $categories
     ]);
   }
 
