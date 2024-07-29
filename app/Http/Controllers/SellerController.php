@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\SellerProductList;
 use App\Models\Categories;
+use App\Models\Category;
 use App\Models\Notification;
 use App\Models\Products;
 use App\Models\ProductsImages;
@@ -174,7 +175,7 @@ class SellerController extends Controller
 
   public function showAddProduct(Request $request)
   {
-    $categories = Categories::all();
+    $categories = Category::all();
 
     return Inertia::render('Seller/Partials/AddProduct', [
       'categories' => $categories

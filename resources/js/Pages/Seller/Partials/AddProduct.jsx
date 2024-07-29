@@ -221,7 +221,7 @@ export default function AddProduct({ auth }) {
                                     {categories.map((category) => (
                                         <option
                                             key={category.id}
-                                            value={category.id}
+                                            value={category.category_name}
                                             className="text-slate-900 w-full"
                                         >
                                             {category.category_name}
