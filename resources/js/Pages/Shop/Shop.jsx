@@ -9,10 +9,12 @@ import Pagination from "@/Components/Pagination";
 import TextInput from "@/Components/TextInput";
 import { FaSearch } from "react-icons/fa";
 import SelectInput from "@/Components/SelectInput";
+import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
 
 export default function Shop({ auth, queryParams = null }) {
     const { products = [], categories } = usePage().props;
     queryParams = queryParams || {};
+    console.log(products.data);
 
     const searchFieldProduct = (name, value) => {
         if (value) {
@@ -135,7 +137,12 @@ export default function Shop({ auth, queryParams = null }) {
                                         >
                                             <div className="w-full h-48 relative">
                                                 <img
-                                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+                                                    src={
+                                                        product.images == null
+                                                            ? DefaultProductIcon
+                                                            : product.images[0]
+                                                                  .image_path
+                                                    }
                                                     alt={
                                                         product.product_name +
                                                         " Image"
