@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
@@ -29,7 +30,7 @@ Route::get('/', function () {
 //     ]);
 // });
 
-//Customer pages INSERT MIDDLEWARE FOR CUSTOMER ONLY
+//Customer pages 
 Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard', function () {
@@ -44,9 +45,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('store-to-cart');
   Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
-  Route::get('/my-purchases', function () {
-    return Inertia::render('Shop/MyPurchases');
-  })->name('user.myPurchases');
+  Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
 });
 
 //unverified seller account
@@ -58,10 +57,7 @@ Route::get('/seller-account-on-the-process', function () {
 })->middleware(NotVerfiedSeller::class)
   ->name('seller.pending.account');
 
-//FOR TESTING
-Route::get('/test', function () {
-  return Inertia::render('Admin/Index');
-});
+
 
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
@@ -104,15 +100,7 @@ Route::get('/about', function () {
   return Inertia::render('About');
 })->middleware(['auth'])->name('about');
 
-Route::get('/testemail', function () {
-  $data = [
-    'is_verified' => true,
-  ];
 
-  Mail::to('lejero08@gmail.com')->send(new SellerVerified((object) $data));
-
-  return 'Email sent!';
-});
 
 Route::get('/contact', function () {
   return Inertia::render('Contact');
