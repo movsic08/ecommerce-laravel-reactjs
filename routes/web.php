@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
   Route::get('/my-purchases', function () {
-    return Inertia::render('User/MyPurchases');
+    return Inertia::render('Shop/MyPurchases');
   })->name('user.myPurchases');
 });
 
