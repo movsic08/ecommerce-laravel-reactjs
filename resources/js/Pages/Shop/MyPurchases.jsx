@@ -1,14 +1,17 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import { useState } from "react";
+import { Head, usePage } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 import {
     FaMoneyBillWave,
     FaShippingFast,
     FaBoxOpen,
     FaStar,
 } from "react-icons/fa";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function MyPurchases({ auth }) {
+    const { flash } = usePage().props;
     const [activeTab, setActiveTab] = useState("toPay");
 
     const tabs = [
@@ -18,10 +21,19 @@ export default function MyPurchases({ auth }) {
         { id: "toRate", label: "To Rate", icon: <FaStar /> },
     ];
 
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message);
+        }
+    });
+
     return (
         <>
             <UserAuthenticatedLayout user={auth}>
                 <Head title="My Purchases" />
+                <ToastContainer />
                 <div className="container mx-auto p-4">
                     <h1 className="text-3xl font-bold mb-6">My Purchases</h1>
 

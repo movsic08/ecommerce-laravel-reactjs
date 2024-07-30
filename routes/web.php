@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
   Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
+  Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
 });
 
 //unverified seller account
