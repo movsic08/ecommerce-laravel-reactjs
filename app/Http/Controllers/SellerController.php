@@ -140,8 +140,7 @@ class SellerController extends Controller
         'product_name' => $request->product_name,
         'quantity' => $request->quantity,
         'description' => $request->description,
-        'type' => $request->category,
-        'category_id' => $request->category,
+        'category' => $request->category,
         'price' => $request->price
       ]);
 
