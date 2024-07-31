@@ -21,7 +21,7 @@ class ProductsFactory extends Factory
       'description' => $this->faker->paragraph(), // More descriptive product description
       'seller_id' => $this->faker->numberBetween(1, 20),
       'sold' => $this->faker->numberBetween(0, 1000), // Number of items sold can be higher
-      'price' => $this->faker->randomNumber(10, 2000), // More realistic price range
+      'price' => $this->faker->numberBetween(10, 2000), // More realistic price range
       'category_id' => \App\Models\Category::inRandomOrder()->first()->category_name,
     ];
   }
