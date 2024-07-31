@@ -9,17 +9,14 @@ class Products extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['product_name', 'is_verified', 'price', 'rating', 'quantity', 'seller_id', 'description', 'category_id', 'type', 'sold'];
+  protected $fillable = ['product_name', 'is_verified', 'price', 'rating', 'quantity', 'seller_id', 'description', 'category', 'type', 'sold'];
 
   public function seller()
   {
     return $this->belongsTo(User::class);
   }
 
-  public function category()
-  {
-    return $this->belongsTo(Categories::class);
-  }
+
   public function images()
   {
     return $this->hasMany(ProductsImages::class, 'product_id');
