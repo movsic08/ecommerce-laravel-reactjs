@@ -5,6 +5,7 @@ import InputLabel from "@/Components/InputLabel";
 import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
 
 export default function Products() {
     const { products, flash } = usePage().props;
@@ -29,6 +30,7 @@ export default function Products() {
             },
         });
     };
+
     return (
         <>
             <SellerAuthenticatedLayout>
@@ -77,11 +79,12 @@ export default function Products() {
                                     key={item.id}
                                     className="bg-white shadow-md rounded-lg p-4 flex flex-col"
                                 >
+                                    <pre>{item.images}</pre>
                                     <img
                                         src={
-                                            item.images[0].image_path
-                                                ? item.images[0].image_path
-                                                : defaultProduct1
+                                            item.images.length == 0
+                                                ? DefaultProductIcon
+                                                : item.images[0].image_path
                                         }
                                         alt="Product"
                                         className="w-full h-48 object-cover rounded-t-lg"
