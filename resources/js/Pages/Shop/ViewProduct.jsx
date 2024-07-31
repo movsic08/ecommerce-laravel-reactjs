@@ -22,17 +22,18 @@ export default function ViewProduct({ auth }) {
     const handleQuantityChange = (newQuantity) => {
         setBuyingQuantity(newQuantity);
     };
-    console.log(buyingQuantity);
+
     const toggleModal = () => {
         setModalOpen(!modalOpen);
     };
 
-    const handleBuyNow = (id, name, price, quantity) => {
+    const handleBuyNow = (id) => {
         const item = {
             product_id: id,
             item_quantity: buyingQuantity,
         };
-        router.post(route("checkout.show", item));
+        console.log(item);
+        router.post(route("checkout.show", { items: [item] }));
     };
 
     return (

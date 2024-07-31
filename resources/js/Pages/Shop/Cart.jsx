@@ -1,8 +1,8 @@
 import Checkbox from "@/Components/Checkbox";
 import Quantity from "@/Components/Quantity";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { Head, router, usePage } from "@inertiajs/react";
+import { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import defaultImgIcon from "../../assets/img/Default-Product-Placeholder.svg";
 import { toast, ToastContainer } from "react-toastify";
@@ -12,9 +12,22 @@ import axios from "axios";
 export default function Cart({ auth }) {
     const { props } = usePage();
     const [items, setItems] = useState(props.cartsItem);
-
     const [checkedItems, setCheckedItems] = useState([]);
-    // console.log(checkedItems);
+
+    const [totalAmount, setTotalAmount] = useState(0);
+
+    const handleCheckout = () => {
+        const selectedItems = items.filter((item) =>
+            checkedItems.includes(item.id)
+        );
+        const checkoutData = selectedItems.map((item) => ({
+            product_id: item.product.id,
+            item_quantity: item.quantity,
+        }));
+        console.log(checkoutData);
+        router.post(route("checkout.show", { items: checkoutData }));
+        // router.post(router("checkout.show"), { items: checkoutData });
+    };
 
     const handleCheckboxChange = (itemId, isChecked) => {
         if (isChecked) {
@@ -28,22 +41,28 @@ export default function Cart({ auth }) {
             );
         }
     };
-    const calculateTotalAmount = () => {
-        return items
-            .filter((item) => checkedItems.includes(item.id))
-            .reduce((acc, item) => acc + item.price * item.quantity, 0)
-            .toFixed(2);
+
+    const handleQuantityChange = (itemId, newQuantity) => {
+        setItems((prevItems) =>
+            prevItems.map((item) =>
+                item.id === itemId ? { ...item, quantity: newQuantity } : item
+            )
+        );
     };
 
-    const calculateTotalChecked = () => {
-        return checkedItems.length; // Count the number of checked items
-    };
+    useEffect(() => {
+        const calculateTotalAmount = () => {
+            return items
+                .filter((item) => checkedItems.includes(item.id))
+                .reduce(
+                    (acc, item) => acc + item.product.price * item.quantity,
+                    0
+                )
+                .toFixed(2);
+        };
 
-    const { setData } = useForm();
-
-    const handleQuantityChange = (newQuantity) => {
-        setData("quantity", newQuantity);
-    };
+        setTotalAmount(calculateTotalAmount());
+    }, [items, checkedItems]);
 
     const deleteItem = async (id) => {
         try {
@@ -54,13 +73,14 @@ export default function Cart({ auth }) {
                 setItems((prevItems) =>
                     prevItems.filter((item) => item.id !== id)
                 );
+                setCheckedItems((prevCheckedItems) =>
+                    prevCheckedItems.filter((itemId) => itemId !== id)
+                );
             } else {
-                // Handle error
                 toast.error("Failed to delete item");
             }
         } catch (error) {
-            // Handle network error or server error
-            alert("Failed to delete item");
+            toast.error("Failed to delete item");
         }
     };
 
@@ -104,7 +124,7 @@ export default function Cart({ auth }) {
                                                 className="w-16 h-16 mr-4"
                                             />
 
-                                            <div>
+                                            <div className="flex flex-col">
                                                 <h2 className="text-lg font-semibold">
                                                     {item.product.product_name}
                                                 </h2>
@@ -112,14 +132,22 @@ export default function Cart({ auth }) {
                                                     Stock:{" "}
                                                     {item.product.quantity}
                                                 </small>
+                                                <small>
+                                                    Price: {item.product.price}
+                                                </small>
                                             </div>
                                         </div>
                                         <div className="flex items-center">
                                             <div className="mr-6">
                                                 <div className="mt-1 relative rounded-md shadow-sm">
                                                     <Quantity
-                                                        onQuantityChange={
-                                                            handleQuantityChange
+                                                        onQuantityChange={(
+                                                            newQuantity
+                                                        ) =>
+                                                            handleQuantityChange(
+                                                                item.id,
+                                                                newQuantity
+                                                            )
                                                         }
                                                         quantity={item.quantity}
                                                         currentStock={
@@ -131,7 +159,10 @@ export default function Cart({ auth }) {
                                             </div>
                                             <p className="text-lg mr-4 font-semibold whitespace-wrap">
                                                 ₱{" "}
-                                                {item.product.price.toFixed(2)}
+                                                {new Intl.NumberFormat().format(
+                                                    item.product.price *
+                                                        item.quantity
+                                                )}
                                             </p>
                                             <button
                                                 type="button"
@@ -149,11 +180,22 @@ export default function Cart({ auth }) {
                                     <p className="  text-lg">
                                         Total Amount{" "}
                                         <span className=" text-themeColor">
-                                            ₱ {calculateTotalAmount()}
+                                            ₱{" "}
+                                            {new Intl.NumberFormat().format(
+                                                totalAmount
+                                            )}
                                         </span>
                                     </p>
-                                    <button className=" bg-themeColor py-2 px-3 text-white rounded-lg">
-                                        Checkout ({calculateTotalChecked()})
+                                    <button
+                                        disabled={checkedItems == 0}
+                                        className={`bg-themeColor ${
+                                            checkedItems == 0
+                                                ? ""
+                                                : "duration-300 ease-in-out hover:bg-orange-500"
+                                        } py-2 px-3 text-white rounded-lg`}
+                                        onClick={handleCheckout}
+                                    >
+                                        Checkout ({checkedItems.length})
                                     </button>
                                 </div>
                             </div>

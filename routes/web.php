@@ -77,7 +77,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 
 
 //seller pages
-Route::prefix('seller')->middleware('auth')->group(function () {
+Route::prefix('seller')->middleware('seller')->group(function () {
   Route::get('/index', function () {
     return Inertia::render('Seller/Dashboard');
   })->name('seller.dashboard');
