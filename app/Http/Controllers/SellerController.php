@@ -12,8 +12,6 @@ use App\Models\Seller;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
-use Illuminate\Http\File;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,8 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
-use PhpParser\Node\Stmt\TryCatch;
-use Ramsey\Uuid\Type\Integer;
+
 
 class SellerController extends Controller
 {
@@ -36,7 +33,7 @@ class SellerController extends Controller
 
     return Inertia::render('Seller/Products', [
 
-      'products' => (object) SellerProductList::collection($products)
+      'products' =>  SellerProductList::collection($products)
     ]);
   }
 

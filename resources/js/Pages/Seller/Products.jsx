@@ -9,8 +9,9 @@ import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg
 
 export default function Products() {
     const { products, flash } = usePage().props;
-    // console.log(products);\
-    console.log(flash);
+    const [data, setData] = useState(products.data);
+    console.log(data);
+
     const deleteSubmit = (e, id, name) => {
         e.preventDefault();
         if (
@@ -61,7 +62,8 @@ export default function Products() {
                             Add prodcut
                         </Link>
                     </div>
-                    {products.data == 0 ? (
+
+                    {data.length == 0 ? (
                         <div className="flex justify-center w-full">
                             <div className="bg-white p-8  mt-10 rounded-lg shadow-lg text-center max-w-sm w-full">
                                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -79,7 +81,6 @@ export default function Products() {
                                     key={item.id}
                                     className="bg-white shadow-md rounded-lg p-4 flex flex-col"
                                 >
-                                    <pre>{item.images}</pre>
                                     <img
                                         src={
                                             item.images.length == 0
