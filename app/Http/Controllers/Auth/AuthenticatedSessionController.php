@@ -30,12 +30,19 @@ class AuthenticatedSessionController extends Controller
    */
   public function store(LoginRequest $request): RedirectResponse
   {
-    $currentUser = $request->authenticate();
+    $request->authenticate();
+
 
     $request->session()->regenerate();
     if (auth()->user()->is_seller == 1) {
+      if (auth()->user()->seller->is_verified == 0) {
+        $request->session()->regenerateToken();
 
-      return redirect()->intended(route('seller.dashboard', absolute: false));
+        $request->session()->invalidate();
+        return to_route('seller.pending.account');
+      } else {
+        return redirect()->intended(route('seller.dashboard', absolute: false));
+      }
     } else {
 
       return redirect()->intended(route('dashboard', absolute: false));
