@@ -9,11 +9,22 @@ class Products extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['product_name', 'is_verified', 'price', 'rating', 'quantity', 'seller_id', 'description', 'category', 'type', 'sold'];
+  protected $fillable = [
+    'product_name',
+    'is_verified',
+    'price',
+    'rating',
+    'quantity',
+    'seller_id',
+    'description',
+    'category',
+    'type',
+    'sold'
+  ];
 
   public function seller()
   {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(Seller::class);
   }
 
 
