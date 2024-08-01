@@ -18,13 +18,12 @@ class Products extends Model
     'seller_id',
     'description',
     'category',
-    'type',
     'sold'
   ];
 
   public function seller()
   {
-    return $this->belongsTo(Seller::class);
+    return $this->belongsTo(Seller::class, 'seller_id');
   }
 
 
