@@ -52,9 +52,9 @@ class ProductsController extends Controller
   public function viewProduct($productid)
   {
     try {
-      $product = Products::findOrFail($productid);
+      $product = Products::with('images', 'seller')->findOrFail($productid);
       return Inertia::render('Shop/ViewProduct', [
-        'product' => $product
+        'product' => new ViewProductResource($product)
       ]);
     } catch (ModelNotFoundException $e) {
       return response()->json(['message' => 'Product not found.']);

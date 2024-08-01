@@ -9,9 +9,8 @@ import Quantity from "@/Components/Quantity";
 export default function ViewProduct({ auth }) {
     const { product } = usePage().props;
 
-    // Photo Carousel
     const [currentPhoto, setCurrentPhoto] = useState(
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
+        product.images[0].image_path
     );
     const changePhoto = (src) => {
         setCurrentPhoto(src);
@@ -45,9 +44,7 @@ export default function ViewProduct({ auth }) {
                 <AddToCart
                     isOpen={modalOpen}
                     onClose={toggleModal}
-                    itemImage={
-                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                    }
+                    itemImage={product.images[0].image_path}
                     price={product.price}
                     stock={product.quantity}
                     product_id={product.id}
@@ -61,53 +58,32 @@ export default function ViewProduct({ auth }) {
                             <div className="flex flex-col md:flex-row">
                                 <div className="w-full lg:w-[40%]">
                                     <div className="p-3 rounded-md bg-slate-200">
-                                        <img
-                                            src={currentPhoto}
-                                            alt={`${product.product_name} Image`}
-                                            className="rounded-md h-80 md:h-96 lg:h-96 w-full object-cover"
-                                        />
+                                        <div className="aspect-w-1 aspect-h-1 w-full">
+                                            <img
+                                                src={currentPhoto}
+                                                alt={`${product.product_name} Image`}
+                                                className="object-cover w-full h-full rounded-md"
+                                            />
+                                        </div>
                                     </div>
                                     <div className="flex gap-2 mt-2 overflow-x-auto">
-                                        <img
-                                            onClick={() =>
-                                                changePhoto(
-                                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                                                )
-                                            }
-                                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                                            alt="Sample Image"
-                                            className="rounded-md h-20 w-20 cursor-pointer object-cover p-2 bg-secondaryColor"
-                                        />
-                                        <img
-                                            onClick={() =>
-                                                changePhoto(
-                                                    "https://p.globalsources.com/IMAGES/PDT/B1186575162/lady-handbag.jpg"
-                                                )
-                                            }
-                                            src="https://p.globalsources.com/IMAGES/PDT/B1186575162/lady-handbag.jpg"
-                                            alt="Sample Image"
-                                            className="rounded-md h-20 w-20 cursor-pointer object-cover"
-                                        />
-                                        <img
-                                            onClick={() =>
-                                                changePhoto(
-                                                    "https://m.media-amazon.com/images/I/31fEusvQBML._AC_SY580_.jpg"
-                                                )
-                                            }
-                                            src="https://m.media-amazon.com/images/I/31fEusvQBML._AC_SY580_.jpg"
-                                            alt="Sample Image"
-                                            className="rounded-md h-20 w-20 cursor-pointer object-cover"
-                                        />
-                                        <img
-                                            onClick={() =>
-                                                changePhoto(
-                                                    "https://my-test-11.slatic.net/p/7baf0d1de165ee94a44efc319a5798ea.jpg"
-                                                )
-                                            }
-                                            src="https://my-test-11.slatic.net/p/7baf0d1de165ee94a44efc319a5798ea.jpg"
-                                            alt="Sample Image"
-                                            className="rounded-md h-20 w-20 cursor-pointer object-cover"
-                                        />
+                                        {product.images.map((image) => (
+                                            <img
+                                                onClick={() =>
+                                                    changePhoto(
+                                                        image.image_path
+                                                    )
+                                                }
+                                                src={image.image_path}
+                                                alt="Sample Image"
+                                                className={`rounded-md h-20 w-20 ${
+                                                    currentPhoto ==
+                                                    image.image_path
+                                                        ? "bg-secondaryColor"
+                                                        : "cursor-pointer"
+                                                }  object-cover p-2 `}
+                                            />
+                                        ))}
                                     </div>
                                 </div>
                                 <div className="w-full md:w-[60%] px-4 md:px-10 mt-4 md:mt-0">
