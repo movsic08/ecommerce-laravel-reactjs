@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Seller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,17 +31,19 @@ class AuthenticatedSessionController extends Controller
    */
   public function store(LoginRequest $request): RedirectResponse
   {
-    $request->authenticate();
 
+    $request->authenticate();
 
     $request->session()->regenerate();
     if (auth()->user()->is_seller == 1) {
-      if (auth()->user()->seller->is_verified == 0) {
-        $request->session()->regenerateToken();
+      $seller = Seller::where('user_id', auth()->user()->id)->first();
+      if ($seller->is_verified == 0) {
 
+        $request->session()->regenerateToken();
         $request->session()->invalidate();
         return to_route('seller.pending.account');
       } else {
+
         return redirect()->intended(route('seller.dashboard', absolute: false));
       }
     } else {
