@@ -20,6 +20,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@fontsource/karla": "^5.0.20",
+        "@fontsource/manjari": "^5.0.21",
         "@tailwindcss/aspect-ratio": "^0.4.2",
         "date-fns": "^3.6.0",
         "react-icons": "^5.2.1",
