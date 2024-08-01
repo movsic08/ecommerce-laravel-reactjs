@@ -38,9 +38,11 @@ Route::middleware('guest')->group(function () {
 
   Route::post('create-seller', [SellerController::class, 'createSellerAccoount'])
     ->name('create.seller');
+
   Route::get('/create-seller-account', function () {
     return Inertia::render('User/SellerSignup');
   })->name('seller.signup');
+
   Route::get('/admin', function () {
     return Inertia::render('Admin/Login');
   })->name('admin.login');
