@@ -1,96 +1,193 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { FaLocationDot } from "react-icons/fa6";
 import ModalImage from "react-modal-image";
 import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
 import SpinnerLoading from "@/Components/SpinnerLoading";
 import "react-toastify/dist/ReactToastify.css";
-import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Checkout({ auth }) {
-    const { products } = usePage().props;
+    const { products, flash, props } = usePage().props;
     const name = auth.user.first_name + " " + auth.user.last_name;
+
     const phone_no = auth.user.phone_no;
     const address = auth.user.address;
     console.log(products);
-    console.log(auth);
+
     const dummy = [
         {
             product: {
-                id: 4,
-                product_name: "Lamps",
+                id: 1,
+                product_name: "Lamp",
                 rating: 0,
                 sold: 0,
-                quantity: 123,
-                price: 100,
-                description: "safdsgdfhfncgnc",
-                is_verified: 1,
-                category: "Accessories",
-                type: null,
-                created_at: "2024-07-31T08:45:33.000000Z",
-                updated_at: "2024-07-31T08:51:39.000000Z",
-            },
-            images: {
-                data: [
-                    {
-                        id: 2,
-                        product_id: 4,
-                        image_path:
-                            "/storage/Photos/Product_Photos/Lamps_851.png",
-                    },
-                ],
-            },
-            buying_quantity: "3",
-        },
-        {
-            product: {
-                id: 3,
-                product_name: "Shell Cahndelier",
-                rating: 0,
-                sold: 0,
-                quantity: 12,
-                price: 450,
-                description: "this is created by the alaminians by hands",
+                quantity: 21,
+                price: 120,
+                description: "sample sample sample sample",
                 is_verified: 1,
                 category: "Shells",
                 type: null,
-                created_at: "2024-07-31T08:38:52.000000Z",
-                updated_at: "2024-07-31T08:51:37.000000Z",
+                created_at: "2024-08-01T05:36:26.000000Z",
+                updated_at: "2024-08-01T05:36:26.000000Z",
+            },
+            seller: {
+                id: 1,
+                user_id: 5,
+                shop_address: null,
+                shop_name: null,
+                years_in_selling: "below 11 months",
+                shop_picture_path: null,
+                store_name: null,
+                motto: null,
+                has_permit: 1,
+                has_DTI: 1,
+                has_mayors_business_permit: 1,
+                has_paid_organizational_fee: 1,
+                has_barangay_clearance: 1,
+                has_bir: 1,
+                proof_of_membership_path:
+                    "Photos/Permit_photos/Permit_João_5147.PNG",
+                is_verified: 1,
+                verified_at: null,
+                created_at: "2024-08-01T05:23:08.000000Z",
+                updated_at: "2024-08-01T05:23:08.000000Z",
             },
             images: {
                 data: [
                     {
                         id: 1,
-                        product_id: 3,
+                        product_id: 1,
                         image_path:
-                            "/storage/Photos/Product_Photos/Shell Cahndelier_304.png",
+                            "/storage/Photos/Product_Photos/Lamp_147.png",
                     },
                 ],
             },
-            buying_quantity: "4",
+            buying_quantity: "1",
+        },
+        {
+            product: {
+                id: 2,
+                product_name: "Chandelier",
+                rating: 0,
+                sold: 0,
+                quantity: 10,
+                price: 160,
+                description: "sdfkbsdfkjebfoe",
+                is_verified: 0,
+                category: "E-Kawayan",
+                type: null,
+                created_at: "2024-08-01T06:53:28.000000Z",
+                updated_at: "2024-08-01T06:53:28.000000Z",
+            },
+            seller: {
+                id: 1,
+                user_id: 5,
+                shop_address: null,
+                shop_name: null,
+                years_in_selling: "below 11 months",
+                shop_picture_path: null,
+                store_name: null,
+                motto: null,
+                has_permit: 1,
+                has_DTI: 1,
+                has_mayors_business_permit: 1,
+                has_paid_organizational_fee: 1,
+                has_barangay_clearance: 1,
+                has_bir: 1,
+                proof_of_membership_path:
+                    "Photos/Permit_photos/Permit_João_5147.PNG",
+                is_verified: 1,
+                verified_at: null,
+                created_at: "2024-08-01T05:23:08.000000Z",
+                updated_at: "2024-08-01T05:23:08.000000Z",
+            },
+            images: {
+                data: [
+                    {
+                        id: 2,
+                        product_id: 2,
+                        image_path:
+                            "/storage/Photos/Product_Photos/Chandelier_846.png",
+                    },
+                ],
+            },
+            buying_quantity: "2",
+        },
+        {
+            product: {
+                id: 2,
+                product_name: "Chandelier",
+                rating: 0,
+                sold: 0,
+                quantity: 10,
+                price: 160,
+                description: "sdfkbsdfkjebfoe",
+                is_verified: 0,
+                category: "E-Kawayan",
+                type: null,
+                created_at: "2024-08-01T06:53:28.000000Z",
+                updated_at: "2024-08-01T06:53:28.000000Z",
+            },
+            seller: {
+                id: 1,
+                user_id: 5,
+                shop_address: null,
+                shop_name: null,
+                years_in_selling: "below 11 months",
+                shop_picture_path: null,
+                store_name: null,
+                motto: null,
+                has_permit: 1,
+                has_DTI: 1,
+                has_mayors_business_permit: 1,
+                has_paid_organizational_fee: 1,
+                has_barangay_clearance: 1,
+                has_bir: 1,
+                proof_of_membership_path:
+                    "Photos/Permit_photos/Permit_João_5147.PNG",
+                is_verified: 1,
+                verified_at: null,
+                created_at: "2024-08-01T05:23:08.000000Z",
+                updated_at: "2024-08-01T05:23:08.000000Z",
+            },
+            images: {
+                data: [
+                    {
+                        id: 2,
+                        product_id: 2,
+                        image_path:
+                            "/storage/Photos/Product_Photos/Chandelier_846.png",
+                    },
+                ],
+            },
+            buying_quantity: "3",
         },
     ];
-    const totalItems = dummy.reduce(
+    const totalItems = products.reduce(
         (acc, item) => acc + parseInt(item.buying_quantity),
         0
     );
 
-    const totalPrice = dummy.reduce(
+    const totalPrice = products.reduce(
         (acc, item) => acc + item.product.price * item.buying_quantity,
         0
     );
-    const { data, setData, errors, post, processing } = useForm({
+    const { data, setData, errors, processing, post } = useForm({
+        // _token: props.csrf_token,
         name: name,
         address: address,
         phone_no: phone_no,
         total: totalPrice,
         payment_method: "cod",
-        items: dummy.map((item) => ({
-            product_id: item.id,
+        items: products.map((item) => ({
+            product_id: item.product.id,
             quantity: item.buying_quantity,
             price: item.product.price,
-            shop_name: "for retrieval",
+            shop_name: "testing",
+            seller_id: item.seller.id,
+            // shop_name: item.seller.store_name,
             product_name: item.product.product_name,
             category: item.product.category,
         })),
@@ -107,16 +204,22 @@ export default function Checkout({ auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         console.log("Form submitted with data:", data);
-        post(route("checkout.store", data), {
+        post(route("checkout.store"), data, {
             onSuccess: () => {
-                toast.success("chekout complete");
+                toast.success("Checkout complete");
             },
-            onError: () => [toast.error("ERROR in submitting")],
+            onError: () => {
+                toast.error("ERROR in submitting");
+            },
         });
     };
-    console.log(dummy);
+
+    useEffect(() => {
+        if (flash.message) {
+            toast.error("Error placing your order");
+        }
+    }, [flash]);
 
     return (
         <UserAuthenticatedLayout user={auth}>
@@ -126,7 +229,7 @@ export default function Checkout({ auth }) {
                 <h1 className="text-2xl font-bold text-center text-gray-800">
                     Checkout
                 </h1>
-                <form onSubmit={handleSubmit} className="mt-6">
+                <form onSubmit={handleSubmit} className="mt-6" method="POST">
                     <div className="bg-gray-100 p-4 rounded-lg">
                         <h2 className="text-2xl mb-2 flex items-center gap-2 font-semibold text-gray-700">
                             <FaLocationDot className="text-gray-600" /> Delivery
@@ -142,9 +245,9 @@ export default function Checkout({ auth }) {
                         Product Details
                     </h2>
                     <div className="space-y-4 mt-4">
-                        {/* list of checking out dummy */}
+                        {/* list of checking out products */}
 
-                        {dummy.map((item, index) => (
+                        {products.map((item, index) => (
                             <div className="border border-gray-300 p-4 rounded-lg flex justify-between items-center bg-gray-50">
                                 <div className="flex gap-3 items-center">
                                     <ModalImage
@@ -235,10 +338,10 @@ export default function Checkout({ auth }) {
 
                     <button
                         type="submit"
-                        className="w-full mt-6 p-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+                        className="w-full mt-6 p-3  bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
                     >
                         {processing ? (
-                            <div>
+                            <div className="flex items-center gap-2 w-full justify-center ">
                                 Placing Order <SpinnerLoading />
                             </div>
                         ) : (
