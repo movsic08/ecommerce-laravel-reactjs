@@ -44,6 +44,7 @@ class SellerController extends Controller
       'last_name' => ['required', 'string', 'max:255'],
       'proof_of_membership_path' => ['required'],
       'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+      'phone_no' => ['required', 'digits:11', 'unique:' . User::class],
       'password' => ['required', 'confirmed', Password::defaults()],
       'has_permit' => ['required'],
       'has_dti' => ['required'],
@@ -76,6 +77,7 @@ class SellerController extends Controller
         'last_name' => $request->last_name,
         'address' => $request->address,
         'email' => $request->email,
+        'phone_no' => $request->phone_no,
         'is_seller' => true,
         'password' => Hash::make($request->password),
       ]);

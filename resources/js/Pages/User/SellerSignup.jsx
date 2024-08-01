@@ -24,6 +24,7 @@ export default function SellerSignup() {
         first_name: "",
         last_name: "",
         email: "",
+        phone_no: "",
         address: "",
         password: "",
         password_confirmation: "",
@@ -104,26 +105,50 @@ export default function SellerSignup() {
                                 />
                             </div>
                         </div>
-                        <div className="mt-4 w-full lg:w-1/2">
-                            <InputLabel htmlFor="email" value="Email" />
-                            <TextInput
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={data.email}
-                                className="mt-1 block w-full"
-                                autoComplete="email"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("email", e.target.value)
-                                }
-                                required
-                            />
-
-                            <InputError
-                                message={errors.email}
-                                className="mt-1"
-                            />
+                        <div className="mt-4 flex w-full flex-col lg:flex-row gap-2">
+                            <div className="w-full">
+                                <InputLabel htmlFor="email" value="Email" />
+                                <TextInput
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={data.email}
+                                    className="mt-1 block w-full"
+                                    autoComplete="email"
+                                    isFocused={true}
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
+                                    required
+                                />
+                                <InputError
+                                    message={errors.email}
+                                    className="mt-1"
+                                />
+                            </div>
+                            <div className="w-full">
+                                <InputLabel
+                                    htmlFor="phone_no"
+                                    value="Phone Number"
+                                />
+                                <TextInput
+                                    type="text"
+                                    id="phone_no"
+                                    name="phone_no"
+                                    value={data.phone_no}
+                                    className="mt-1 block w-full"
+                                    autoComplete="phone_no"
+                                    isFocused={true}
+                                    onChange={(e) =>
+                                        setData("phone_no", e.target.value)
+                                    }
+                                    required
+                                />
+                                <InputError
+                                    message={errors.phone_no}
+                                    className="mt-1"
+                                />
+                            </div>
                         </div>
                         <div className="mt-4 flex w-full flex-col lg:flex-row gap-2">
                             <div className="w-full">
