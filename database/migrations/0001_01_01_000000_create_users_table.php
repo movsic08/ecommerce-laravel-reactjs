@@ -18,6 +18,7 @@ return new class extends Migration
       $table->string('first_name');
       $table->string('last_name');
       $table->string('address');
+      $table->string('phone_no', 11)->unique();
       $table->boolean('is_seller')->default(false);
       $table->boolean('is_admin')->default(false);
       $table->string('email')->unique();
