@@ -17,6 +17,8 @@ return new class extends Migration
       $table->foreignId('product_id')->constrained()->onDelete('cascade');
       $table->integer('quantity');
       $table->decimal('price', 8, 2);
+      $table->unsignedBigInteger('seller_id');
+      $table->foreign('seller_id')->reference('id')->on('sellers')->onDelete('cascade');
       $table->string('shop_name');
       $table->string('product_name');
       $table->string('category');
