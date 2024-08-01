@@ -48,6 +48,7 @@ return new class extends Migration
       'first_name' => 'Admin',
       'last_name' => 'Main',
       'email' => 'admin@gmail.com',
+      'phone_no' => '09010113456',
       'address' => 'Poblacion, Alaminos City, Pangasinan',
       'is_admin' => true,
       'password' => Hash::make('password')
