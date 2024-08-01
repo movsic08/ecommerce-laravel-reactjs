@@ -25,7 +25,7 @@ class ShopProductResource extends JsonResource
       'price' => $this->price,
       'description' => $this->description,
       'is_verified' => $this->is_verified,
-      'category_id' => $this->category_id,
+      'category' => $this->category,
       'type' => $this->type,
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
