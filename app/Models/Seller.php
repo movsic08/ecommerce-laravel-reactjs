@@ -11,7 +11,7 @@ class Seller extends Model
 
   protected $fillable = [
     'user_id',
-    'seller_id',
+    'user_id',
     'address',
     'shop_name',
     'years_in_selling',
@@ -28,11 +28,11 @@ class Seller extends Model
 
   public function user()
   {
-    return $this->belongsTo(User::class);
+    return $this->hasMany(User::class);
   }
 
   public function products()
   {
-    return $this->hasMany(Products::class);
+    return $this->hasMany(Products::class, 'seller_id');
   }
 }

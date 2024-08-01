@@ -13,8 +13,8 @@ return new class extends Migration
   {
     Schema::create('sellers', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('seller_id');
-      $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
+      $table->unsignedBigInteger('user_id');
+      $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       $table->string('shop_address')->nullable();
       $table->string('shop_name')->nullable();
       $table->string('years_in_selling');
