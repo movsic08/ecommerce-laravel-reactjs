@@ -50,11 +50,13 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                         <div className="shrink-0 flex items-center">
                             <Link href="/" className=" flex items-center gap-1">
                                 <img className=" h-12" src={Logo} alt="Logo" />
-                                <h1>MADEBYHANDS</h1>
+                                <h1 className="font-karla font-medium text-mainText">
+                                    MadeByHands
+                                </h1>
                             </Link>
                         </div>
 
-                        <div className="hidden uppercase space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <div className="hidden font-manjari text-mainText uppercase space-x-8 sm:-my-px sm:ms-10 sm:flex">
                             <NavLink
                                 href={route("dashboard")}
                                 active={route().current("dashboard")}
@@ -228,7 +230,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div className="max-w-7xl mx-auto font-karla py-6 px-4 sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
