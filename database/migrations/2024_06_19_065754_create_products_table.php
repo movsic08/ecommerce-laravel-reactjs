@@ -21,7 +21,7 @@ return new class extends Migration
       $table->string('description');
       $table->boolean('is_verified')->default(0);
       $table->unsignedBigInteger('seller_id');
-      $table->foreign('seller_id')->references('seller_id')->on('sellers')->onDelete('cascade');
+      $table->foreign('seller_id')->references('id')->on('sellers')->onDelete('cascade');
       $table->string('category');
       $table->timestamps();
     });
