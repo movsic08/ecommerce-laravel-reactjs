@@ -28,8 +28,9 @@ class SellerController extends Controller
    */
   public function products()
   {
-    $products = Products::with('images')->where('seller_id', auth()->id())->get();
-    // dd(new SellerProductList($products));
+    $seller = Seller::where('user_id', auth()->id())->first();
+    dd($seller);
+    $products = Products::with('images')->where('seller_id', $seller->id)->get();
 
     return Inertia::render('Seller/Products', [
 
@@ -83,8 +84,7 @@ class SellerController extends Controller
       ]);
 
       $sellerDetails = Seller::create([
-        'user_id',
-        'seller_id' => $user->id,
+        'user_id' => $user->id,
         'seller_address' => $request->address,
         'years_in_selling' => $request->years_in_selling,
         'has_permit' => $request->has_permit == 'on' ? true : false,
@@ -131,11 +131,17 @@ class SellerController extends Controller
 
 
     try {
-
+      $seller = Seller::where('user_id', auth()->id())->first();
+      if (!$seller) {
+        return redirect()->route('seller.showAddProduct')->with([
+          'message' => 'Failed referencing Seller data',
+          'status' => 'error'
+        ]);
+      }
       DB::beginTransaction();
 
       $product = Products::create([
-        'seller_id' => auth()->id(),
+        'seller_id' => $seller->id,
         'product_name' => $request->product_name,
         'quantity' => $request->quantity,
         'description' => $request->description,
