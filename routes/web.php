@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
   Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
   Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+  Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
 });
 
 //unverified seller account

@@ -24,7 +24,7 @@ export default function Cart({ auth }) {
             product_id: item.product.id,
             item_quantity: item.quantity,
         }));
-        console.log(checkoutData);
+
         router.post(route("checkout.show", { items: checkoutData }));
         // router.post(router("checkout.show"), { items: checkoutData });
     };

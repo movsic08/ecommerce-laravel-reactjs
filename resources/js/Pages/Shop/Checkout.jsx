@@ -3,19 +3,101 @@ import { Head, useForm, usePage } from "@inertiajs/react";
 import { FaLocationDot } from "react-icons/fa6";
 import ModalImage from "react-modal-image";
 import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
+import SpinnerLoading from "@/Components/SpinnerLoading";
+import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 export default function Checkout({ auth }) {
-    const { quantity, products } = usePage().props;
+    const { products } = usePage().props;
+    const name = auth.user.first_name + " " + auth.user.last_name;
+    const phone_no = auth.user.phone_no;
+    const address = auth.user.address;
     console.log(products);
+    console.log(auth);
+    const dummy = [
+        {
+            product: {
+                id: 4,
+                product_name: "Lamps",
+                rating: 0,
+                sold: 0,
+                quantity: 123,
+                price: 100,
+                description: "safdsgdfhfncgnc",
+                is_verified: 1,
+                category: "Accessories",
+                type: null,
+                created_at: "2024-07-31T08:45:33.000000Z",
+                updated_at: "2024-07-31T08:51:39.000000Z",
+            },
+            images: {
+                data: [
+                    {
+                        id: 2,
+                        product_id: 4,
+                        image_path:
+                            "/storage/Photos/Product_Photos/Lamps_851.png",
+                    },
+                ],
+            },
+            buying_quantity: "3",
+        },
+        {
+            product: {
+                id: 3,
+                product_name: "Shell Cahndelier",
+                rating: 0,
+                sold: 0,
+                quantity: 12,
+                price: 450,
+                description: "this is created by the alaminians by hands",
+                is_verified: 1,
+                category: "Shells",
+                type: null,
+                created_at: "2024-07-31T08:38:52.000000Z",
+                updated_at: "2024-07-31T08:51:37.000000Z",
+            },
+            images: {
+                data: [
+                    {
+                        id: 1,
+                        product_id: 3,
+                        image_path:
+                            "/storage/Photos/Product_Photos/Shell Cahndelier_304.png",
+                    },
+                ],
+            },
+            buying_quantity: "4",
+        },
+    ];
+    const totalItems = dummy.reduce(
+        (acc, item) => acc + parseInt(item.buying_quantity),
+        0
+    );
 
-    const { data, setData, processing, errors } = useForm({
+    const totalPrice = dummy.reduce(
+        (acc, item) => acc + item.product.price * item.buying_quantity,
+        0
+    );
+    const { data, setData, errors, post, processing } = useForm({
+        name: name,
+        address: address,
+        phone_no: phone_no,
+        total: totalPrice,
         payment_method: "cod",
+        items: dummy.map((item) => ({
+            product_id: item.id,
+            quantity: item.buying_quantity,
+            price: item.product.price,
+            shop_name: "for retrieval",
+            product_name: item.product.product_name,
+            category: item.product.category,
+        })),
     });
 
-    // const total = items.reduce(
-    //     (acc, item) => acc + item.price * item.quantity,
-    //     0
-    // );
+    // const [processing, setProcessing] = useState(false);
+
     const handleChange = (e) => {
         setData({
             ...data,
@@ -25,71 +107,21 @@ export default function Checkout({ auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         console.log("Form submitted with data:", data);
+        post(route("checkout.store", data), {
+            onSuccess: () => {
+                toast.success("chekout complete");
+            },
+            onError: () => [toast.error("ERROR in submitting")],
+        });
     };
-
-    const dummy = [
-        {
-            product: {
-                id: 10,
-                product_name: "Another test with 1 ome pic",
-                rating: 0,
-                sold: 0,
-                quantity: 675,
-                price: 477,
-                description: "this that it has 1 pic only",
-                is_verified: 1,
-                category_id: 15,
-                type: "15",
-                created_at: "2024-07-25T15:15:25.000000Z",
-                updated_at: "2024-07-28T05:13:01.000000Z",
-            },
-            images: {
-                data: [
-                    {
-                        id: 7,
-                        product_id: 10,
-                        image_path:
-                            "/storage/Photos/Product_Photos/Another test with 1 ome pic_654.jpg",
-                    },
-                ],
-            },
-            buying_quantity: "4",
-        },
-        {
-            product: {
-                id: 19,
-                product_name: "nemo aut sunt",
-                rating: 3.7,
-                sold: 7,
-                quantity: 76,
-                price: 787,
-                description: "Voluptatem qui praesentium itaque magnam aut.",
-                is_verified: 0,
-                category_id: 1,
-                type: "digital",
-                created_at: "2024-07-28T09:39:27.000000Z",
-                updated_at: "2024-07-28T09:39:27.000000Z",
-            },
-            images: {
-                data: [],
-            },
-            buying_quantity: "3",
-        },
-    ];
-    const totalItems = products.reduce(
-        (acc, item) => acc + parseInt(item.buying_quantity),
-        0
-    );
-
-    const totalPrice = products.reduce(
-        (acc, item) => acc + item.product.price * item.buying_quantity,
-        0
-    );
     console.log(dummy);
+
     return (
         <UserAuthenticatedLayout user={auth}>
             <Head title="Checkout" />
+            <ToastContainer />
             <div className="max-w-2xl mx-auto p-6 my-6 bg-white shadow-lg md:rounded-lg border border-gray-200">
                 <h1 className="text-2xl font-bold text-center text-gray-800">
                     Checkout
@@ -101,25 +133,28 @@ export default function Checkout({ auth }) {
                             Address
                         </h2>
                         <div className="text-gray-600">
-                            Elmer Tirao | 09668093199
+                            {name} | {phone_no}
                         </div>
-                        <div className="text-gray-600">
-                            Alaminos City, Pangasinan
-                        </div>
+                        <div className="text-gray-600">{address}</div>
                     </div>
 
                     <h2 className="text-2xl font-semibold mt-6 text-gray-800">
                         Product Details
                     </h2>
                     <div className="space-y-4 mt-4">
-                        {/* list of checking out products */}
+                        {/* list of checking out dummy */}
 
-                        {products.map((item, index) => (
+                        {dummy.map((item, index) => (
                             <div className="border border-gray-300 p-4 rounded-lg flex justify-between items-center bg-gray-50">
                                 <div className="flex gap-3 items-center">
                                     <ModalImage
                                         className="w-24 h-24 object-cover"
                                         small={
+                                            item.images.data.length == 0
+                                                ? DefaultProductIcon
+                                                : item.images.data[0].image_path
+                                        }
+                                        large={
                                             item.images.data.length == 0
                                                 ? DefaultProductIcon
                                                 : item.images.data[0].image_path
@@ -202,7 +237,13 @@ export default function Checkout({ auth }) {
                         type="submit"
                         className="w-full mt-6 p-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
                     >
-                        Place Order
+                        {processing ? (
+                            <div>
+                                Placing Order <SpinnerLoading />
+                            </div>
+                        ) : (
+                            "Place Order"
+                        )}
                     </button>
                 </form>
             </div>
