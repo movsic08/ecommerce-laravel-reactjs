@@ -99,7 +99,7 @@ export default function Register() {
 
                         <TextInput
                             id="phone_no"
-                            type="text"
+                            type="number"
                             name="phone_no"
                             value={data.phone_no}
                             className="mt-1 block w-full"
