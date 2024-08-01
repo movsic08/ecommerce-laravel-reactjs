@@ -16,6 +16,7 @@ return new class extends Migration
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
       $table->uuid('order_id')->unique();
       $table->string('name');
+      $table->string('phone_no');
       $table->string('address');
       $table->decimal('total');
       $table->string('payment_option');
