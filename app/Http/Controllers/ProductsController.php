@@ -37,12 +37,12 @@ class ProductsController extends Controller
         break;
     }
 
-    $products = $query->paginate(15);
+    $products = $query->with('images')->paginate(15);
     $categories = Category::all();
 
     // return  $products;
     return Inertia::render('Shop/Shop', [
-      'products' => $products,
+      'products' => ViewProductResource::collection($products,),
       'queryParams' => request()->query() ?: null,
       'categories' => $categories
     ]);

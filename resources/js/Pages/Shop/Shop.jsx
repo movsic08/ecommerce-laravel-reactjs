@@ -14,7 +14,6 @@ import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg
 export default function Shop({ auth, queryParams = null }) {
     const { products = [], categories } = usePage().props;
     queryParams = queryParams || {};
-    console.log(products.data);
 
     const searchFieldProduct = (name, value) => {
         if (value) {
