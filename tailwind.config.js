@@ -14,6 +14,8 @@ export default {
         extend: {
             fontFamily: {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                manjari: ["Manjari", "sans-serif"],
+                karla: ["Karla", "sans-serif"],
             },
             backgroundColor: {
                 footer: "#222222",
