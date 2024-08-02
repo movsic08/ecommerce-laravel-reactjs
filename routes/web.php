@@ -9,13 +9,6 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
 use App\Http\Middleware\NotVerfiedSeller;
-use App\Http\Middleware\VerifiedSeller;
-use App\Mail\SellerVerified;
-use App\Models\CartItem;
-use App\Models\Notification;
-use Illuminate\Foundation\Application;
-use Illuminate\Notifications\Notification as NotificationsNotification;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -41,6 +34,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
   })->name('user-messages');
+  Route::get('/shop/id', [SellerController::class, 'shop'])->name('view.seller.shop');
   Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
   Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
   Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('store-to-cart');

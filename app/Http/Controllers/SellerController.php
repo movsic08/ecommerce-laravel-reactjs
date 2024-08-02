@@ -36,6 +36,11 @@ class SellerController extends Controller
     ]);
   }
 
+  public function shop()
+  {
+    return Inertia::render('Shop/ShopProfile');
+  }
+
   public function createSellerAccoount(Request $request)
   {
     $request->validate([
