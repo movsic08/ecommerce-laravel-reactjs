@@ -157,9 +157,15 @@ export default function Shop({ auth, queryParams = null }) {
                                                     <StarRating
                                                         rating={product.rating}
                                                     />
-                                                    <p className="font-semibold">
-                                                        Php {product.price}
-                                                    </p>
+                                                    <div className=" flex items-center justify-between">
+                                                        <p className="font-semibold">
+                                                            Php {product.price}
+                                                        </p>
+                                                        <small>
+                                                            Stock:{" "}
+                                                            {product.quantity}
+                                                        </small>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </Link>
