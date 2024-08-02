@@ -20,8 +20,9 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Home" />
+            {/* firrst page full s */}
             <div className="-mt-[5rem] h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">
-                <div className=" absolute left-[10rem]  flex items-center h-full">
+                <div className=" absolute left-[10rem]  flex items-center ">
                     <div className="flex-col text-8xl flex text-[#403E3E]">
                         <h1>Shell </h1>
                         <h1> Chandeliers</h1>
