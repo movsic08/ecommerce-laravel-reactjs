@@ -16,7 +16,7 @@ const ToReceive = lazy(() => import("./Partials/ToReceive"));
 const ToRate = lazy(() => import("./Partials/ToRate"));
 
 export default function MyPurchases({ auth }) {
-    const { flash } = usePage().props;
+    const { flash, purchases } = usePage().props;
     const [activeTab, setActiveTab] = useState("toPay");
 
     const tabs = [
@@ -63,7 +63,9 @@ export default function MyPurchases({ auth }) {
 
                     <div className="space-y-4">
                         <Suspense fallback={<div>Loading...</div>}>
-                            {activeTab === "toPay" && <ToPay />}
+                            {activeTab === "toPay" && (
+                                <ToPay toPay={purchases} />
+                            )}
                             {activeTab === "toShip" && <ToShip />}
                             {activeTab === "toReceive" && <ToReceive />}
                             {activeTab === "toRate" && <ToRate />}
