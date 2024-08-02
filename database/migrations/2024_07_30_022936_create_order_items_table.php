@@ -21,6 +21,8 @@ return new class extends Migration
       $table->foreign('seller_id')->reference('id')->on('sellers')->onDelete('cascade');
       $table->string('shop_name');
       $table->string('product_name');
+      $table->string('status');
+      $table->date('received_date')->nullable();
       $table->string('category');
       $table->timestamps();
     });
