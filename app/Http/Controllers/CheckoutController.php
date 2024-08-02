@@ -88,6 +88,7 @@ class CheckoutController extends Controller
           'price' => $item['price'],
           'seller_id' => $item['seller_id'],
           'shop_name' => $item['shop_name'],
+          'status' => 'topay',
           'product_name' => $item['product_name'],
           'category' => $item['category'],
         ]);
