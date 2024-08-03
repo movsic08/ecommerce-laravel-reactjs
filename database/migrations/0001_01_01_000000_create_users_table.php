@@ -44,15 +44,57 @@ return new class extends Migration
       $table->integer('last_activity')->index();
     });
 
-    User::factory()->create([
-      'first_name' => 'Admin',
-      'last_name' => 'Main',
-      'email' => 'admin@gmail.com',
-      'phone_no' => '09010113456',
-      'address' => 'Poblacion, Alaminos City, Pangasinan',
-      'is_admin' => true,
-      'password' => Hash::make('password')
-    ]);
+
+
+    User::factory()->createMany(
+      [
+        [
+          'first_name' => 'Admin',
+          'last_name' => 'Main',
+          'email' => 'admin@gmail.com',
+          'phone_no' => '09010113456',
+          'address' => 'Poblacion, Alaminos City, Pangasinan',
+          'is_admin' => true,
+          'password' => Hash::make('password')
+        ],
+        [
+          'first_name' => 'Rhenz',
+          'last_name' => 'Ginez',
+          'email' => 'rhenz30@gmail.com',
+          'phone_no' => '09373929921',
+          'address' => 'Lucap, Alaminos City, Pangasinan',
+          'is_seller' => true,
+          'password' => Hash::make('password')
+        ],
+        [
+          'first_name' => 'Richelle',
+          'last_name' => 'Villaflor',
+          'email' => 'richellev9708@gmail.com',
+          'phone_no' => '09946864609',
+          'address' => 'Lucap, Alaminos City, Pangasinan',
+          'is_seller' => true,
+          'password' => Hash::make('password')
+        ],
+        [
+          'first_name' => 'Merj',
+          'last_name' => 'Balicao',
+          'email' => 'Mjbalics@gmail.com',
+          'phone_no' => '09156972003',
+          'address' => 'Lucap, Alaminos City, Pangasinan',
+          'is_seller' => true,
+          'password' => Hash::make('password')
+        ],
+        [
+          'first_name' => 'John Carlos',
+          'last_name' => 'Libo-on',
+          'email' => 'liboonjohncarlos15@gmail.com',
+          'phone_no' => '09776661534',
+          'address' => 'Lucap, Alaminos City, Pangasinan',
+          'is_seller' => true,
+          'password' => Hash::make('password')
+        ]
+      ]
+    );
   }
 
   /**
