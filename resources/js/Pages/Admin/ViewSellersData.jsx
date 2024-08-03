@@ -289,7 +289,7 @@ export default function ViewSellersData({ auth }) {
                                         type="text"
                                         name="seller_address"
                                         id="sellerAddress"
-                                        value={seller.seller.address}
+                                        value={data.seller_address}
                                         onChange={handleChange}
                                         disabled={!isEditing}
                                         className={`mt-1 block w-full rounded-md ${
