@@ -283,11 +283,12 @@ class AdminController extends Controller
 
   public function viewSellerData(Request $request)
   {
+
     $seller = User::with('seller')
       ->where('id', $request->id)
       ->where('is_seller', true)
       ->firstOrFail();
-    // dd($seller->seller->proof_of_membership_path);
+
     // Transform the fetched data using SellerResource
     $sellerResource = new SellerDataResource($seller);
 
