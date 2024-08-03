@@ -12,7 +12,7 @@ class Seller extends Model
   protected $fillable = [
     'user_id',
     'user_id',
-    'address',
+    'shop_address',
     'shop_name',
     'years_in_selling',
     'has_permit',
