@@ -78,6 +78,7 @@ class UserController extends Controller
         $fileName = $request->first_name . $request->last_name . '_' . $randomNumber . '.' . $fileExtension;
         $directory = 'Photos/Profile_Pictures/Customers';
         $path = $request->new_profile_picture->storeAs($directory, $fileName, 'public');
+        $finalPath = 'storage/' . $path;
       }
 
       $user->update([
@@ -86,7 +87,7 @@ class UserController extends Controller
         'email' => $request->email,
         'phone_no' => $request->phone_no,
         'address' => $request->address,
-        'profile_picture_path' => $path
+        'profile_picture_path' => $finalPath
       ]);
 
       DB::commit();

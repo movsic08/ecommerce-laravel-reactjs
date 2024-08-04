@@ -29,6 +29,8 @@ export default function UpdateUserProfileForm() {
         phone_no: user.phone_no,
     });
 
+    console.log("links is: ", data.profile_picture);
+
     const updateProfile = (e) => {
         e.preventDefault();
         // console.log("submitted data", data);
@@ -73,7 +75,7 @@ export default function UpdateUserProfileForm() {
                             <img
                                 src={
                                     data.profile_picture
-                                        ? data.profile_picture
+                                        ? `/storage${data.profile_picture}`
                                         : DefaultUserIcon
                                 }
                                 alt="Profile Preview"
