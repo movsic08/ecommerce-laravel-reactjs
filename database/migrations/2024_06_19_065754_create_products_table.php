@@ -70,7 +70,7 @@ return new class extends Migration
         'quantity' => '200',
         'seller_id' => '4',
         'description' => ' Toys & Furniture made in bamboo (kawayan)',
-        'category' => 'E - Kawayan',
+        'category' => 'E-Kawayan',
         'sold' => '300'
       ],
     ];
