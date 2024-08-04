@@ -156,7 +156,10 @@ export default function Shop({ auth, queryParams = null }) {
                                                     />
                                                     <div className="flex items-center justify-between">
                                                         <p className="font-semibold">
-                                                            Php {product.price}
+                                                            Php{" "}
+                                                            {new Intl.NumberFormat().format(
+                                                                product.price
+                                                            )}
                                                         </p>
                                                         <small>
                                                             Stock:{" "}
