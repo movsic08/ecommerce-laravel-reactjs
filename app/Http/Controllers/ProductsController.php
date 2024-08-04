@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
+  public function customerHome()
+  {
+    return Inertia::render('Dashboard',);
+  }
+
+
   public function allProducts()
   {
     $query = Products::query();

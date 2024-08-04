@@ -27,9 +27,7 @@ Route::get('/', function () {
 //Customer pages 
 Route::middleware('auth')->group(function () {
 
-  Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-  })->name('dashboard');
+  Route::get('/home', [ProductsController::class, 'customerHome'])->name('dashboard');
   Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
