@@ -54,12 +54,9 @@ export default function Shop({ auth, queryParams = null }) {
                                             {categories.map((category) => (
                                                 <li
                                                     key={category.id}
-                                                    className="mb-1 whitespace-nowrap p-2 lg:bg-gray-50 bg-gray-50 rounded-lg"
+                                                    className="mb-1 whitespace-nowrap hover:bg-themeColor duration-200 ease-in-out hover:text-slate-100 cursor-pointer p-2 lg:bg-gray-50 bg-gray-50 rounded-lg"
                                                 >
-                                                    <a
-                                                        href="#"
-                                                        className="hover:underline"
-                                                    >
+                                                    <a href="#">
                                                         {category.category_name}
                                                     </a>
                                                 </li>
@@ -124,7 +121,7 @@ export default function Shop({ auth, queryParams = null }) {
                                         </SelectInput>
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3 md:mt-6">
                                     {products.data.map((product) => (
                                         <Link
                                             key={product.id}
@@ -132,9 +129,9 @@ export default function Shop({ auth, queryParams = null }) {
                                                 "view-product",
                                                 product.id
                                             )}
-                                            className="bg-gray-100 duration-700 hover:bg-gray-200 ease-in-out hover:-top-2 drop-shadow-lg rounded relative overflow-hidden"
+                                            className="bg-gray-100 duration-700 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg rounded relative overflow-hidden"
                                         >
-                                            <div className="w-full h-48 relative">
+                                            <div className="w-full pt-[100%] relative">
                                                 <img
                                                     src={
                                                         product.images == null
@@ -146,18 +143,18 @@ export default function Shop({ auth, queryParams = null }) {
                                                         product.product_name +
                                                         " Image"
                                                     }
-                                                    className="w-full h-full object-cover absolute"
+                                                    className="absolute top-0 left-0 w-full h-full object-cover"
                                                 />
                                             </div>
-                                            <div className="p-4 text-center h-fit flex flex-col">
-                                                <p className="line-clamp-2 h-[5vw] grow">
+                                            <div className="p-4 text-center flex flex-col">
+                                                <p className="line-clamp-2 overflow-hidden">
                                                     {product.product_name}
                                                 </p>
-                                                <div className="flex flex-none flex-col">
+                                                <div className="flex flex-col">
                                                     <StarRating
                                                         rating={product.rating}
                                                     />
-                                                    <div className=" flex items-center justify-between">
+                                                    <div className="flex items-center justify-between">
                                                         <p className="font-semibold">
                                                             Php {product.price}
                                                         </p>
@@ -171,6 +168,7 @@ export default function Shop({ auth, queryParams = null }) {
                                         </Link>
                                     ))}
                                 </div>
+
                                 <Pagination
                                     links={products.links}
                                     className="pb-4"
