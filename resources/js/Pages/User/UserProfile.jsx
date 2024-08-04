@@ -18,11 +18,6 @@ const UserProfile = ({ auth }) => {
             <Head title="Update Profile" />
             <ToastContainer />
             <div className="container mx-auto p-4 flex gap-4 md:gap-5 lg:gap-6 flex-col max-w-7xl">
-                <div className="flex flex-col items-center mb-4">
-                    <FaUserCircle className="text-6xl text-gray-400 mb-2" />
-                    <h1 className="text-2xl font-semibold">Update Profile</h1>
-                </div>
-
                 {/* bio data */}
                 <UpdateUserProfileForm />
 

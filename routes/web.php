@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/my-profile', [UserController::class, 'showProfile'])->name('user.profile');
   Route::delete('/my-profile', [UserController::class, 'destroy'])->name('user.destroy');
   Route::put('/my-profile', [UserController::class, 'updatePassword'])->name('user.update.password');
+  Route::post('/my-profile', [UserController::class, 'updateUserInformation'])->name('user.update.info');
   Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
