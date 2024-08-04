@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/home', [ProductsController::class, 'customerHome'])->name('dashboard');
   Route::get('/my-profile', [UserController::class, 'showProfile'])->name('user.profile');
   Route::delete('/my-profile', [UserController::class, 'destroy'])->name('user.destroy');
+  Route::put('/my-profile', [UserController::class, 'updatePassword'])->name('user.update.password');
   Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
@@ -109,7 +110,7 @@ Route::get('/contact', function () {
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+  // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 
