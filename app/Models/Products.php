@@ -26,6 +26,10 @@ class Products extends Model
     return $this->belongsTo(Seller::class, 'seller_id');
   }
 
+  public function sellerData()
+  {
+  }
+
 
   public function images()
   {

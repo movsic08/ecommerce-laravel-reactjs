@@ -27,6 +27,7 @@ class SellerProductList extends JsonResource
       'is_verified' => $this->is_verified,
       'category' => $this->category,
       'images' =>  SellerProductImageResource::collection($this->images),
+      'seller' => new SellerFullDataResources($this->seller),
       'created_at' => $this->created_at,
       'updated_at' => $this->updated_at,
     ];

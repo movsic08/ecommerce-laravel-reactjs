@@ -70,7 +70,7 @@ export default function PermissionPanel({ auth }) {
             },
         });
     };
-    console.log("default " + isProcessing);
+
     return (
         <>
             <AdminAuthenticatedLayout user={auth.user}>
@@ -104,7 +104,7 @@ export default function PermissionPanel({ auth }) {
                                     {product.product_name}
                                 </h2>
                                 <p className="text-gray-500">
-                                    Seller: {product.sellerName}
+                                    Seller: {product.seller.seller_name}
                                 </p>
                                 <p className="text-gray-500">
                                     Date Created: {product.created_at}

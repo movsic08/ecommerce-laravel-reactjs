@@ -186,7 +186,8 @@ class AdminController extends Controller
   public function viewAllProducts()
   {
     $query = Products::query();
-    $products = $query->with('images')->paginate(3);
+    $products = $query->with('images', 'seller.user')->paginate(3);
+
 
     return Inertia::render('Admin/PermissionPanel', [
       'products' =>  SellerProductList::collection($products)
