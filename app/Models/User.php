@@ -23,6 +23,7 @@ class User extends Authenticatable
     'email',
     'phone_no',
     'password',
+    'profile_picture_path',
     'is_seller',
     'is_admin'
   ];
