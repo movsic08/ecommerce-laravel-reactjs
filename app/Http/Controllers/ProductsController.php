@@ -29,6 +29,9 @@ class ProductsController extends Controller
     if (request('name')) {
       $query->where('product_name', 'like', '%' . request('name') . '%');
     }
+    if (request('category') !== 'all') {
+      $query->where('category', 'like', '%' . request('category'));
+    }
     switch (request('filterProducts')) {
       case  'filterProducts':
         $query->orderBy('created_at', 'asc');
@@ -40,6 +43,14 @@ class ProductsController extends Controller
 
       case 'highest-rating':
         $query->orderBy('rating', 'desc');
+        break;
+
+      case 'a-z':
+        $query->orderBy('product_name', 'asc');
+        break;
+
+      case 'z-a':
+        $query->orderBy('product_name', 'desc');
         break;
     }
 
