@@ -130,7 +130,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                                     <Dropdown.Content className="z-40">
                                         <Dropdown.Link
                                             className="z-40"
-                                            href={route("profile.edit")}
+                                            href={route("user.profile")}
                                         >
                                             Profile
                                         </Dropdown.Link>
@@ -216,7 +216,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
+                            <ResponsiveNavLink href={route("user.profile")}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
