@@ -36,7 +36,7 @@ return new class extends Migration
         'quantity' => '50',
         'seller_id' => '1',
         'description' => 'Chandelier made of Small shells',
-        'category' => 'Chandelier',
+        'category' => 'Chandeliers',
         'sold' => '10'
       ],
       [
@@ -48,7 +48,7 @@ return new class extends Migration
         'seller_id' => '2',
         'description' => ' - Assorted Clock made of shells
                            - Fout Layers',
-        'category' => 'Shell Clock',
+        'category' => 'Clocks',
         'sold' => '30'
       ],
       [
@@ -59,7 +59,7 @@ return new class extends Migration
         'quantity' => '200',
         'seller_id' => '3',
         'description' => ' Assorted specialized Printed T-shirts of Hundred Islands.',
-        'category' => 'Shell Clock',
+        'category' => 'T-shirts',
         'sold' => '300'
       ],
       [
