@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SellerController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\NotVerfiedSeller;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,8 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
 
   Route::get('/home', [ProductsController::class, 'customerHome'])->name('dashboard');
+  Route::get('/my-profile', [UserController::class, 'showProfile'])->name('user.profile');
+  Route::delete('/my-profile', [UserController::class, 'destroy'])->name('user.destroy');
   Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
