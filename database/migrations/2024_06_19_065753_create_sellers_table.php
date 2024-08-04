@@ -49,20 +49,6 @@ return new class extends Migration
         'is_verified' => '1'
       ],
       [
-        'user_id' => 2,
-        'shop_address' => 'Lucap Wharf, Alaminos City, Pangasinan',
-        'shop_name' => 'RV Souvenirs',
-        'years_in_selling' => 'below 11 months',
-        'has_permit' => '1',
-        'has_DTI' => '1',
-        'has_mayors_business_permit' => '1',
-        'has_paid_organizational_fee' => '1',
-        'has_barangay_clearance' => '1',
-        'has_bir' => '1',
-        'proof_of_membership_path' => '',
-        'is_verified' => '1'
-      ],
-      [
         'user_id' => 3,
         'shop_address' => 'Lucap Wharf, Alaminos City, Pangasinan',
         'shop_name' => 'Chell & Shell Craft',
