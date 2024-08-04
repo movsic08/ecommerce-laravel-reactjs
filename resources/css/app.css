@@ -1,17 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import '@fontsource/manjari/300.css';
-/* Manjari Light */
-@import '@fontsource/manjari/400.css';
-/* Manjari Regular */
-@import '@fontsource/manjari/700.css';
-/* Manjari Bold */
-
-@import '@fontsource/karla/400.css';
-/* Karla Regular */
-@import '@fontsource/karla/700.css';
-/* Karla Bold */
-@import '@fontsource/karla/800.css';
-/* Karla Extra Bold */
