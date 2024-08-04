@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
@@ -68,6 +69,10 @@ class UserController extends Controller
 
       $user = User::where('id', auth()->id())->first();
       if ($request->hasFile('new_profile_picture')) {
+
+        if ($user->profile_picture_path) {
+          Storage::disk('public')->delete($user->profile_picture_path);
+        }
         $randomNumber  = rand(100, 999);
         $fileExtension = $request->new_profile_picture->getClientOriginalExtension();
         $fileName = $request->first_name . $request->last_name . '_' . $randomNumber . '.' . $fileExtension;
