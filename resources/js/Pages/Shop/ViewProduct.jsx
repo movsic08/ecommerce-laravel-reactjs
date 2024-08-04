@@ -91,7 +91,10 @@ export default function ViewProduct({ auth }) {
                                         {product.product_name}
                                     </h1>
                                     <p className="mt-2 text-2xl text-green-600">
-                                        Php {product.price}
+                                        Php{" "}
+                                        {new Intl.NumberFormat().format(
+                                            product.price
+                                        )}
                                     </p>
                                     <StarRating rating={product.rating} />
                                     <p className="text-lg mt-2 text-gray-700">
