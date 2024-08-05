@@ -20,83 +20,77 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Home" />
-            <div className="relative h-screen w-full overflow-hidden flex items-center justify-center">
-                <div className="absolute left-10 md:left-16 lg:left-20 flex items-center z-10">
-                    <div className="flex-col text-5xl md:text-6xl lg:text-8xl flex text-[#403E3E]">
-                        <h1>Shell</h1>
-                        <h1>Chandeliers</h1>
+            {/* first page full*/}
+            <div className="lg:-mt-[5rem] h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">
+                <div className=" absolute left-[2rem] md:left-[5rem] lg:left-[10rem]  flex items-center ">
+                    <div className="flex-col text-4xl md:text-6xl lg:text-8xl flex text-[#403E3E]">
+                        <h1>Shell </h1>
+                        <h1> Chandeliers</h1>
                         <Link
                             href={route("shop")}
-                            className="text-lg md:text-2xl lg:text-3xl mt-4 hover:bg-slate-800 duration-300 rounded-full px-3 py-2 bg-[#403E3E] text-white font-bold w-fit"
+                            className="text-3xl mt-4 hover:bg-slate-800 duration-300 rounded-full px-3 capitalize font-bold py-2 bg-[#403E3E] w-fit text-white"
                         >
                             Shop now
                         </Link>
                     </div>
                 </div>
                 <img
-                    className="w-full h-full object-cover"
+                    className=" w-full h-full object-cover"
                     src={frame_1}
-                    alt="Frame 1"
+                    alt=""
                 />
             </div>
-            <div className="bg-[#FEF3F0] flex flex-col items-center justify-center min-h-screen p-2 md:p-6">
-                <h1 className="font-bold text-3xl md:text-4xl py-2 lg:py-8">
+            {/* 2nd page */}
+            <div className="bg-white w-screen h-full p-6 flex flex-col items-center ">
+                <h1 className=" font-bold text-4xl py-8">
                     Artist of the Month
                 </h1>
-                <div className="flex flex-col md:flex-row items-center md:items-start justify-center">
+                <div className="flex-col md:flex-row flex items-start justify-center ">
                     <img
                         src="https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg"
-                        className="rounded-full object-cover h-32 w-32 md:h-52 md:w-52"
-                        alt="Artist"
+                        className=" rounded-full object-cover h-52 w-52"
+                        alt=""
                     />
-                    <div className="mt-4 md:mt-0 md:ml-8">
-                        <h2 className="font-semibold text-center text-xl md:text-3xl">
-                            Seller Name
-                        </h2>
-                        <div className="mt-4 text-center">Store name</div>
-                        <table className="min-w-full mt-4 md:mt-0">
-                            <tbody>
-                                <tr className="text-left">
-                                    <td className="font-bold pr-6 pt-2">
-                                        Name
-                                    </td>
-                                    <td className="pt-2 font-italic">
-                                        John Doe
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="font-bold pr-6 pt-2">
-                                        Location
-                                    </td>
-                                    <td className="pt-2 font-italic">
-                                        Lucap Wharf
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td className="font-bold pr-6 pt-2">
-                                        Join
-                                    </td>
-                                    <td className="pt-2 font-italic">
-                                        March 24, 2002
-                                    </td>
-                                </tr>
-                            </tbody>
+                    <div className=" ml-8">
+                        <h2 className=" font-semibold text-3xl">Seller Name</h2>
+                        <div className="mt-4">Store name</div>
+
+                        <table className="min-w-full overflow-hidden">
+                            <tr className="text-left">
+                                <td className=" font-bold pr-6 pt-2">Name</td>
+                                <td className="pt-2 font-italic">John Doe</td>
+                            </tr>
+                            <tr>
+                                <td className=" font-bold pr-6 pt-2">
+                                    Location
+                                </td>
+                                <td className="pt-2 font-italic">
+                                    Lucap Wharf
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className=" font-bold pr-6 pt-2">Join</td>
+                                <td className="pt-2 font-italic">
+                                    March 24, 2002
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
-                <div className="grid mt-10 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center">
+                <div className="grid mt-10 grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center">
+                    {" "}
                     <Link
                         href=""
-                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden w-full"
+                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden"
                     >
                         <img
                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                            alt="Product"
+                            alt=""
                             className="mx-auto h-48 w-full object-cover"
                         />
-                        <div className="p-4 text-center flex flex-col">
-                            <p className="line-clamp-2 h-10 grow">name</p>
-                            <div className="flex flex-col mt-2">
+                        <div className="p-4 text-center h-fit flex flex-col">
+                            <p className="line-clamp-2 h-[5vw] grow ">name</p>
+                            <div className="flex  flex-none flex-col ">
                                 <StarRating rating={4} />
                                 <p className="font-semibold">Php 200</p>
                             </div>
@@ -104,16 +98,16 @@ export default function Dashboard({ auth }) {
                     </Link>
                     <Link
                         href=""
-                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden w-full"
+                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden"
                     >
                         <img
                             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                            alt="Product"
+                            alt=""
                             className="mx-auto h-48 w-full object-cover"
                         />
-                        <div className="p-4 text-center flex flex-col">
-                            <p className="line-clamp-2 h-10 grow">name</p>
-                            <div className="flex flex-col mt-2">
+                        <div className="p-4 text-center h-fit flex flex-col">
+                            <p className="line-clamp-2 h-[5vw] grow ">name</p>
+                            <div className="flex  flex-none flex-col ">
                                 <StarRating rating={4} />
                                 <p className="font-semibold">Php 200</p>
                             </div>
