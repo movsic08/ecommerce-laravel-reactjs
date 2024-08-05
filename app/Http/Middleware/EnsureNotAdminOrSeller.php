@@ -17,17 +17,19 @@ class EnsureNotAdminOrSeller
   public function handle(Request $request, Closure $next): Response
   {
 
-    if (Auth::check()) {
-      $user = Auth::user();
-
-      if ($user->is_admin == false  && $user->is_seller == false) {
-        // Proceed to the next request if the user is not admin and not seller
-        return $next($request);
+    $user = Auth::user();
+    if ($user->is_admin == false  && $user->is_seller == false) {
+      // Proceed to the next request if the user is not admin and not seller
+      return $next($request);
+    } else {
+      if ($user->is_admin) {
+        return redirect()->route('admin.login');
+      } elseif ($user->is_seller) {
+        return redirect()->route('seller.dashboard');
       } else {
         // Abort with 403 forbidden if the user is admin or seller
         abort(403, 'Unauthorized');
       }
     }
-    return $next($request);
   }
 }

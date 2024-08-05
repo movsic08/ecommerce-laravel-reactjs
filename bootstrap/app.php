@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
       // EnsureNotAdminOrSeller::class,
     ]);
     $middleware->alias([
-      'user' => EnsureNotAdminOrSeller::class,
+      'customer' => EnsureNotAdminOrSeller::class,
       'seller' => VerifiedSeller::class,
       'admin' => AdminMiddleware::class
     ]);

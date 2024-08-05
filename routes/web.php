@@ -26,7 +26,7 @@ Route::get('/', function () {
 // });
 
 //Customer pages 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'customer')->group(function () {
 
   Route::get('/home', [ProductsController::class, 'customerHome'])->name('dashboard');
   Route::get('/my-profile', [UserController::class, 'showProfile'])->name('user.profile');
@@ -60,7 +60,7 @@ Route::get('/seller-account-on-the-process', function () {
 
 
 // Admin
-Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
+Route::prefix('auth', 'admin')->middleware('admin', 'auth')->group(function () {
   Route::get('/index', [AdminController::class, 'adminDashboard'])->name('admin.index');
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
   Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');
@@ -75,7 +75,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 
 
 //seller pages
-Route::prefix('seller')->middleware('seller')->group(function () {
+Route::prefix('auth', 'seller')->middleware('seller')->group(function () {
   Route::get('/index', function () {
     return Inertia::render('Seller/Dashboard');
   })->name('seller.dashboard');
