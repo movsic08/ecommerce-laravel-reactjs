@@ -81,9 +81,9 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                             </NavLink>
                         </div>
 
-                        <div className=" gap-3 flex sm:items-center sm:ms-6">
+                        <div className=" gap-3 hidden md:flex items-center justify-between sm:ms-6">
                             <NavLink href={route("user-cart")}>
-                                <div className=" relative">
+                                <div className=" relative ">
                                     <span className=" absolute -top-2 -right-2 text-sm font-bold">
                                         {cartNumber == 0 ? "" : cartNumber}
                                     </span>
@@ -111,7 +111,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.first_name}
-
+                                                elmer
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -196,12 +196,28 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                         " sm:hidden"
                     }
                 >
-                    <div className="pt-2 pb-3 space-y-1">
+                    <div className="pt-2  space-y-1">
                         <ResponsiveNavLink
                             href={route("dashboard")}
                             active={route().current("dashboard")}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                    </div>
+                    <div className="pt-2space-y-1">
+                        <ResponsiveNavLink
+                            href={route("shop")}
+                            active={route().current("shop")}
+                        >
+                            Shop
+                        </ResponsiveNavLink>
+                    </div>
+                    <div className="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink
+                            href={route("user.myPurchases")}
+                            active={route().current("user.myPurchases")}
+                        >
+                            My Purchases
                         </ResponsiveNavLink>
                     </div>
 
