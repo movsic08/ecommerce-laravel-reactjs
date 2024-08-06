@@ -144,20 +144,23 @@ class SellerController extends Controller
       DB::beginTransaction();
 
       $user = User::with('seller')->where('id', auth()->id())->firstOrFail();
-      $finalPathSellerProfile = $user->profile_picture_path;
-      $finalPathShopProfile = $user->seller->shop_picture_path;
+
       if ($request->hasFile('new_profile_picture')) {
 
         if ($user->profile_picture_path) {
+
           Storage::disk('public')->delete($user->profile_picture_path);
         }
         $randomNumber  = rand(100, 999);
         $fileExtension = $request->new_profile_picture->getClientOriginalExtension();
         $fileName = $request->first_name . $request->last_name . '_' . $randomNumber . '.' . $fileExtension;
-        $directory = 'Photos/Profile_Pictures/Customers';
+        $directory = 'Photos/Profile_Pictures/Sellers';
         $path = $request->new_profile_picture->storeAs($directory, $fileName, 'public');
-        $finalNewProfile = 'storage/' . $path;
-        $finalPathSellerProfile = $finalNewProfile;
+
+
+        $user->update([
+          'profile_picture_path' => $path
+        ]);
       }
 
 
@@ -171,39 +174,28 @@ class SellerController extends Controller
         $fileName = $request->shop_name . '_' . $randomNumber . '.' . $fileExtension;
         $directory = 'Photos/Profile_Pictures/Shops';
         $path = $request->new_shop_profile->storeAs($directory, $fileName, 'public');
-        $finalNewShopProfile = 'storage/' . $path;
-        $finalPathShopProfile = $finalNewShopProfile;
+        $user->seller->update([
+          'shop_picture_path' => $path,
+        ]);
       }
 
-      $new = $user->update([
+      $user->update([
         'first_name' => $request->first_name,
         'last_name' => $request->last_name,
         'email' => $request->email,
         'phone_no' => $request->phone_no,
         'address' => $request->address,
-        'profile_picture_path' => $finalPathSellerProfile
       ]);
 
-      if ($new) {
-        Log::info('User updated successfully.');
-      } else {
-        Log::error('User update failed.');
-      }
+
 
       $sellerUpdated = $user->seller->update([
         'shop_address' => $request->shop_address,
         'shop_name' => $request->shop_name,
-        'shop_picture_path' => $finalPathShopProfile
       ]);
 
 
-
       DB::commit();
-
-      // Log data after update
-      Log::info('User after update: ' . json_encode($user));
-      Log::info('Seller after update: ' . json_encode($user->seller));
-
       return to_route('seller.profile')->with([
         'status' => 'success',
         'message' => 'Update successfully'

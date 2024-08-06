@@ -25,9 +25,9 @@ export default function UpdateSellerProfileForm() {
             last_name: user.last_name,
             email: user.email,
             address: user.address,
-            profile_picture: user.profile_picture_path,
+            profile_picture: user.profile_picture,
             new_profile_picture: null,
-            shop_profile_picture: user.seller.shop_profile_picture,
+            shop_profile_picture: user.seller.shop_picture_path,
             new_shop_profile: null,
             phone_no: user.phone_no,
             shop_name: user.seller.shop_name,
@@ -94,7 +94,7 @@ export default function UpdateSellerProfileForm() {
                                 <img
                                     src={
                                         data.profile_picture
-                                            ? `/storage${data.profile_picture}`
+                                            ? data.profile_picture
                                             : DefaultUserIcon
                                     }
                                     alt="Profile Preview"
@@ -130,7 +130,7 @@ export default function UpdateSellerProfileForm() {
                                 <img
                                     src={
                                         data.shop_profile_picture
-                                            ? `/storage${data.shop_profile_picture}`
+                                            ? data.shop_profile_picture
                                             : DefaultShopIcon
                                     }
                                     alt="Profile Preview"
