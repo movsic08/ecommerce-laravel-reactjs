@@ -16,6 +16,7 @@ class SellerDataResource extends JsonResource
       'address' => $this->address,
       'created_at' => $this->created_at,
       'email' => $this->email,
+      'phone_no' => $this->phone_no,
       'seller' => [
         'id' => $this->seller->id,
         'seller_id' => $this->seller->seller_id,
