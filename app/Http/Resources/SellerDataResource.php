@@ -15,6 +15,7 @@ class SellerDataResource extends JsonResource
       'last_name' => $this->last_name,
       'address' => $this->address,
       'created_at' => $this->created_at,
+      'profile_picture' => $this->profile_picture_path ? Storage::url($this->profile_picture_path) : null,
       'email' => $this->email,
       'phone_no' => $this->phone_no,
       'seller' => [
@@ -23,7 +24,7 @@ class SellerDataResource extends JsonResource
         'shop_address' => $this->seller->shop_address,
         'shop_name' => $this->seller->shop_name,
         'years_in_selling' => $this->seller->years_in_selling,
-        'shop_picture_path' => $this->seller->shop_picture_path,
+        'shop_picture_path' => $this->seller->shop_picture_path ? Storage::url($this->seller->shop_picture_path) : null,
         'store_name' => $this->seller->store_name,
         'motto' => $this->seller->motto,
         'has_permit' => $this->seller->has_permit,
