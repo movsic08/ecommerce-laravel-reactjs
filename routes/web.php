@@ -76,12 +76,9 @@ Route::prefix('auth', 'admin')->middleware('admin', 'auth')->group(function () {
 
 //seller pages
 Route::prefix('auth', 'seller')->middleware('seller')->group(function () {
-  Route::get('/index', function () {
-    return Inertia::render('Seller/Dashboard');
-  })->name('seller.dashboard');
-  Route::get('/shop', function () {
-    return Inertia::render('Seller/Shop');
-  })->name('seller.shop');
+  Route::get('/index', [SellerController::class, 'dashboard'])->name('seller.dashboard');
+  Route::get('/my-shop', [SellerController::class, 'myShop'])->name('seller.shop');
+  Route::get('my-profile', [SellerController::class, 'profileIndex'])->name('seller.profile');
   Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
   Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
   Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');
