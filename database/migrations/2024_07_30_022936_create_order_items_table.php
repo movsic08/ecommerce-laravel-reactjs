@@ -21,7 +21,7 @@ return new class extends Migration
       $table->foreign('seller_id')->references('id')->on('sellers')->onDelete('cascade');
       $table->string('shop_name');
       $table->string('product_name');
-      $table->string('status');
+      $table->enum('status', ['pending', 'shipped', 'delivered', 'cancelled']);
       $table->decimal('amount');
       $table->date('received_date')->nullable();
       $table->string('category');
