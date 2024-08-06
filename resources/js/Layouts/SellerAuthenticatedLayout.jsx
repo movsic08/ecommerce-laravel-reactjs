@@ -64,7 +64,7 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                     alt="chat icon"
                                 />
                             </NavLink>
-                            <NavLink href={route("profile.edit")}>
+                            <NavLink href={route("seller.profile")}>
                                 <FaUserGear size={20} />
                             </NavLink>
                             <NavLink
@@ -145,7 +145,7 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
+                            <ResponsiveNavLink href={route("seller.profile")}>
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
