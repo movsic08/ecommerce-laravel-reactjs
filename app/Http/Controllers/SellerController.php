@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SellerDataResource;
 use App\Http\Resources\SellerProductList;
 use App\Models\Category;
 use App\Models\Products;
@@ -10,6 +11,7 @@ use App\Models\Seller;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -107,6 +109,109 @@ class SellerController extends Controller
     }
   }
 
+  public function dashboard()
+  {
+    return Inertia::render('Seller/Dashboard');
+  }
+
+  public function myShop()
+  {
+    return Inertia::render('Seller/Shop');
+  }
+
+  public function profileIndex()
+  {
+    $sellerData = User::with('seller')->where('id', auth()->id())->get();
+
+    return Inertia::render('Seller/SellerProfile', [
+      'seller' =>  SellerDataResource::collection($sellerData)
+    ]);
+  }
+
+  public function updateSellerInformation(Request $request): RedirectResponse
+  {
+    $request->validate([
+      'first_name' => 'required',
+      'last_name' => 'required',
+      'email' => 'required|email',
+      'address' => 'required',
+      'shop_address' => 'required',
+      'phone_no' => 'required|max:11',
+      'shop_name' => 'required'
+    ]);
+
+    try {
+      DB::beginTransaction();
+
+      $user = User::with('seller')->where('id', auth()->id())->firstOrFail();
+      $finalPathSellerProfile = $user->profile_picture_path;
+      $finalPathShopProfile = $user->seller->shop_picture_path;
+      if ($request->hasFile('new_profile_picture')) {
+
+        if ($user->profile_picture_path) {
+          Storage::disk('public')->delete($user->profile_picture_path);
+        }
+        $randomNumber  = rand(100, 999);
+        $fileExtension = $request->new_profile_picture->getClientOriginalExtension();
+        $fileName = $request->first_name . $request->last_name . '_' . $randomNumber . '.' . $fileExtension;
+        $directory = 'Photos/Profile_Pictures/Customers';
+        $path = $request->new_profile_picture->storeAs($directory, $fileName, 'public');
+        $finalNewProfile = 'storage/' . $path;
+        $finalPathSellerProfile = $finalNewProfile;
+      }
+
+
+      if ($request->hasFile('new_shop_profile')) {
+
+        if ($user->seller->shop_picture_path) {
+          Storage::disk('public')->delete($user->seller->shop_profile_path);
+        }
+        $randomNumber  = rand(100, 999);
+        $fileExtension = $request->new_shop_profile->getClientOriginalExtension();
+        $fileName = $request->shop_name . '_' . $randomNumber . '.' . $fileExtension;
+        $directory = 'Photos/Profile_Pictures/Shops';
+        $path = $request->new_shop_profile->storeAs($directory, $fileName, 'public');
+        $finalNewShopProfile = 'storage/' . $path;
+        $finalPathShopProfile = $finalNewShopProfile;
+      }
+
+      $new = $user->update([
+        'first_name' => $request->first_name,
+        'last_name' => $request->last_name,
+        'email' => $request->email,
+        'phone_no' => $request->phone_no,
+        'address' => $request->address,
+        'profile_picture_path' => $finalPathSellerProfile
+      ]);
+
+      if ($new) {
+        Log::info('User updated successfully.');
+      } else {
+        Log::error('User update failed.');
+      }
+
+      $sellerUpdated = $user->seller->update([
+        'shop_address' => $request->shop_address,
+        'shop_name' => $request->shop_name,
+        'shop_picture_path' => $finalPathShopProfile
+      ]);
+
+
+
+      DB::commit();
+
+      // Log data after update
+      Log::info('User after update: ' . json_encode($user));
+      Log::info('Seller after update: ' . json_encode($user->seller));
+
+      return to_route('seller.profile')->with([
+        'status' => 'success',
+        'message' => 'Update successfully'
+      ]);
+    } catch (Exception $e) {
+      return back()->with(['message' => 'Something went wrong: ' . $e->getMessage()]);
+    }
+  }
   /**
    * Show the form for creating a new resource.
    */
