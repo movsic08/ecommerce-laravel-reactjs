@@ -21,6 +21,7 @@ class Seller extends Model
     'has_paid_organizational_fee',
     'has_barangay_clearance',
     'has_bir',
+    'shop_picture_path',
     'proof_of_membership_path',
     'is_verified',
     'verified_at'
