@@ -81,6 +81,7 @@ Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
   Route::get('my-profile', [SellerController::class, 'profileIndex'])->name('seller.profile');
   Route::post('my-profile', [SellerController::class, 'updateSellerInformation'])->name('seller.update.profile');
   Route::put('my-profile', [SellerController::class, 'updatePassword'])->name('seller.update.password');
+  Route::delete('my-profile', [SellerController::class, 'destroySellerAccount'])->name('seller.destroy.profile');
   Route::get('/products', [SellerController::class, 'products'])->name('seller.products');
   Route::get('/add-product', [SellerController::class, 'showAddProduct'])->name('seller.showAddProduct');
   Route::post('addproduct', [SellerController::class, 'store'])->name('seller.addproduct');

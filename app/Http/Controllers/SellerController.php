@@ -13,9 +13,11 @@ use Exception;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
@@ -222,14 +224,23 @@ class SellerController extends Controller
     ]);
   }
 
-
-
-  /**
-   * Show the form for creating a new resource.
-   */
-  public function create()
+  public function destroySellerAccount(Request $request): RedirectResponse
   {
-    //
+
+    $request->validate([
+      'password' => ['required', 'current_password'],
+    ]);
+
+    $user = $request->user();
+
+    Auth::logout();
+
+    $user->delete();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return Redirect::to('/');
   }
 
   /**
