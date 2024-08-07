@@ -60,7 +60,7 @@ Route::get('/seller-account-on-the-process', function () {
 
 
 // Admin
-Route::prefix('auth', 'admin')->middleware('admin', 'auth')->group(function () {
+Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('/index', [AdminController::class, 'adminDashboard'])->name('admin.index');
   Route::get('/sellers-list', [AdminController::class, 'index'])->name('admin.sellers');
   Route::get('/users-list', [AdminController::class, 'indexUsers'])->name('admin.users');

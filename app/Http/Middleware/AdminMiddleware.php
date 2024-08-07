@@ -19,16 +19,19 @@ class AdminMiddleware
 
     $user = Auth::user();
     // return $sellerData;
-    if ($user->is_admin == true) {
+
+    if ($user->is_admin) {
+      // Allow access if the user is an admin
       return $next($request);
+    } elseif ($user->is_seller) {
+      // Redirect to seller dashboard if the user is a seller
+      return redirect()->route('seller.dashboard');
+    } elseif (!$user->is_seller && !$user->is_admin) {
+      // Redirect to the user dashboard if the user is neither admin nor seller
+      return redirect()->route('dashboard');
     } else {
-      if ($user->seller) {
-        return redirect()->route('seller.dashboard');
-      } elseif ($user->is_seller == false && $user->is_admin == false) {
-        return redirect()->route('dashboard');
-      } else {
-        abort(403, 'Unauthorized');
-      }
+      // Fallback for any other cases
+      abort(403, 'Unauthorized');
     }
   }
 }
