@@ -19,16 +19,14 @@ class VerifiedSeller
   {
 
     $user = Auth::user();
-    $sellerData = Seller::where('user_id', $user->id)->first();
-
-    if ($sellerData->is_verified == true && $user->is_seller == true) {
-      // Proceed to the next request if the user is not admin and not customer
-      return $next($request);
+    if ($user->is_admin) {
+      return redirect()->route('admin.index');
     } else {
-      if ($user->is_admin == true) {
-        return redirect()->route('admin.index');
-      } elseif ($user->is_admin == false && $user->is_seller == false) {
-        return redirect()->route('dashboard');
+      $sellerData = Seller::where('user_id', $user->id)->first();
+
+      if ($sellerData->is_verified == true && $user->is_seller == true) {
+        // Proceed to the next request if the user is not admin and not customer
+        return $next($request);
       } else {
         if ($sellerData->is_verified == false && $user->is_seller == true) {
           return redirect()->route('seller.pending.account');
