@@ -71,7 +71,8 @@ class UserController extends Controller
       if ($request->hasFile('new_profile_picture')) {
 
         if ($user->profile_picture_path) {
-          Storage::disk('public')->delete($user->profile_picture_path);
+
+          Storage::disk('public')->delete(str_replace('storage/', '', $user->profile_picture_path));
         }
         $randomNumber  = rand(100, 999);
         $fileExtension = $request->new_profile_picture->getClientOriginalExtension();
@@ -79,6 +80,9 @@ class UserController extends Controller
         $directory = 'Photos/Profile_Pictures/Customers';
         $path = $request->new_profile_picture->storeAs($directory, $fileName, 'public');
         $finalPath = 'storage/' . $path;
+        $user->update([
+          'profile_picture_path' => $finalPath
+        ]);
       }
 
       $user->update([
@@ -87,7 +91,6 @@ class UserController extends Controller
         'email' => $request->email,
         'phone_no' => $request->phone_no,
         'address' => $request->address,
-        'profile_picture_path' => $finalPath
       ]);
 
       DB::commit();
