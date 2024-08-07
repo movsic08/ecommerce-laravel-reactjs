@@ -204,6 +204,26 @@ class SellerController extends Controller
       return back()->with(['message' => 'Something went wrong: ' . $e->getMessage()]);
     }
   }
+
+  public function updatePassword(Request $request): RedirectResponse
+  {
+    $validated = $request->validate([
+      'current_password' => ['required', 'current_password'],
+      'password' => ['required', Password::defaults(), 'confirmed'],
+    ]);
+
+    $request->user()->update([
+      'password' => Hash::make($validated['password']),
+    ]);
+
+    return to_route('seller.profile')->with([
+      'status' => 'success',
+      'message' => 'Password changed successfully!'
+    ]);
+  }
+
+
+
   /**
    * Show the form for creating a new resource.
    */
