@@ -21,9 +21,10 @@ class AdminResourceOfSellers extends JsonResource
       'name' => $this->first_name . ' ' . $this->last_name,
       'email' => $this->email,
       'address' => $this->address,
-      'seller_id' => $this->seller->seller_id,
-      'status' => $this->seller->is_verified,
-      'seller_picture' => $this->seller->shop_picture_path ? Storage::url($this->seller->shop_picture_path) : null,
+      'seller_id' => optional($this->seller)->seller_id,
+      'status' => optional($this->seller)->is_verified,
+      'seller_picture' => $this->seller && $this->seller->shop_picture_path ? Storage::url($this->seller->shop_picture_path) : null,
+
       'created_at' => Carbon::parse($this->created_at)->format('M d, Y'),
     ];
   }

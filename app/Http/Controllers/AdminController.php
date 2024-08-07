@@ -26,16 +26,39 @@ class AdminController extends Controller
   /**
    * Display a listing of the resource.
    */
-  public function index()
+  public function index(Request $request)
   {
-    $query = User::query();
-    $query = $query->where('is_seller', true);
-    $users = $query->paginate(15);
+    $query = User::with('seller')->where('is_seller', true);
 
+    // Filter by verification status
+    if ($request->filled('sortByStatus')) {
+      if ($request->sortByStatus === 'verified') {
+        $query->whereHas('seller', function ($query) {
+          $query->where('is_verified', true);
+        });
+      } elseif ($request->sortByStatus === 'unverified') {
+        $query->whereHas('seller', function ($query) {
+          $query->where('is_verified', false);
+        });
+      }
+    }
+
+    // Filter by name
+    if ($request->has('name') && $request->name !== '') {
+      $query->where(function ($query) use ($request) {
+        $query->where('first_name', 'like', '%' . $request->name . '%')
+          ->orWhere('last_name', 'like', '%' . $request->name . '%');
+      });
+    }
+
+    $users = $query->paginate(15);
     return Inertia::render('Admin/SellersList', [
       'users' => AdminResourceOfSellers::collection($users),
+      'queryParams' => $request->query(),
     ]);
   }
+
+
 
   public function indexUsers()
   {
