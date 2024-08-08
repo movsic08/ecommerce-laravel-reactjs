@@ -33,6 +33,12 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                 Dashboard
                             </NavLink>
                             <NavLink
+                                href={route("seller.finance")}
+                                active={route().current("seller.finance")}
+                            >
+                                Finance
+                            </NavLink>
+                            <NavLink
                                 href={route("seller.shop")}
                                 active={route().current("seller.shop")}
                             >
@@ -43,6 +49,14 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                 active={route().current("seller.products")}
                             >
                                 Products
+                            </NavLink>
+                            <NavLink
+                                href={route("seller.shipping.setting")}
+                                active={route().current(
+                                    "seller.shipping.setting"
+                                )}
+                            >
+                                Shipping Settings
                             </NavLink>
                         </div>
 
