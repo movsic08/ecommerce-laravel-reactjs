@@ -322,9 +322,14 @@ class SellerController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Seller $seller)
+  public function showShippingSetting(Seller $seller)
   {
-    //
+    return Inertia::render('Seller/ShippingSetting');
+  }
+
+  public function finance()
+  {
+    return Inertia::render('Seller/Finance');
   }
 
   /**

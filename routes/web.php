@@ -92,6 +92,8 @@ Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
   Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
   Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
   Route::patch('/notifications/{id}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('notifications.markAsUnread');
+  Route::get('finance', [SellerController::class, 'finance'])->name('seller.finance');
+  Route::get('shipping-setting', [SellerController::class, 'showShippingSetting'])->name('seller.shipping.setting');
 });
 
 
