@@ -29,33 +29,49 @@ class AuthenticatedSessionController extends Controller
   /**
    * Handle an incoming authentication request.
    */
+
   public function store(LoginRequest $request): RedirectResponse
   {
-
     $request->authenticate();
 
+    if (auth()->user()->is_admin) {
+      $request->session()->invalidate();
+      $request->session()->regenerateToken();
+
+      return back()->withErrors(['email' => 'No account with that email address exists.']);
+    }
+
     $request->session()->regenerate();
+
     if (auth()->user()->is_seller == 1) {
       $seller = Seller::where('user_id', auth()->user()->id)->first();
-      if ($seller->is_verified == 0) {
 
-        $request->session()->regenerateToken();
+      if ($seller->is_verified == 0) {
         $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
         return to_route('seller.pending.account');
       } else {
-
         return redirect()->intended(route('seller.dashboard', absolute: false));
       }
     } else {
-
       return redirect()->intended(route('dashboard', absolute: false));
     }
   }
+
+
   // Incoming Admin authentication request
   public function adminLogin(LoginRequest $request): RedirectResponse
   {
     $request->authenticate();
-    Log::info('User authenticated:', ['user' => auth()->user()]);
+
+    if (auth()->user()->is_admin == false) {
+      $request->session()->invalidate();
+      $request->session()->regenerateToken();
+
+      return back()->withErrors(['email' => 'No account with that email address exists.']);
+    }
+
     $request->session()->regenerate();
 
     return redirect()->intended(route('admin.index', absolute: false));
