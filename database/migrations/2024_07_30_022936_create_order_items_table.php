@@ -22,7 +22,18 @@ return new class extends Migration
       $table->string('shop_name');
       $table->string('product_name');
       $table->enum('status', ['pending', 'shipped', 'delivered', 'cancelled']);
+      $table->boolean('is_preparing')->default(false);
+      $table->boolean('is_ready_for_pickup')->default(false);
+      $table->boolean('is_picked_up')->default(false);
+      $table->boolean('is_in_transit')->default(false);
+      $table->boolean('is_out_for_delivery')->default(false);
+      $table->boolean('is_delivered')->default(false);
+      $table->enum('shipment_status', ['in_transit', 'out_for_delivery', 'delivered', 'failed_attempt'])->nullable();
       $table->decimal('amount');
+      $table->string('delivery_address');
+      $table->string('tracking_number')->nullable();
+      $table->date('payment_time')->nullable();
+      $table->date('ship_time')->nullable();
       $table->date('received_date')->nullable();
       $table->string('category');
       $table->timestamps();
