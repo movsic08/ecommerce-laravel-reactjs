@@ -21,6 +21,7 @@ return new class extends Migration
       $table->foreign('seller_id')->references('id')->on('sellers')->onDelete('cascade');
       $table->string('shop_name');
       $table->string('product_name');
+      $table->string('category');
       $table->enum('status', ['pending', 'shipped', 'delivered', 'cancelled']);
       $table->boolean('is_preparing')->default(false);
       $table->boolean('is_ready_for_pickup')->default(false);
@@ -35,7 +36,6 @@ return new class extends Migration
       $table->date('payment_time')->nullable();
       $table->date('ship_time')->nullable();
       $table->date('received_date')->nullable();
-      $table->string('category');
       $table->timestamps();
     });
   }
