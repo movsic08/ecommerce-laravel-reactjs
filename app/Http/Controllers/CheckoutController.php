@@ -80,6 +80,7 @@ class CheckoutController extends Controller
         'payment_option' => $request->payment_method
       ]);
 
+
       foreach ($request->items as $item) {
         OrderItem::create([
           'order_id' => $order->id,
@@ -88,15 +89,19 @@ class CheckoutController extends Controller
           'price' => $item['price'],
           'seller_id' => $item['seller_id'],
           'shop_name' => $item['shop_name'],
-          'status' => 'topay',
+          'status' => 'pending',
           'product_name' => $item['product_name'],
           'category' => $item['category'],
+          'amount' => $item['quantity'] * $item['price'],
+          'delivery_address' => $request->address,
+
         ]);
       }
 
+
       DB::commit();
 
-      return to_route('user.myPurchases')->with([
+      return to_route('checkout.success', $generated_order_id)->with([
         'status' => 'success',
         'message' => 'Orde Placed Successfully'
       ]);
@@ -111,6 +116,10 @@ class CheckoutController extends Controller
     }
   }
 
+  public function successPage(Request $request)
+  {
+    return Inertia::render('Shop/Status/Success');
+  }
 
 
 
