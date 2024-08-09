@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Seller\ViewProductResource;
 use App\Http\Resources\SellerProductImageResource;
 use App\Http\Resources\SellerProductList;
 use App\Http\Resources\ShopProductResource;
@@ -116,10 +117,19 @@ class CheckoutController extends Controller
     }
   }
 
-  public function successPage(Request $request)
+  public function successPage(string $orderId)
   {
-    return Inertia::render('Shop/Status/Success');
+    $order = Order::where('order_id', $orderId)->with('items')->firstOrFail();
+    $categoriesFromOrder = $order->items->pluck('category')->unique();
+    $products = Products::with('images')->whereIn('category', $categoriesFromOrder)->limit(10)->get();
+
+    return Inertia::render('Shop/Status/Success', [
+      'orderId' => $orderId,
+      'products' => ViewProductResource::collection($products)
+    ]);
   }
+
+
 
 
 

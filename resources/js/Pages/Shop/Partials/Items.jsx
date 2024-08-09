@@ -1,71 +1,9 @@
 import StarRating from "@/Components/StarRating";
 import { Link } from "@inertiajs/react";
+import DefaultProductIcon from "../../../assets/img/Default-Product-Placeholder.svg";
 
-export default function Items() {
-    const products = {
-        data: [
-            {
-                id: 1,
-                product_name: "Product 1",
-                price: 1500.0,
-                quantity: 10,
-                rating: 4.5,
-                images: [
-                    {
-                        image_path: "https://via.placeholder.com/150",
-                    },
-                ],
-            },
-            {
-                id: 2,
-                product_name: "Product 2",
-                price: 2500.0,
-                quantity: 5,
-                rating: 4.0,
-                images: [
-                    {
-                        image_path: "https://via.placeholder.com/150",
-                    },
-                ],
-            },
-            {
-                id: 3,
-                product_name: "Product 3",
-                price: 3500.0,
-                quantity: 8,
-                rating: 5.0,
-                images: [
-                    {
-                        image_path: "https://via.placeholder.com/150",
-                    },
-                ],
-            },
-            {
-                id: 4,
-                product_name: "Product 4",
-                price: 1200.0,
-                quantity: 2,
-                rating: 3.5,
-                images: [
-                    {
-                        image_path: "https://via.placeholder.com/150",
-                    },
-                ],
-            },
-            {
-                id: 5,
-                product_name: "Product 5",
-                price: 4500.0,
-                quantity: 7,
-                rating: 4.2,
-                images: [
-                    {
-                        image_path: "https://via.placeholder.com/150",
-                    },
-                ],
-            },
-        ],
-    };
+export default function Items({ products }) {
+    console.log(products);
 
     const layout = "grid"; // For demonstration purposes, set the layout to "grid"
 
@@ -96,7 +34,7 @@ export default function Items() {
                             <img
                                 src={
                                     product.images == null
-                                        ? "https://via.placeholder.com/150"
+                                        ? DefaultProductIcon
                                         : product.images[0].image_path
                                 }
                                 alt={product.product_name + " Image"}

@@ -46,6 +46,7 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
   Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
   Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
+  Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
 });
 
 //unverified seller account
