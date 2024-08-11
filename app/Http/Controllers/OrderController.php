@@ -15,4 +15,9 @@ class OrderController extends Controller
       'purchases' => $purchases
     ]);
   }
+
+  public function orderDetails(string $orderId)
+  {
+    return Inertia::render('Shop/OrderDetails');
+  }
 }

@@ -44,6 +44,7 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
   Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
+  Route::get('my-purchases/order-details/{orderId}', [OrderController::class, 'orderDetails'])->name('order.details');
   Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
   Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
