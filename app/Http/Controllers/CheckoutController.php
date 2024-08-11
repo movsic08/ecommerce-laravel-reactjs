@@ -69,7 +69,11 @@ class CheckoutController extends Controller
     try {
       do {
         $generated_order_id = 'MBH' . strtoupper(Str::random(3)) . Str::random(4) . strtoupper(Str::random(4)) . Str::random(3);
-      } while (Order::where('order_id', $generated_order_id)->exists());
+        $generated_order_item_id = 'MBH' . strtoupper(Str::random(1)) . Str::random(2) . strtoupper(Str::random(1)) . Str::random(2);
+      } while (
+        Order::where('order_id', $generated_order_id)->exists() ||
+        OrderItem::where('order_item_id', $generated_order_item_id)->exist()
+      );
 
       $order = Order::create([
         'user_id' => auth()->id(),
