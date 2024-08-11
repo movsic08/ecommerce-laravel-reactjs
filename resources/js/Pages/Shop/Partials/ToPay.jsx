@@ -1,7 +1,8 @@
+import { Link } from "@inertiajs/react";
 import { FaPhone, FaMapMarkerAlt, FaShoppingBag } from "react-icons/fa";
 import ModalImage from "react-modal-image";
 export default function ToPay({ toPay }) {
-    console.log(toPay);
+    console.log(toPay[2].order_id);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
@@ -9,7 +10,14 @@ export default function ToPay({ toPay }) {
                 {toPay.map((bulk) => {
                     return bulk.items.map((product) => (
                         <div className="bg-slate-50 shadow rounded-lg p-1 mb-6">
-                            <div className="p-4 border flex w-full gap-2 flex-col lg:flex-row lg:items-center items-start lg:justify-between  rounded-lg bg-white ">
+                            <Link
+                                key={product.id}
+                                href={route(
+                                    "order.details",
+                                    product.item_order_id
+                                )}
+                                className="p-4 border flex w-full gap-2 flex-col lg:flex-row lg:items-center items-start lg:justify-between  rounded-lg bg-white "
+                            >
                                 <div className=" flex flex-row gap-3  items-center">
                                     <ModalImage
                                         className="w-24 h-24 object-cover"
@@ -48,7 +56,7 @@ export default function ToPay({ toPay }) {
                                         )}
                                     </p>
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                     ));
                 })}
