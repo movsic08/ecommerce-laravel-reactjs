@@ -67,17 +67,18 @@ class CheckoutController extends Controller
     DB::beginTransaction();
 
     try {
+
       do {
         $generated_order_id = 'MBH' . strtoupper(Str::random(3)) . Str::random(4) . strtoupper(Str::random(4)) . Str::random(3);
-        $generated_order_item_id = 'MBH' . strtoupper(Str::random(1)) . Str::random(2) . strtoupper(Str::random(1)) . Str::random(2);
       } while (
-        Order::where('order_id', $generated_order_id)->exists() ||
-        OrderItem::where('order_item_id', $generated_order_item_id)->exist()
+        Order::where('order_id', $generated_order_id)->exists()
       );
+
+
 
       $order = Order::create([
         'user_id' => auth()->id(),
-        'order_id' => $generated_order_id,
+        'order_id' => strtoupper($generated_order_id),
         'name' => $request->name,
         'phone_no' => $request->phone_no,
         'address' => $request->address,
@@ -86,9 +87,18 @@ class CheckoutController extends Controller
       ]);
 
 
+
       foreach ($request->items as $item) {
+
+        do {
+          $generated_order_item_id = 'MBH' . strtoupper(Str::random(1)) . Str::random(2) . strtoupper(Str::random(1)) . Str::random(2);
+        } while (
+          OrderItem::where('order_item_id', $generated_order_item_id)->exists()
+        );
+
         OrderItem::create([
           'order_id' => $order->id,
+          'order_item_id' => strtoupper($generated_order_item_id),
           'product_id' => $item['product_id'],
           'quantity' => $item['quantity'],
           'price' => $item['price'],
