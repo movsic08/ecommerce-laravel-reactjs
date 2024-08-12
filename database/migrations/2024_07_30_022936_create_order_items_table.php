@@ -30,6 +30,8 @@ return new class extends Migration
       $table->boolean('is_in_transit')->default(false);
       $table->boolean('is_out_for_delivery')->default(false);
       $table->boolean('is_delivered')->default(false);
+      $table->boolean('is_cancelled')->default(false);
+      $table->string('cancelled_reason')->nullable();
       $table->enum('shipment_status', ['in_transit', 'out_for_delivery', 'delivered', 'failed_attempt'])->nullable();
       $table->decimal('amount');
       $table->string('delivery_address');

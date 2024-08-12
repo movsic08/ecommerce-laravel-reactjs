@@ -27,6 +27,8 @@ class OrderItem extends Model
     'is_in_transit',
     'is_out_for_delivery',
     'is_delivered',
+    'is_cancelled',
+    'cancelled_reason',
     'shipment_status',
     'amount',
     'delivery_address',
