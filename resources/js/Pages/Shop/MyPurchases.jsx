@@ -37,7 +37,7 @@ export default function MyPurchases({ auth }) {
         } else {
             toast.error(flash.message);
         }
-    });
+    }, [flash]);
 
     return (
         <>
