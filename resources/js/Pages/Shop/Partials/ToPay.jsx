@@ -2,7 +2,6 @@ import { Link } from "@inertiajs/react";
 import { FaPhone, FaMapMarkerAlt, FaShoppingBag } from "react-icons/fa";
 import ModalImage from "react-modal-image";
 export default function ToPay({ toPay }) {
-    console.log(toPay[2].order_id);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
