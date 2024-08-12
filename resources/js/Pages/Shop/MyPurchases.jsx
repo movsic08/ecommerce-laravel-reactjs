@@ -64,7 +64,7 @@ export default function MyPurchases({ auth }) {
                     <div className="space-y-4">
                         <Suspense fallback={<div>Loading...</div>}>
                             {activeTab === "toPay" && (
-                                <ToPay toPay={purchases} />
+                                <ToPay toPay={purchases.data} />
                             )}
                             {activeTab === "toShip" && <ToShip />}
                             {activeTab === "toReceive" && <ToReceive />}

@@ -1,36 +1,35 @@
 import { Link } from "@inertiajs/react";
 import { FaPhone, FaMapMarkerAlt, FaShoppingBag } from "react-icons/fa";
-import ModalImage from "react-modal-image";
 export default function ToPay({ toPay }) {
+    console.log("fromtopay componetn", toPay);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold mb-2">To Pay</h2>
-                {toPay.map((bulk) => {
+                {toPay.map((bulk, index) => {
                     return bulk.items.map((product) => (
-                        <div className="bg-slate-50 shadow rounded-lg p-1 mb-6">
+                        <div
+                            key={product.id}
+                            className="bg-slate-50 shadow rounded-lg p-1 mb-6"
+                        >
                             <Link
-                                key={product.id}
                                 href={route(
                                     "order.details",
-                                    product.item_order_id
+                                    product.order_item_id
                                 )}
                                 className="p-4 border flex w-full gap-2 flex-col lg:flex-row lg:items-center items-start lg:justify-between  rounded-lg bg-white "
                             >
-                                <div className=" flex flex-row gap-3  items-center">
-                                    <ModalImage
+                                <div className=" flex flex-row gap-3 items-center">
+                                    <img
                                         className="w-24 h-24 object-cover"
-                                        // small={
-                                        //     item.images.data.length == 0
-                                        //         ? DefaultProductIcon
-                                        //         : item.images.data[0].image_path
-                                        // }
-                                        // large={
-                                        //     item.images.data.length == 0
-                                        //         ? DefaultProductIcon
-                                        //         : item.images.data[0].image_path
-                                        // }
+                                        src={
+                                            product.images.length === 0
+                                                ? "DefaultProductIcon"
+                                                : product.images[0].image_path
+                                        }
+                                        alt="Product"
                                     />
+
                                     <div>
                                         <p className="text-gray-700">
                                             Product Name: {product.product_name}
@@ -46,14 +45,19 @@ export default function ToPay({ toPay }) {
                                         </p>
                                     </div>
                                 </div>
-                                <div className=" flex gap-2 ">
-                                    <h1>Order Total:</h1>
-                                    <p className=" text-themeColor">
-                                        ₱{" "}
-                                        {new Intl.NumberFormat().format(
-                                            product.quantity * product.price
-                                        )}
-                                    </p>
+                                <div className="flex gap-2 flex-col items-end">
+                                    <div className=" flex gap-2 ">
+                                        <h1>Order Total:</h1>
+                                        <p className=" text-themeColor">
+                                            ₱{" "}
+                                            {new Intl.NumberFormat().format(
+                                                product.quantity * product.price
+                                            )}
+                                        </p>
+                                    </div>
+                                    <button className="bg-themeColor rounded-md px-2 uppercase font-bold duration-300 ease-in-out hover:bg-orange-500 text-white py-1 text-sm">
+                                        Cancel Order
+                                    </button>
                                 </div>
                             </Link>
                         </div>

@@ -47,4 +47,9 @@ class OrderItem extends Model
   {
     return $this->belongsTo(Seller::class);
   }
+
+  public function images()
+  {
+    return $this->hasMany(ProductsImages::class, 'product_id', 'product_id');
+  }
 }
