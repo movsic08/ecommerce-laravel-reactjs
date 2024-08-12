@@ -1,12 +1,11 @@
 import { Link } from "@inertiajs/react";
 import { FaPhone, FaMapMarkerAlt, FaShoppingBag } from "react-icons/fa";
 export default function ToPay({ toPay }) {
-    console.log("fromtopay componetn", toPay);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold mb-2">To Pay</h2>
-                {toPay.map((bulk, index) => {
+                {toPay.map((bulk) => {
                     return bulk.items.map((product) => (
                         <div
                             key={product.id}
@@ -45,7 +44,7 @@ export default function ToPay({ toPay }) {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex gap-2 flex-col items-end">
+                                <div className="flex gap-2 w-full lg:w-fit lg:flex-col justify-between lg:justify-normal lg:items-end">
                                     <div className=" flex gap-2 ">
                                         <h1>Order Total:</h1>
                                         <p className=" text-themeColor">
@@ -55,9 +54,15 @@ export default function ToPay({ toPay }) {
                                             )}
                                         </p>
                                     </div>
-                                    <button className="bg-themeColor rounded-md px-2 uppercase font-bold duration-300 ease-in-out hover:bg-orange-500 text-white py-1 text-sm">
+                                    <Link
+                                        href={route(
+                                            "order.show.cancel",
+                                            product.id
+                                        )}
+                                        className="bg-themeColor rounded-md px-2 uppercase font-bold duration-300 ease-in-out hover:bg-orange-500 text-white py-1 text-sm"
+                                    >
                                         Cancel Order
-                                    </button>
+                                    </Link>
                                 </div>
                             </Link>
                         </div>

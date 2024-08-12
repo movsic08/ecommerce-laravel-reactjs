@@ -1,5 +1,5 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import { RiBillLine } from "react-icons/ri";
 import { MdOutlinePayments } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
@@ -12,14 +12,18 @@ export default function OrderDetais({ auth }) {
         <>
             <UserAuthenticatedLayout user={auth}>
                 <Head title="No. - Order Details" />
+
                 <div className="max-w-4xl mx-auto p-4">
                     <div className="bg-white shadow-md rounded-md p-4 mb-6">
                         <div className="flex flex-col sm:flex-row items-center justify-between">
                             <div className="flex items-center justify-between  w-full  text-gray-500">
-                                <div className="items-center hover:text-themeColor duration-200 cursor-pointer flex gap-2">
+                                <Link
+                                    href={route("user.myPurchases")}
+                                    className="items-center hover:text-themeColor duration-200 cursor-pointer flex gap-2"
+                                >
                                     <IoChevronBackCircle />
                                     Back
-                                </div>
+                                </Link>
                                 <span className="text-sm">
                                     <strong> ORDER ID:</strong> 220615VRSUDYM |
                                     <span className="text-red-500 ml-2 font-semibold">

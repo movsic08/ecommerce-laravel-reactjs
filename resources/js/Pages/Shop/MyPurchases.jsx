@@ -7,6 +7,8 @@ import {
     FaBoxOpen,
     FaStar,
 } from "react-icons/fa";
+import { LuPackageCheck } from "react-icons/lu";
+import { TbBasketCancel } from "react-icons/tb";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,7 +25,9 @@ export default function MyPurchases({ auth }) {
         { id: "toPay", label: "To Pay", icon: <FaMoneyBillWave /> },
         { id: "toShip", label: "To Ship", icon: <FaShippingFast /> },
         { id: "toReceive", label: "To Receive", icon: <FaBoxOpen /> },
+        { id: "completed", label: "Completed", icon: <LuPackageCheck /> },
         { id: "toRate", label: "To Rate", icon: <FaStar /> },
+        { id: "cancelled", label: "Cancelled", icon: <TbBasketCancel /> },
     ];
 
     useEffect(() => {
@@ -43,7 +47,7 @@ export default function MyPurchases({ auth }) {
                     <h1 className="text-3xl font-bold mb-6">My Purchases</h1>
 
                     <div className="mb-6">
-                        <ul className="flex justify-around border-b">
+                        <ul className="flex justify-around border-b overflow-y-auto">
                             {tabs.map((tab) => (
                                 <li
                                     key={tab.id}
@@ -55,7 +59,9 @@ export default function MyPurchases({ auth }) {
                                     onClick={() => setActiveTab(tab.id)}
                                 >
                                     {tab.icon}
-                                    <span>{tab.label}</span>
+                                    <span className="whitespace-nowrap">
+                                        {tab.label}
+                                    </span>
                                 </li>
                             ))}
                         </ul>
@@ -64,7 +70,27 @@ export default function MyPurchases({ auth }) {
                     <div className="space-y-4">
                         <Suspense fallback={<div>Loading...</div>}>
                             {activeTab === "toPay" && (
-                                <ToPay toPay={purchases.data} />
+                                <ToPay
+                                    toPay={purchases.data
+                                        .map((bulk) => ({
+                                            ...bulk,
+                                            items: bulk.items.filter(
+                                                (product) =>
+                                                    product.status ==
+                                                        "pending" &&
+                                                    !product.is_preparing &&
+                                                    !product.is_ready_for_pickup &&
+                                                    !product.is_picked_up &&
+                                                    !product.is_in_transit &&
+                                                    !product.is_out_for_delivery &&
+                                                    !product.is_delivered &&
+                                                    !product.is_cancelled
+                                            ),
+                                        }))
+                                        .filter(
+                                            (bulk) => bulk.items.length > 0
+                                        )} // Ensure only bulks with valid items are passed
+                                />
                             )}
                             {activeTab === "toShip" && <ToShip />}
                             {activeTab === "toReceive" && <ToReceive />}
