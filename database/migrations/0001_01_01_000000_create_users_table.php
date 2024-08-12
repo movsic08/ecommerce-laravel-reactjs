@@ -92,6 +92,15 @@ return new class extends Migration
           'address' => 'Lucap, Alaminos City, Pangasinan',
           'is_seller' => true,
           'password' => Hash::make('password')
+        ],
+        [
+          'first_name' => 'Elmer',
+          'last_name' => 'Tirao',
+          'email' => 'lejero08@gmail.com',
+          'phone_no' => '09102635271',
+          'address' => 'Pocalpocal, Alaminos City, Pangasinan',
+          'is_seller' => false,
+          'password' => Hash::make('password')
         ]
       ]
     );

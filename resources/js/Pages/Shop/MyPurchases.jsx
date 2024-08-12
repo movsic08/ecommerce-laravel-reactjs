@@ -16,6 +16,7 @@ const ToPay = lazy(() => import("./Partials/ToPay"));
 const ToShip = lazy(() => import("./Partials/TopShip"));
 const ToReceive = lazy(() => import("./Partials/ToReceive"));
 const ToRate = lazy(() => import("./Partials/ToRate"));
+const Cancelled = lazy(() => import("./Partials/Cancelled"));
 
 export default function MyPurchases({ auth }) {
     const { flash, purchases } = usePage().props;
@@ -95,6 +96,23 @@ export default function MyPurchases({ auth }) {
                             {activeTab === "toShip" && <ToShip />}
                             {activeTab === "toReceive" && <ToReceive />}
                             {activeTab === "toRate" && <ToRate />}
+                            {activeTab === "cancelled" && (
+                                <Cancelled
+                                    cancelled={purchases.data
+                                        .map((bulk) => ({
+                                            ...bulk,
+                                            items: bulk.items.filter(
+                                                (product) =>
+                                                    product.status ==
+                                                        "cancelled" &&
+                                                    product.is_cancelled
+                                            ),
+                                        }))
+                                        .filter(
+                                            (bulk) => bulk.items.length > 0
+                                        )}
+                                />
+                            )}
                         </Suspense>
                     </div>
                 </div>
