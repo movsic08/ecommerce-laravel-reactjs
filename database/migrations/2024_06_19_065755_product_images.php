@@ -91,6 +91,14 @@ return new class extends Migration
       ],
     ];
 
+    for ($i = 5; $i <= 25; $i++) {
+      $images[] = [
+        'product_id' => $i,
+        'image_path' => 'Photos/Product_Photos/Default_Product.svg'
+      ];
+    }
+
+
     foreach ($images as $image) {
       ProductsImages::create($image);
     }

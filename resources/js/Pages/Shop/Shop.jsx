@@ -53,6 +53,7 @@ export default function Shop({ auth, queryParams = null }) {
         setLayout((prevLayout) => (prevLayout === "grid" ? "list" : "grid"));
     };
 
+    console.log(products);
     return (
         <UserAuthenticatedLayout user={auth.user}>
             <Head title="Shop" />
@@ -227,7 +228,8 @@ export default function Shop({ auth, queryParams = null }) {
                                             >
                                                 <img
                                                     src={
-                                                        product.images == null
+                                                        product.images.length ==
+                                                        0
                                                             ? DefaultProductIcon
                                                             : product.images[0]
                                                                   .image_path
