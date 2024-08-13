@@ -1,4 +1,16 @@
+import { useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+
 export default function Cancelled({ canceledData }) {
+    console.log("cancelled data ", canceledData);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenId, setIsOpenId] = useState();
+
+    const toggleDropdown = (id) => {
+        setIsOpen(!isOpen);
+        setIsOpenId(id);
+    };
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -56,9 +68,31 @@ export default function Cancelled({ canceledData }) {
                                 </p>
                             </div>
 
-                            <button className="w-full bg-blue-600 text-white p-2 rounded-lg">
-                                Process Order
-                            </button>
+                            <div
+                                onClick={() => toggleDropdown(item.id)}
+                                className="w-full bg-slate-100 cursor-pointer flex items-center justify-between px-4 font-bold  text-slate-800 p-2 rounded-lg"
+                            >
+                                Order Cancelled
+                                {isOpen && item.id == isOpenId ? (
+                                    <IoIosArrowUp size={20} />
+                                ) : (
+                                    <IoIosArrowDown size={20} />
+                                )}
+                            </div>
+                            <div
+                                className={`mt-2 p-2 bg-themeColor text-white border rounded-lg shadow-md transition-all duration-300 ease-in-out ${
+                                    isOpen && item.id === isOpenId
+                                        ? "max-h-40 opacity-100"
+                                        : "max-h-0 opacity-0 overflow-hidden"
+                                }`}
+                            >
+                                <p className="font-semibold">
+                                    Reason for Cancellation:
+                                </p>
+                                <p className="capitalize">
+                                    {item.cancelled_reason}
+                                </p>
+                            </div>
                         </div>
                     ))
                 )}

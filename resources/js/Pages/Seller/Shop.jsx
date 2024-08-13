@@ -18,8 +18,20 @@ const Cancelled = lazy(() => import("./Partials/Shop-Partials/Cancelled"));
 export default function Shop({ auth }) {
     const { flash, orders } = usePage().props;
 
-    const [activeTab, setActiveTab] = useState("incomingOrders");
+    const [activeTab, setActiveTab] = useState();
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get("activeTab") || "incomingOrders";
+        setActiveTab(category);
+    }, []);
+
+    const handleTabChange = (tabId) => {
+        setActiveTab(tabId);
+        const url = new URL(window.location);
+        url.searchParams.set("activeTab", tabId);
+        window.history.pushState({}, "", url);
+    };
     const tabs = [
         {
             id: "incomingOrders",
@@ -57,7 +69,7 @@ export default function Shop({ auth }) {
                                                 ? "border-b-2 border-themeColor text-themeColor"
                                                 : "hover:text-themeColor"
                                         }`}
-                                        onClick={() => setActiveTab(tab.id)}
+                                        onClick={() => handleTabChange(tab.id)}
                                     >
                                         {tab.icon}
                                         <span className="whitespace-nowrap">
