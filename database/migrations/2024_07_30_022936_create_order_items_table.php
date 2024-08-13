@@ -33,7 +33,7 @@ return new class extends Migration
       $table->boolean('is_in_transit')->default(false);
       $table->date('is_in_transit_date')->nullable();
       $table->boolean('is_out_for_delivery')->default(false);
-      $table->date('is_out_for_deliveryp_date')->nullable();
+      $table->date('is_out_for_delivery_date')->nullable();
       $table->boolean('is_delivered')->default(false);
       $table->date('is_delivered_date')->nullable();
       $table->boolean('is_cancelled')->default(false);

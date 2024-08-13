@@ -36,6 +36,13 @@ class OrderItem extends Model
     'payment_time',
     'ship_time',
     'received_date',
+    'is_preparing_date',
+    'is_ready_for_pickup_date',
+    'is_picked_up_date',
+    'is_in_transit_date',
+    'is_out_for_delivery_date',
+    'is_delivered_date',
+    'is_cancelled_date'
   ];
 
   public function order()
