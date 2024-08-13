@@ -60,7 +60,7 @@ export default function Shop({ auth }) {
                 <div className="container mx-auto p-6">
                     <div className="bg-white shadow-md rounded-lg p-6 pt-2">
                         {/* tab area */}
-                        <div className="mb-6">
+                        <div className="">
                             <ul className="flex justify-around border-b overflow-y-auto">
                                 {tabs.map((tab) => (
                                     <li
@@ -106,7 +106,9 @@ export default function Shop({ auth }) {
                                     <Processed
                                         processedData={orders.data.filter(
                                             (order) => {
-                                                return order.status === "";
+                                                return (
+                                                    order.status === "preparing"
+                                                );
                                             }
                                         )}
                                     />
