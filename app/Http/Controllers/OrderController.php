@@ -13,10 +13,9 @@ class OrderController extends Controller
 {
   public function index()
   {
-    $purchases = Order::with('items.images')->where('user_id', auth()->id())->get();
-    // dump(PurchaseDetailsResource::collection($purchases));
+    $purchases = Order::with('items.images')->where('user_id', auth()->id())->orderBy('updated_at', 'asc')->get();
+
     return Inertia::render('Shop/MyPurchases', [
-      // 'purchases' => $purchases,
       'purchases' => PurchaseDetailsResource::collection($purchases)
     ]);
   }
@@ -74,5 +73,29 @@ class OrderController extends Controller
     return Inertia::render('Shop/CancelOrder', [
       'id' => $orderId
     ]);
+  }
+
+  public function processOrder(Request $request)
+  {
+    $item = OrderItem::findOrFail($request->id);
+    try {
+      DB::beginTransaction();
+
+      $item->update([
+        'status' => 'preparing',
+        'is_preparing' => true,
+      ]);
+      DB::commit();
+      return to_route('seller.shop')->with([
+        'status' => 'success',
+        'message' => 'Order sent as preparing now.'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return to_route('seller.shop')->with([
+        'status' => 'error',
+        'message' => $e->getMessage()
+      ]);
+    }
   }
 }

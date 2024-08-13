@@ -58,7 +58,8 @@ export default function Shop({ auth }) {
                 <Head title="Seller - Dashboard" />
                 <ToastContainer />
                 <div className="container mx-auto p-6">
-                    <div className="bg-white shadow-md rounded-lg p-6">
+                    <div className="bg-white shadow-md rounded-lg p-6 pt-2">
+                        {/* tab area */}
                         <div className="mb-6">
                             <ul className="flex justify-around border-b overflow-y-auto">
                                 {tabs.map((tab) => (
@@ -101,7 +102,15 @@ export default function Shop({ auth }) {
                                         )}
                                     />
                                 )}
-                                {activeTab === "processed" && <Processed />}
+                                {activeTab === "processed" && (
+                                    <Processed
+                                        processedData={orders.data.filter(
+                                            (order) => {
+                                                return order.status === "";
+                                            }
+                                        )}
+                                    />
+                                )}
                                 {activeTab === "toReceive" && <ToReceive />}
                                 {activeTab === "delivered" && <Delivered />}
                                 {activeTab === "cancelled" && (

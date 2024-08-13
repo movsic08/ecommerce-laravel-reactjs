@@ -36,7 +36,7 @@ class SellerController extends Controller
   {
     $seller = Seller::where('user_id', auth()->id())->first();
 
-    $products = Products::with('images')->where('seller_id', $seller->id)->get();
+    $products = Products::with('images')->where('seller_id', $seller->id)->orderBy('created_at', 'asc')->get();
 
     return Inertia::render('Seller/Products', [
 
@@ -123,7 +123,7 @@ class SellerController extends Controller
   public function myShop()
   {
     $sellerId = Seller::where('user_id', auth()->id())->value('id');
-    $orders = OrderItem::where('seller_id', $sellerId)->with('images', 'order')->get();
+    $orders = OrderItem::where('seller_id', $sellerId)->orderBy('updated_at', 'desc')->with('images', 'order')->get();
     // dump($orders);
 
     return Inertia::render('Seller/Shop', [

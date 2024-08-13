@@ -82,6 +82,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
 Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
   Route::get('/index', [SellerController::class, 'dashboard'])->name('seller.dashboard');
   Route::get('/my-shop', [SellerController::class, 'myShop'])->name('seller.shop');
+  Route::patch('/my-shop/process-order', [OrderController::class, 'processOrder'])->name('seller.order.process');
   Route::get('my-profile', [SellerController::class, 'profileIndex'])->name('seller.profile');
   Route::post('my-profile', [SellerController::class, 'updateSellerInformation'])->name('seller.update.profile');
   Route::put('my-profile', [SellerController::class, 'updatePassword'])->name('seller.update.password');
