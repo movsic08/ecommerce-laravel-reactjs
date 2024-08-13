@@ -40,10 +40,20 @@ class OrderController extends Controller
     try {
       $order = OrderItem::where('id', $request->orderId)->first();
 
-      $order->update([
-        "is_cancelled" => 1,
-        'status' => 'cancelled'
-      ]);
+      if ($request->selected_reason == 'others') {
+        $order->update([
+          "is_cancelled" => 1,
+          'status' => 'cancelled',
+          'cancelled_reason' =>  $request->other_reason
+        ]);
+      } else {
+        $order->update([
+          "is_cancelled" => 1,
+          'status' => 'cancelled',
+          'cancelled_reason' =>  $request->selected_reason
+        ]);
+      }
+
 
       DB::commit();
       return to_route('user.myPurchases')->with([
