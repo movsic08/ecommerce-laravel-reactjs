@@ -5,7 +5,7 @@ export default function ProcessingPreparing({ processingPreparingData }) {
     console.log("preparing component: ", processingPreparingData);
     const { processing, patch } = useForm();
 
-    const submitForPickUp = (e, id) => {
+    const submitReadyForPickup = (e, id) => {
         e.preventDefault();
         patch(route("seller.order.process.preparing", { id }));
     };
@@ -86,7 +86,9 @@ export default function ProcessingPreparing({ processingPreparingData }) {
 
                             <button
                                 disabled={processing}
-                                onClick={(e) => submitForPickUp(e, item.id)}
+                                onClick={(e) =>
+                                    submitReadyForPickup(e, item.id)
+                                }
                                 className="w-full bg-blue-600 hover:bg-blue-800 duration-200 ease-out text-white p-2 rounded-lg"
                             >
                                 {processing
