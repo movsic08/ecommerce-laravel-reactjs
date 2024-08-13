@@ -120,7 +120,39 @@ class OrderController extends Controller
         'activeTab' => 'processed',
       ])->with([
         'status' => 'success',
-        'message' => 'Order sent as for pickup by courier'
+        'message' => 'Order sent as for Ready to pickup by courier'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'preparing',
+        'activeTab' => 'processed',
+      ])->with([
+        'status' => 'error',
+        'message' => 'Something went worong. ' . $e->getMessage()
+      ]);
+    }
+  }
+  public function processOrderForPickUp(Request $request)
+  {
+    $item = OrderItem::findOrFail($request->id);
+    try {
+      DB::beginTransaction();
+
+      $item->update([
+        'status' => 'preparing',
+        'is_preparing' => true,
+        'is_ready_for_pickup' => true,
+        'is_picked_up' => true,
+        // 'is_picked_up_date' => now()
+      ]);
+      DB::commit();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'preparing',
+        'activeTab' => 'processed',
+      ])->with([
+        'status' => 'success',
+        'message' => 'Order sent as picked up by courier.'
       ]);
     } catch (\Exception $e) {
       DB::rollBack();
