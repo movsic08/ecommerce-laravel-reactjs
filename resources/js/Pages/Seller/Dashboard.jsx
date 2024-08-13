@@ -54,7 +54,55 @@ export default function Dashboard() {
             <SellerAuthenticatedLayout>
                 <Head title="Seller - Dashboard" />
 
-                <div className="flex gap-4">
+                <div className="flex flex-col lg:flex-row gap-4  mx-auto">
+                    <div>
+                        <div className="py-3 px-5 rounded-xl min-w-[15rem] bg-white drop-shadow-lg">
+                            <h1 className="whitespace-nowrap mt-2 font-bold text-lg text-mainText">
+                                To do List
+                            </h1>
+                            <small className="text-slate-400 mb-4 -my-2">
+                                Things you need to deal with
+                            </small>
+                            <div className=" flex gap-4 flex-row mt-4 lg:flex-col">
+                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
+                                    <span className="text-themeColor">0</span>
+                                    <h2 className=" font-bold text-mainText text-center">
+                                        To-Process Shipment
+                                    </h2>
+                                </div>
+                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
+                                    <span className="text-themeColor">0</span>
+                                    <h2 className=" font-bold text-mainText text-center">
+                                        Processed Shipment
+                                    </h2>
+                                </div>
+                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
+                                    <span className="text-themeColor">0</span>
+                                    <h2 className=" font-bold text-mainText text-center">
+                                        Unpaid
+                                    </h2>
+                                </div>
+                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
+                                    <span className="text-themeColor">0</span>
+                                    <h2 className=" font-bold text-mainText text-center">
+                                        Pending Cancellation
+                                    </h2>
+                                </div>
+                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
+                                    <span className="text-themeColor">0</span>
+                                    <h2 className=" font-bold text-mainText text-center">
+                                        Sold Out Products
+                                    </h2>
+                                </div>
+                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
+                                    <span className="text-themeColor">0</span>
+                                    <h2 className=" font-bold text-mainText text-center">
+                                        Banned Products
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div className=" w-full flex gap-4 flex-col">
                         <div className=" flex gap-6">
                             <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
@@ -209,11 +257,6 @@ export default function Dashboard() {
                             </div>
                         </div>
                     </div>
-                    {/* <div>
-                        <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
-                            right
-                        </div>
-                    </div> */}
                 </div>
             </SellerAuthenticatedLayout>
         </>
