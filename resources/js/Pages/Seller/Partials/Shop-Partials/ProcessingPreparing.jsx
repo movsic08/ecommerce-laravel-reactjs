@@ -1,7 +1,14 @@
+import { useForm } from "@inertiajs/react";
 import { VscPackage } from "react-icons/vsc";
 
 export default function ProcessingPreparing({ processingPreparingData }) {
     console.log("preparing component: ", processingPreparingData);
+    const { processing, patch } = useForm();
+
+    const submitForPickUp = (e, id) => {
+        e.preventDefault();
+        patch(route("seller.order.process.preparing", { id }));
+    };
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -77,8 +84,14 @@ export default function ProcessingPreparing({ processingPreparingData }) {
                                 </div>
                             </div>
 
-                            <button className="w-full bg-blue-600 hover:bg-blue-800 duration-200 ease-out text-white p-2 rounded-lg">
-                                Proceed to Ready for Pickup
+                            <button
+                                disabled={processing}
+                                onClick={(e) => submitForPickUp(e, item.id)}
+                                className="w-full bg-blue-600 hover:bg-blue-800 duration-200 ease-out text-white p-2 rounded-lg"
+                            >
+                                {processing
+                                    ? "Processing..."
+                                    : " Proceed to Ready for Pickup"}
                             </button>
                         </div>
                     ))

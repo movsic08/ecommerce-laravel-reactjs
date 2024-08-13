@@ -101,4 +101,36 @@ class OrderController extends Controller
       ]);
     }
   }
+
+  public function processOrderPreparing(Request $request)
+  {
+    $item = OrderItem::findOrFail($request->id);
+    try {
+      DB::beginTransaction();
+
+      $item->update([
+        'status' => 'preparing',
+        'is_preparing' => true,
+        'is_ready_for_pickup' => true,
+        'is_ready_for_pickup_date' => now()
+      ]);
+      DB::commit();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'preparing',
+        'activeTab' => 'processed',
+      ])->with([
+        'status' => 'success',
+        'message' => 'Order sent as for pickup by courier'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'preparing',
+        'activeTab' => 'processed',
+      ])->with([
+        'status' => 'error',
+        'message' => 'Something went worong. ' . $e->getMessage()
+      ]);
+    }
+  }
 }
