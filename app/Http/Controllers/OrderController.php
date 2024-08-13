@@ -43,13 +43,15 @@ class OrderController extends Controller
         $order->update([
           "is_cancelled" => 1,
           'status' => 'cancelled',
-          'cancelled_reason' =>  $request->other_reason
+          'cancelled_reason' =>  $request->other_reason,
+          'is_cancelled_date' => now()
         ]);
       } else {
         $order->update([
           "is_cancelled" => 1,
           'status' => 'cancelled',
-          'cancelled_reason' =>  $request->selected_reason
+          'cancelled_reason' =>  $request->selected_reason,
+          'is_cancelled_date' => now()
         ]);
       }
 
@@ -84,6 +86,7 @@ class OrderController extends Controller
       $item->update([
         'status' => 'preparing',
         'is_preparing' => true,
+        'is_preparing_date' => now()
       ]);
       DB::commit();
       return to_route('seller.shop')->with([
