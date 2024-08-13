@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ItemResource;
+use App\Http\Resources\OrdersResource;
 use App\Http\Resources\SellerDataResource;
 use App\Http\Resources\SellerProductList;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Products;
 use App\Models\ProductsImages;
 use App\Models\Seller;
@@ -118,7 +122,13 @@ class SellerController extends Controller
 
   public function myShop()
   {
-    return Inertia::render('Seller/Shop');
+    $sellerId = Seller::where('user_id', auth()->id())->value('id');
+    $orders = OrderItem::where('seller_id', $sellerId)->with('images', 'order')->get();
+    // dump($orders);
+
+    return Inertia::render('Seller/Shop', [
+      'orders' => OrdersResource::collection($orders)
+    ]);
   }
 
   public function profileIndex()

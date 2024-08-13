@@ -1,114 +1,111 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
+import { lazy, useEffect, useState } from "react";
+import { FaMoneyBillWave, FaShippingFast, FaBoxOpen } from "react-icons/fa";
+import { LuPackageCheck } from "react-icons/lu";
+import { TbBasketCancel } from "react-icons/tb";
+import { Suspense } from "react-is";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const IncomingOrders = lazy(() =>
+    import("./Partials/Shop-Partials/IncomingOrders")
+);
+const ToReceive = lazy(() => import("./Partials/Shop-Partials/ToReceive"));
+const Processed = lazy(() => import("./Partials/Shop-Partials/Processed"));
+const Delivered = lazy(() => import("./Partials/Shop-Partials/Delivered"));
+const Cancelled = lazy(() => import("./Partials/Shop-Partials/Cancelled"));
 
-export default function Shop() {
+export default function Shop({ auth }) {
+    const { flash, orders } = usePage().props;
+
+    const [activeTab, setActiveTab] = useState("incomingOrders");
+
+    const tabs = [
+        {
+            id: "incomingOrders",
+            label: "Incoming Orders",
+            icon: <FaMoneyBillWave />,
+        },
+        { id: "processed", label: "Processed", icon: <FaShippingFast /> },
+        { id: "toReceive", label: "To Receive", icon: <FaBoxOpen /> },
+        { id: "delivered", label: "Delivered", icon: <LuPackageCheck /> },
+        { id: "cancelled", label: "Cancelled", icon: <TbBasketCancel /> },
+    ];
+
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message);
+        }
+    }, [flash]);
+
     return (
         <>
-            <SellerAuthenticatedLayout>
+            <SellerAuthenticatedLayout user={auth}>
                 <Head title="Seller - Dashboard" />
+                <ToastContainer />
                 <div className="container mx-auto p-6">
-                    <h1 className="text-3xl font-bold mb-6">
-                        Seller Dashboard
-                    </h1>
-
                     <div className="bg-white shadow-md rounded-lg p-6">
-                        <h2 className="text-2xl font-semibold mb-4">
-                            Incoming Orders
-                        </h2>
+                        <div className="mb-6">
+                            <ul className="flex justify-around border-b overflow-y-auto">
+                                {tabs.map((tab) => (
+                                    <li
+                                        key={tab.id}
+                                        className={`cursor-pointer p-4 flex-col md:flex-row text-slate-700 flex items-center space-x-2 transition-colors duration-200 ${
+                                            activeTab === tab.id
+                                                ? "border-b-2 border-themeColor text-themeColor"
+                                                : "hover:text-themeColor"
+                                        }`}
+                                        onClick={() => setActiveTab(tab.id)}
+                                    >
+                                        {tab.icon}
+                                        <span className="whitespace-nowrap">
+                                            {tab.label}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {/* Pending Orders */}
-                            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg shadow-sm">
-                                <h3 className="text-xl font-semibold mb-2">
-                                    Pending Orders
-                                </h3>
-                                <ul className="space-y-4">
-                                    <li className="border-b pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <span>Order #12345</span>
-                                            <span className="text-gray-500">
-                                                2 items
-                                            </span>
-                                        </div>
-                                        <div className="text-right text-sm text-gray-500">
-                                            Pending
-                                        </div>
-                                    </li>
-                                    <li className="border-b pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <span>Order #12346</span>
-                                            <span className="text-gray-500">
-                                                3 items
-                                            </span>
-                                        </div>
-                                        <div className="text-right text-sm text-gray-500">
-                                            Pending
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Processing Orders */}
-                            <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg shadow-sm">
-                                <h3 className="text-xl font-semibold mb-2">
-                                    Processing Orders
-                                </h3>
-                                <ul className="space-y-4">
-                                    <li className="border-b pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <span>Order #12347</span>
-                                            <span className="text-gray-500">
-                                                1 item
-                                            </span>
-                                        </div>
-                                        <div className="text-right text-sm text-gray-500">
-                                            Processing
-                                        </div>
-                                    </li>
-                                    <li className="border-b pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <span>Order #12348</span>
-                                            <span className="text-gray-500">
-                                                5 items
-                                            </span>
-                                        </div>
-                                        <div className="text-right text-sm text-gray-500">
-                                            Processing
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Completed Orders */}
-                            <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg shadow-sm">
-                                <h3 className="text-xl font-semibold mb-2">
-                                    Completed Orders
-                                </h3>
-                                <ul className="space-y-4">
-                                    <li className="border-b pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <span>Order #12349</span>
-                                            <span className="text-gray-500">
-                                                2 items
-                                            </span>
-                                        </div>
-                                        <div className="text-right text-sm text-gray-500">
-                                            Completed
-                                        </div>
-                                    </li>
-                                    <li className="border-b pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <span>Order #12350</span>
-                                            <span className="text-gray-500">
-                                                4 items
-                                            </span>
-                                        </div>
-                                        <div className="text-right text-sm text-gray-500">
-                                            Completed
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div className="space-y-4">
+                            <Suspense fallback={<div>Loading...</div>}>
+                                {activeTab === "incomingOrders" && (
+                                    <IncomingOrders
+                                        incomingOrdersData={orders.data.filter(
+                                            (order) => {
+                                                return (
+                                                    order.status ===
+                                                        "pending" &&
+                                                    !order.is_preparing &&
+                                                    !order.is_ready_for_pickup &&
+                                                    !order.is_picked_up &&
+                                                    !order.is_in_transit &&
+                                                    !order.is_out_for_delivery &&
+                                                    !order.is_delivered &&
+                                                    !order.is_cancelled
+                                                );
+                                            }
+                                        )}
+                                    />
+                                )}
+                                {activeTab === "processed" && <Processed />}
+                                {activeTab === "toReceive" && <ToReceive />}
+                                {activeTab === "delivered" && <Delivered />}
+                                {activeTab === "cancelled" && (
+                                    <Cancelled
+                                        canceledData={orders.data.filter(
+                                            (order) => {
+                                                return (
+                                                    order.status ===
+                                                        "cancelled" &&
+                                                    order.is_cancelled
+                                                );
+                                            }
+                                        )}
+                                    />
+                                )}
+                            </Suspense>
                         </div>
                     </div>
                 </div>
