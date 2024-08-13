@@ -148,7 +148,7 @@ class OrderController extends Controller
       ]);
       DB::commit();
       return redirect()->route('seller.shop', [
-        'activeProcessingTab' => 'preparing',
+        'activeProcessingTab' => 'readyForPickup',
         'activeTab' => 'processed',
       ])->with([
         'status' => 'success',
