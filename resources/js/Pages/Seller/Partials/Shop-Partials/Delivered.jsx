@@ -1,3 +1,14 @@
-export default function Delivered() {
-    return <>delviered</>;
+import { Suspense, useEffect, useState } from "react";
+import { lazy } from "react";
+
+const ProcessingPreparing = lazy(() => import("./ProcessingPreparing"));
+const ProcessingReadyForPickUp = lazy(() =>
+    import("./ProcessingReadyForPickup")
+);
+const ProcessingForPickUp = lazy(() => import("./ProcessingForPickUp"));
+
+export default function Delivered({ processedData }) {
+    const [activeProcessingTab, setActiveProcessingTab] = useState();
+
+    return <>hello</>;
 }

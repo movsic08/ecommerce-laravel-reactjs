@@ -141,7 +141,7 @@ class OrderController extends Controller
       DB::beginTransaction();
 
       $item->update([
-        'status' => 'preparing',
+        'status' => 'shipped',
         'is_preparing' => true,
         'is_ready_for_pickup' => true,
         'is_picked_up' => true,
@@ -174,12 +174,12 @@ class OrderController extends Controller
       DB::beginTransaction();
 
       $item->update([
-        'status' => 'preparing',
+        'status' => 'shipped',
         'is_preparing' => true,
         'is_ready_for_pickup' => true,
         'is_picked_up' => true,
         'is_in_transit' => true,
-        // 'is_in_transit_date' => now()
+        'is_in_transit_date' => now()
       ]);
       DB::commit();
       return redirect()->route('seller.shop', [
@@ -194,6 +194,41 @@ class OrderController extends Controller
       return redirect()->route('seller.shop', [
         'activeProcessingTab' => 'forPickUp',
         'activeTab' => 'processed',
+      ])->with([
+        'status' => 'error',
+        'message' => 'Something went worong. ' . $e->getMessage()
+      ]);
+    }
+  }
+
+  public function processOrderOutForDelivery(Request $request)
+  {
+    $item = OrderItem::findOrFail($request->id);
+    try {
+      DB::beginTransaction();
+
+      $item->update([
+        'status' => 'shipped',
+        'is_preparing' => true,
+        'is_ready_for_pickup' => true,
+        'is_picked_up' => true,
+        'is_in_transit' => true,
+        'is_out_for_delivery' => true,
+        // 'is_in_transit_date' => now()
+      ]);
+      DB::commit();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'forPickUp',
+        'activeTab' => 'inTransit',
+      ])->with([
+        'status' => 'success',
+        'message' => 'Order sent as out for delivery.'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'forPickUp',
+        'activeTab' => 'inTransit',
       ])->with([
         'status' => 'error',
         'message' => 'Something went worong. ' . $e->getMessage()

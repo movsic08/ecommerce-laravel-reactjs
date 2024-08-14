@@ -113,7 +113,17 @@ export default function Shop({ auth }) {
                                         )}
                                     />
                                 )}
-                                {activeTab === "toReceive" && <ToReceive />}
+                                {activeTab === "toReceive" && (
+                                    <ToReceive
+                                        processedData={orders.data.filter(
+                                            (order) => {
+                                                return (
+                                                    order.status == "preparing"
+                                                );
+                                            }
+                                        )}
+                                    />
+                                )}
                                 {activeTab === "delivered" && <Delivered />}
                                 {activeTab === "cancelled" && (
                                     <Cancelled

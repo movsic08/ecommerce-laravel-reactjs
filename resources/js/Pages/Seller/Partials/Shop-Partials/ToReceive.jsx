@@ -1,11 +1,8 @@
 import { Suspense, useEffect, useState } from "react";
 import { lazy } from "react";
 
-const ProcessingPreparing = lazy(() => import("./ProcessingPreparing"));
-const ProcessingReadyForPickUp = lazy(() =>
-    import("./ProcessingReadyForPickup")
-);
-const ProcessingForPickUp = lazy(() => import("./ProcessingForPickUp"));
+const ToReceiveInTransit = lazy(() => import("./ToReceiveInTransit"));
+const ToReceiveOutForDelivery = lazy(() => import("./ToReceiveOutForDelivery"));
 
 export default function ToReceive({ processedData }) {
     const [activeProcessingTab, setActiveProcessingTab] = useState();
@@ -33,6 +30,21 @@ export default function ToReceive({ processedData }) {
         { id: "outForDelivery", label: "Out for Delivery" },
     ];
 
+    // const test = processedData.filter((order) => {
+    //     return (
+    //         order.status === "preparing" &&
+    //         // order.status === "shipped" &&
+    //         order.is_preparing == true &&
+    //         order.is_ready_for_pickup == true &&
+    //         order.is_picked_up == true &&
+    //         order.is_in_transit == true &&
+    //         order.is_out_for_delivery == true &&
+    //         order.is_delivered == false
+    //     );
+    // });
+
+    // console.log("to receive parent", test);
+
     return (
         <>
             {/* tab area */}
@@ -58,43 +70,36 @@ export default function ToReceive({ processedData }) {
             {/* content area */}
             <div className="space-y-4">
                 <Suspense fallback={<div>Loading...</div>}>
-                    {activeProcessingTab === "preparing" && (
-                        <ProcessingPreparing
-                            processingPreparingData={processedData.filter(
+                    {activeProcessingTab === "inTransit" && (
+                        <ToReceiveInTransit
+                            toReceiveInTransitData={processedData.filter(
                                 (order) => {
                                     return (
                                         order.status === "preparing" &&
-                                        order.is_preparing == true &&
-                                        order.is_ready_for_pickup == false
-                                    );
-                                }
-                            )}
-                        />
-                    )}
-                    {activeProcessingTab === "readyForPickup" && (
-                        <ProcessingReadyForPickUp
-                            processingReadyForPickUpData={processedData.filter(
-                                (order) => {
-                                    return (
-                                        order.status === "preparing" &&
-                                        order.is_preparing == true &&
-                                        order.is_ready_for_pickup == true &&
-                                        order.is_picked_up == false
-                                    );
-                                }
-                            )}
-                        />
-                    )}
-                    {activeProcessingTab === "forPickUp" && (
-                        <ProcessingForPickUp
-                            processingForPickUpData={processedData.filter(
-                                (order) => {
-                                    return (
-                                        order.status === "preparing" &&
+                                        // order.status === "shipped" &&
                                         order.is_preparing == true &&
                                         order.is_ready_for_pickup == true &&
                                         order.is_picked_up == true &&
-                                        order.is_in_transit == false
+                                        order.is_in_transit == true &&
+                                        order.is_out_for_delivery == false
+                                    );
+                                }
+                            )}
+                        />
+                    )}
+                    {activeProcessingTab === "outForDelivery" && (
+                        <ToReceiveOutForDelivery
+                            toReceiveOutForDeliveryData={processedData.filter(
+                                (order) => {
+                                    return (
+                                        order.status === "preparing" &&
+                                        // order.status === "shipped" &&
+                                        order.is_preparing == true &&
+                                        order.is_ready_for_pickup == true &&
+                                        order.is_picked_up == true &&
+                                        order.is_in_transit == true &&
+                                        order.is_out_for_delivery == true &&
+                                        order.is_delivered == false
                                     );
                                 }
                             )}
