@@ -133,6 +133,7 @@ class OrderController extends Controller
       ]);
     }
   }
+
   public function processOrderForPickUp(Request $request)
   {
     $item = OrderItem::findOrFail($request->id);
@@ -144,7 +145,7 @@ class OrderController extends Controller
         'is_preparing' => true,
         'is_ready_for_pickup' => true,
         'is_picked_up' => true,
-        // 'is_picked_up_date' => now()
+        'is_picked_up_date' => now()
       ]);
       DB::commit();
       return redirect()->route('seller.shop', [
@@ -157,7 +158,41 @@ class OrderController extends Controller
     } catch (\Exception $e) {
       DB::rollBack();
       return redirect()->route('seller.shop', [
-        'activeProcessingTab' => 'preparing',
+        'activeProcessingTab' => 'readyForPickup',
+        'activeTab' => 'processed',
+      ])->with([
+        'status' => 'error',
+        'message' => 'Something went worong. ' . $e->getMessage()
+      ]);
+    }
+  }
+
+  public function processOrderToReceive(Request $request)
+  {
+    $item = OrderItem::findOrFail($request->id);
+    try {
+      DB::beginTransaction();
+
+      $item->update([
+        'status' => 'preparing',
+        'is_preparing' => true,
+        'is_ready_for_pickup' => true,
+        'is_picked_up' => true,
+        'is_in_transit' => true,
+        // 'is_in_transit_date' => now()
+      ]);
+      DB::commit();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'forPickUp',
+        'activeTab' => 'processed',
+      ])->with([
+        'status' => 'success',
+        'message' => 'Order sent as in transit.'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'forPickUp',
         'activeTab' => 'processed',
       ])->with([
         'status' => 'error',
