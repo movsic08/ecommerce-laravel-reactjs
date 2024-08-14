@@ -107,9 +107,11 @@ export default function Shop({ auth }) {
                                         processedData={orders.data.filter(
                                             (order) => {
                                                 return (
-                                                    order.status ===
+                                                    (order.status ===
                                                         "preparing" ||
-                                                    order.status === "shipped"
+                                                        order.status ===
+                                                            "shipped") &&
+                                                    order.is_cancelled == false
                                                 );
                                             }
                                         )}
@@ -120,7 +122,8 @@ export default function Shop({ auth }) {
                                         processedData={orders.data.filter(
                                             (order) => {
                                                 return (
-                                                    order.status == "shipped"
+                                                    order.status == "shipped" &&
+                                                    order.is_cancelled == false
                                                 );
                                             }
                                         )}
@@ -133,7 +136,8 @@ export default function Shop({ auth }) {
                                                 return (
                                                     order.status ==
                                                         "delivered" &&
-                                                    order.is_delivered
+                                                    order.is_delivered &&
+                                                    order.is_cancelled == false
                                                 );
                                             }
                                         )}
