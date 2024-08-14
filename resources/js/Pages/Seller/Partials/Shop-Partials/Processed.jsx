@@ -5,7 +5,7 @@ const ProcessingPreparing = lazy(() => import("./ProcessingPreparing"));
 const ProcessingReadyForPickUp = lazy(() =>
     import("./ProcessingReadyForPickup")
 );
-const ProcessingForPickUp = lazy(() => import("./ProcessingForPickUp"));
+const ProcessingForPickUp = lazy(() => import("./ProcessingPickedUp"));
 export default function Processed({ processedData }) {
     const [activeProcessingTab, setActiveProcessingTab] = useState();
 
@@ -30,7 +30,7 @@ export default function Processed({ processedData }) {
     const tabs = [
         { id: "preparing", label: "Preparing" },
         { id: "readyForPickup", label: "Ready for Pickup" },
-        { id: "forPickUp", label: "For Pickup" },
+        { id: "forPickUp", label: "Already picked up" },
     ];
 
     return (
@@ -90,7 +90,7 @@ export default function Processed({ processedData }) {
                             processingForPickUpData={processedData.filter(
                                 (order) => {
                                     return (
-                                        order.status === "preparing" &&
+                                        order.status === "shipped" &&
                                         order.is_preparing == true &&
                                         order.is_ready_for_pickup == true &&
                                         order.is_picked_up == true &&

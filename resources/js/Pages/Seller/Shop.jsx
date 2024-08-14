@@ -107,7 +107,9 @@ export default function Shop({ auth }) {
                                         processedData={orders.data.filter(
                                             (order) => {
                                                 return (
-                                                    order.status === "preparing"
+                                                    order.status ===
+                                                        "preparing" ||
+                                                    order.status === "shipped"
                                                 );
                                             }
                                         )}

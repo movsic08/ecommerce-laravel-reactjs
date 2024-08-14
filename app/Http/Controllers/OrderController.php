@@ -22,7 +22,12 @@ class OrderController extends Controller
 
   public function orderDetails(string $orderId)
   {
-    return Inertia::render('Shop/OrderDetails');
+
+    $data = OrderItem::where('order_item_id', $orderId)->with('order')->first();
+
+    return Inertia::render('Shop/OrderDetails', [
+      'data' => $data
+    ]);
   }
 
   public function cancelOrder(Request $request)

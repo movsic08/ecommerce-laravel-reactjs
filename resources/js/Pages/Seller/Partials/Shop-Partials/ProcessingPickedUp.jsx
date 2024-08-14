@@ -2,7 +2,7 @@ import { useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { VscPackage } from "react-icons/vsc";
 
-export default function ProcessingForPickUp({ processingForPickUpData }) {
+export default function ProcessingPickedUp({ processingForPickUpData }) {
     const { patch, processing } = useForm();
     const [processingId, setProcessingId] = useState();
     const submitToReceive = (e, id) => {

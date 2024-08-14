@@ -9,7 +9,7 @@ export default function ToReceive({ processedData }) {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const category = ["preparing", "readyForPickup", "forPickup"].includes(
+        const category = ["preparing", "readyForPickup", "forPickUp"].includes(
             urlParams.get("activeProcessingTab")
         )
             ? "inTransit"
@@ -75,8 +75,7 @@ export default function ToReceive({ processedData }) {
                             toReceiveInTransitData={processedData.filter(
                                 (order) => {
                                     return (
-                                        order.status === "preparing" &&
-                                        // order.status === "shipped" &&
+                                        order.status === "shipped" &&
                                         order.is_preparing == true &&
                                         order.is_ready_for_pickup == true &&
                                         order.is_picked_up == true &&
@@ -92,8 +91,7 @@ export default function ToReceive({ processedData }) {
                             toReceiveOutForDeliveryData={processedData.filter(
                                 (order) => {
                                     return (
-                                        order.status === "preparing" &&
-                                        // order.status === "shipped" &&
+                                        order.status === "shipped" &&
                                         order.is_preparing == true &&
                                         order.is_ready_for_pickup == true &&
                                         order.is_picked_up == true &&

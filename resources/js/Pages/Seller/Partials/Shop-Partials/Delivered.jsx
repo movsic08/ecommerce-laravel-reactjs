@@ -5,7 +5,7 @@ const ProcessingPreparing = lazy(() => import("./ProcessingPreparing"));
 const ProcessingReadyForPickUp = lazy(() =>
     import("./ProcessingReadyForPickup")
 );
-const ProcessingForPickUp = lazy(() => import("./ProcessingForPickUp"));
+const ProcessingForPickUp = lazy(() => import("./ProcessingPickedUp"));
 
 export default function Delivered({ processedData }) {
     const [activeProcessingTab, setActiveProcessingTab] = useState();
