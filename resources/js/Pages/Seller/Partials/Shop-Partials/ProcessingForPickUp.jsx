@@ -1,6 +1,15 @@
+import { useForm } from "@inertiajs/react";
+import { useState } from "react";
 import { VscPackage } from "react-icons/vsc";
 
 export default function ProcessingForPickUp({ processingForPickUpData }) {
+    const { patch, processing } = useForm();
+    const [processingId, setProcessingId] = useState();
+    const submitToReceive = (e, id) => {
+        e.preventDefault();
+        setProcessingId(id);
+        patch(route("seller.order.process.toReceive", { id }));
+    };
     return (
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -76,8 +85,14 @@ export default function ProcessingForPickUp({ processingForPickUpData }) {
                                 </div>
                             </div>
 
-                            <button className="w-full bg-blue-600 hover:bg-blue-800 duration-200 ease-out text-white p-2 rounded-lg">
-                                Proceed to for Transit
+                            <button
+                                onClick={(e) => submitToReceive(e, item.id)}
+                                disabled={processing}
+                                className="w-full bg-blue-600 hover:bg-blue-800 duration-200 ease-out text-white p-2 rounded-lg"
+                            >
+                                {processing && processingId == item.id
+                                    ? "Processing..."
+                                    : "Proceed to for Transit"}
                             </button>
                         </div>
                     ))
