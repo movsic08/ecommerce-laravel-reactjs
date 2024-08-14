@@ -89,7 +89,7 @@ export default function Shop({ auth }) {
                                             (order) => {
                                                 return (
                                                     order.status ===
-                                                        "pending" &&
+                                                        "order placed" &&
                                                     !order.is_preparing &&
                                                     !order.is_ready_for_pickup &&
                                                     !order.is_picked_up &&
