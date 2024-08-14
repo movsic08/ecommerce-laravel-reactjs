@@ -1,12 +1,14 @@
 import { useForm } from "@inertiajs/react";
+import { useState } from "react";
 import { VscPackage } from "react-icons/vsc";
 
 export default function ProcessingPreparing({ processingPreparingData }) {
-    console.log("preparing component: ", processingPreparingData);
     const { processing, patch } = useForm();
+    const [processingId, setProcessingId] = useState();
 
     const submitReadyForPickup = (e, id) => {
         e.preventDefault();
+        setProcessingId(id);
         patch(route("seller.order.process.preparing", { id }));
     };
     return (
@@ -91,7 +93,7 @@ export default function ProcessingPreparing({ processingPreparingData }) {
                                 }
                                 className="w-full bg-blue-600 hover:bg-blue-800 duration-200 ease-out text-white p-2 rounded-lg"
                             >
-                                {processing
+                                {processing && processingId == item.id
                                     ? "Processing..."
                                     : " Proceed to Ready for Pickup"}
                             </button>
