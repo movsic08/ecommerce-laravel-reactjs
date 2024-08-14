@@ -1,68 +1,107 @@
-export default function ToReceive({ ToReceiveData }) {
+import { Suspense, useEffect, useState } from "react";
+import { lazy } from "react";
+
+const ProcessingPreparing = lazy(() => import("./ProcessingPreparing"));
+const ProcessingReadyForPickUp = lazy(() =>
+    import("./ProcessingReadyForPickup")
+);
+const ProcessingForPickUp = lazy(() => import("./ProcessingForPickUp"));
+
+export default function ToReceive({ processedData }) {
+    const [activeProcessingTab, setActiveProcessingTab] = useState();
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = ["preparing", "readyForPickup", "forPickup"].includes(
+            urlParams.get("activeProcessingTab")
+        )
+            ? "inTransit"
+            : urlParams.get("activeProcessingTab") || "inTransit";
+
+        setActiveProcessingTab(category);
+    }, []);
+
+    const handleTabChange = (tabId) => {
+        setActiveProcessingTab(tabId);
+        const url = new URL(window.location);
+        url.searchParams.set("activeProcessingTab", tabId);
+        window.history.pushState({}, "", url);
+    };
+
+    const tabs = [
+        { id: "inTransit", label: "In Transit" },
+        { id: "outForDelivery", label: "Out for Delivery" },
+    ];
+
     return (
         <>
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {ToReceiveData.length == 0 ? (
-                    <div>No Data</div>
-                ) : (
-                    ToReceiveData.map((item) => (
-                        <div
-                            key={item.id}
-                            className="bg-white border border-slate-300 p-4 rounded-lg shadow-md"
+            {/* tab area */}
+            <div>
+                <ul className="flex justify-around border-b overflow-y-auto">
+                    {tabs.map((tab) => (
+                        <li
+                            key={tab.id}
+                            className={`cursor-pointer p-4 flex-col md:flex-row text-slate-700 flex items-center space-x-2 transition-colors duration-200 ${
+                                activeProcessingTab === tab.id
+                                    ? "border-b-2 border-themeColor text-themeColor"
+                                    : "hover:text-themeColor"
+                            }`}
+                            onClick={() => handleTabChange(tab.id)}
                         >
-                            <div className="flex items-center gap-4 mb-4">
-                                <img
-                                    src={
-                                        item.images == null ||
-                                        item.images.length == 0
-                                            ? DefaultProductIcon
-                                            : item.images[0].image_path
-                                    }
-                                    alt={item.product_name}
-                                    className="w-24 h-24 object-cover rounded-lg"
-                                />
-                                <div>
-                                    <h3 className="text-lg font-semibold">
-                                        {item.product_name}
-                                    </h3>
-                                    <p className="text-gray-600">
-                                        Quantity: {item.quantity}
-                                    </p>
-                                    <p className="text-gray-600">
-                                        Price: Php{" "}
-                                        {new Intl.NumberFormat().format(
-                                            item.amount
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mb-4 text-slate-800">
-                                <h4 className="font-semibold">Buyer:</h4>
-                                <p>{item.buyer_data.name}</p>
-                                <p>{item.buyer_data.address}</p>
-                                <p>{item.buyer_data.phone_no}</p>
-                                <div>
-                                    <strong className="">Payment: </strong>
-                                    <span className="uppercase">
-                                        {" "}
-                                        {item.buyer_data.payment_option}
-                                    </span>{" "}
-                                </div>
-                                <p>
-                                    {new Date(
-                                        item.buyer_data.created_at
-                                    ).toLocaleString()}
-                                </p>
-                            </div>
-
-                            <button className="w-full bg-blue-600 text-white p-2 rounded-lg">
-                                Process Order
-                            </button>
-                        </div>
-                    ))
-                )}
-            </div> */}
+                            <span className="whitespace-nowrap">
+                                {tab.label}
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            {/* content area */}
+            <div className="space-y-4">
+                <Suspense fallback={<div>Loading...</div>}>
+                    {activeProcessingTab === "preparing" && (
+                        <ProcessingPreparing
+                            processingPreparingData={processedData.filter(
+                                (order) => {
+                                    return (
+                                        order.status === "preparing" &&
+                                        order.is_preparing == true &&
+                                        order.is_ready_for_pickup == false
+                                    );
+                                }
+                            )}
+                        />
+                    )}
+                    {activeProcessingTab === "readyForPickup" && (
+                        <ProcessingReadyForPickUp
+                            processingReadyForPickUpData={processedData.filter(
+                                (order) => {
+                                    return (
+                                        order.status === "preparing" &&
+                                        order.is_preparing == true &&
+                                        order.is_ready_for_pickup == true &&
+                                        order.is_picked_up == false
+                                    );
+                                }
+                            )}
+                        />
+                    )}
+                    {activeProcessingTab === "forPickUp" && (
+                        <ProcessingForPickUp
+                            processingForPickUpData={processedData.filter(
+                                (order) => {
+                                    return (
+                                        order.status === "preparing" &&
+                                        order.is_preparing == true &&
+                                        order.is_ready_for_pickup == true &&
+                                        order.is_picked_up == true &&
+                                        order.is_in_transit == false
+                                    );
+                                }
+                            )}
+                        />
+                    )}
+                </Suspense>
+            </div>
         </>
     );
 }

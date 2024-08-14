@@ -11,7 +11,12 @@ export default function Processed({ processedData }) {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get("activeProcessingTab") || "preparing";
+        const category = ["inTransit", "outForDelivery"].includes(
+            urlParams.get("activeProcessingTab")
+        )
+            ? "preparing"
+            : urlParams.get("activeProcessingTab") || "preparing";
+
         setActiveProcessingTab(category);
     }, []);
 
