@@ -118,13 +118,25 @@ export default function Shop({ auth }) {
                                         processedData={orders.data.filter(
                                             (order) => {
                                                 return (
-                                                    order.status == "preparing"
+                                                    order.status == "shipped"
                                                 );
                                             }
                                         )}
                                     />
                                 )}
-                                {activeTab === "delivered" && <Delivered />}
+                                {activeTab === "delivered" && (
+                                    <Delivered
+                                        processedData={orders.data.filter(
+                                            (order) => {
+                                                return (
+                                                    order.status ==
+                                                        "delivered" &&
+                                                    order.is_delivered
+                                                );
+                                            }
+                                        )}
+                                    />
+                                )}
                                 {activeTab === "cancelled" && (
                                     <Cancelled
                                         canceledData={orders.data.filter(
