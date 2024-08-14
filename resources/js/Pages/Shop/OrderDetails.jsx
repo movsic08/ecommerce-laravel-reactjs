@@ -1,5 +1,5 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import { RiBillLine } from "react-icons/ri";
 import { MdOutlinePayments } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
@@ -8,6 +8,8 @@ import { MdOutlineStarRate } from "react-icons/md";
 import { IoChevronBackCircle } from "react-icons/io5";
 
 export default function OrderDetais({ auth }) {
+    const { data } = usePage().props;
+    console.log(data);
     return (
         <>
             <UserAuthenticatedLayout user={auth}>
@@ -25,9 +27,10 @@ export default function OrderDetais({ auth }) {
                                     Back
                                 </Link>
                                 <span className="text-sm">
-                                    <strong> ORDER ID:</strong> 220615VRSUDYM |
-                                    <span className="text-red-500 ml-2 font-semibold">
-                                        ORDER PLACED
+                                    <strong> ORDER ID:</strong>{" "}
+                                    {data.order_item_id} |
+                                    <span className="uppercase text-red-500 ml-2 font-semibold">
+                                        {data.status}
                                     </span>
                                 </span>
                             </div>
@@ -106,7 +109,9 @@ export default function OrderDetais({ auth }) {
                             Delivery Address
                         </h3>
                         <p className="text-sm text-gray-500">
-                            [Delivery Address Details]
+                            {data.order.name}
+                            <br /> {data.order.address} <br />{" "}
+                            {data.order.phone_no}
                         </p>
                     </div>
 
@@ -116,25 +121,25 @@ export default function OrderDetais({ auth }) {
                         </h3>
                         <div className="overflow-auto">
                             <ul className="text-sm text-gray-500 space-y-4">
-                                <li>
-                                    <span className="text-green-500 font-semibold">
-                                        Delivered:
-                                    </span>{" "}
-                                    22-06-2022 10:44 - Delivered to recipient
-                                </li>
-                                <li>
-                                    <span className="text-blue-500 font-semibold">
-                                        In transit:
-                                    </span>{" "}
-                                    22-06-2022 07:31 - Package is in transit to
-                                    final destination
-                                </li>
+                                {data.is_preparing ? (
+                                    <li>
+                                        <span className="text-blue-500 font-semibold">
+                                            In transit:
+                                        </span>{" "}
+                                        22-06-2022 07:31 - Package is in transit
+                                        to final destination
+                                    </li>
+                                ) : (
+                                    ""
+                                )}
                             </ul>
                         </div>
                         <p className="text-sm text-gray-400 mt-4">
                             Tracking Number:{" "}
                             <span className="text-gray-600">
-                                TH4225287912815R
+                                {data.tracking_number == null
+                                    ? "Waiting for seller to put the tracking number"
+                                    : data.tracking_number}
                             </span>
                         </p>
                     </div>
