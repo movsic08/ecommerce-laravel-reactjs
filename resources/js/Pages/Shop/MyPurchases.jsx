@@ -20,7 +20,13 @@ const Cancelled = lazy(() => import("./Partials/Cancelled"));
 
 export default function MyPurchases({ auth }) {
     const { flash, purchases } = usePage().props;
-    const [activeTab, setActiveTab] = useState("toPay");
+    const [activeTab, setActiveTab] = useState();
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const param = urlParams.get("activeTab") || "toPay";
+        setActiveTab(param);
+    });
 
     const tabs = [
         { id: "toPay", label: "To Pay", icon: <FaMoneyBillWave /> },
@@ -30,6 +36,13 @@ export default function MyPurchases({ auth }) {
         { id: "toRate", label: "To Rate", icon: <FaStar /> },
         { id: "cancelled", label: "Cancelled", icon: <TbBasketCancel /> },
     ];
+
+    const handleChangeTab = (tabId) => {
+        setActiveTab(tabId);
+        const url = new URL(window.location);
+        url.searchParams.set("activeTab", tabId);
+        window.history.pushState({}, "", url);
+    };
 
     useEffect(() => {
         if (flash.status == "success") {
@@ -57,7 +70,7 @@ export default function MyPurchases({ auth }) {
                                             ? "border-b-2 border-themeColor text-themeColor"
                                             : "hover:text-themeColor"
                                     }`}
-                                    onClick={() => setActiveTab(tab.id)}
+                                    onClick={(e) => handleChangeTab(tab.id)}
                                 >
                                     {tab.icon}
                                     <span className="whitespace-nowrap">
