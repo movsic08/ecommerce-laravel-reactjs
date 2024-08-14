@@ -1,6 +1,5 @@
 import { Link } from "@inertiajs/react";
 export default function ToShip({ toShipData }) {
-    console.log(toShipData);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
@@ -43,6 +42,9 @@ export default function ToShip({ toShipData }) {
                                         <p className="text-gray-700">
                                             Quantity: {product.quantity}
                                         </p>
+                                        <div className="uppercase text-xs py-1 px-2 bg-green-200 text-green-800 w-fit rounded-full">
+                                            {product.status}
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="flex gap-2 w-full lg:w-fit lg:flex-col justify-between lg:justify-normal lg:items-end">
@@ -56,7 +58,13 @@ export default function ToShip({ toShipData }) {
                                         </p>
                                     </div>
 
-                                    <Link className="bg-themeColor rounded-md px-2 uppercase font-bold duration-300 ease-in-out hover:bg-orange-500 text-white py-1 text-sm">
+                                    <Link
+                                        className={`bg-themeColor rounded-md px-2 uppercase font-bold  text-white py-1 text-sm ${
+                                            product.status == "shipped"
+                                                ? " cursor-not-allowed"
+                                                : " cursor-pointer duration-300 ease-in-out hover:bg-orange-500"
+                                        }`}
+                                    >
                                         Cancel Order
                                     </Link>
                                 </div>

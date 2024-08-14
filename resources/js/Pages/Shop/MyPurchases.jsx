@@ -41,7 +41,7 @@ export default function MyPurchases({ auth }) {
         setActiveTab(tabId);
         const url = new URL(window.location);
         url.searchParams.set("activeTab", tabId);
-        window.history.pushState({}, "", url);
+        window.history.pushState({ activeTab }, "", url);
     };
 
     useEffect(() => {
@@ -124,7 +124,21 @@ export default function MyPurchases({ auth }) {
                                         )}
                                 />
                             )}
-                            {activeTab === "toReceive" && <ToReceive />}
+                            {activeTab === "toReceive" && (
+                                <ToReceive
+                                    toReceiveData={purchases.data
+                                        .map((bulk) => ({
+                                            ...bulk,
+                                            items: bulk.items.filter(
+                                                (product) =>
+                                                    product.status == "shipped"
+                                            ),
+                                        }))
+                                        .filter(
+                                            (bulk) => bulk.items.length > 0
+                                        )}
+                                />
+                            )}
                             {activeTab === "toRate" && <ToRate />}
                             {activeTab === "cancelled" && (
                                 <Cancelled
