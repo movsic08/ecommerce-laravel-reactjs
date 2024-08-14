@@ -104,7 +104,7 @@ class CheckoutController extends Controller
           'price' => $item['price'],
           'seller_id' => $item['seller_id'],
           'shop_name' => $item['shop_name'],
-          'status' => 'pending',
+          'status' => 'order placed',
           'product_name' => $item['product_name'],
           'category' => $item['category'],
           'amount' => $item['quantity'] * $item['price'],
