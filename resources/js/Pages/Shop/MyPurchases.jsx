@@ -78,7 +78,7 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status ==
-                                                        "pending" &&
+                                                        "order placed" &&
                                                     !product.is_preparing &&
                                                     !product.is_ready_for_pickup &&
                                                     !product.is_picked_up &&
@@ -90,10 +90,27 @@ export default function MyPurchases({ auth }) {
                                         }))
                                         .filter(
                                             (bulk) => bulk.items.length > 0
-                                        )} // Ensure only bulks with valid items are passed
+                                        )}
                                 />
                             )}
-                            {activeTab === "toShip" && <ToShip />}
+                            {activeTab === "toShip" && (
+                                <ToShip
+                                    toShipData={purchases.data
+                                        .map((bulk) => ({
+                                            ...bulk,
+                                            items: bulk.items.filter(
+                                                (product) =>
+                                                    product.status ==
+                                                        "pending" ||
+                                                    product.status ==
+                                                        "preparing"
+                                            ),
+                                        }))
+                                        .filter(
+                                            (bulk) => bulk.items.length > 0
+                                        )}
+                                />
+                            )}
                             {activeTab === "toReceive" && <ToReceive />}
                             {activeTab === "toRate" && <ToRate />}
                             {activeTab === "cancelled" && (

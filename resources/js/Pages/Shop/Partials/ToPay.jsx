@@ -1,10 +1,10 @@
 import { Link } from "@inertiajs/react";
-import { FaPhone, FaMapMarkerAlt, FaShoppingBag } from "react-icons/fa";
 export default function ToPay({ toPay }) {
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold mb-2">To Pay</h2>
+                {toPay.length == 0 ? "No purchased items" : ""}
                 {toPay.map((bulk) => {
                     return bulk.items.map((product) => (
                         <div
