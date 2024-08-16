@@ -12,7 +12,7 @@ export default function ToReceive({ toReceiveData }) {
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold mb-2">To Ship</h2>
+                <h2 className="text-xl font-semibold mb-2">To Receive</h2>
                 {toReceiveData.length == 0 ? "There is no to ship item" : ""}
                 {toReceiveData.map((bulk) => {
                     return bulk.items.map((product) => (
