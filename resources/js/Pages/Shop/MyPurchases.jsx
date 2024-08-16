@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ToPay = lazy(() => import("./Partials/ToPay"));
 const ToShip = lazy(() => import("./Partials/TopShip"));
 const ToReceive = lazy(() => import("./Partials/ToReceive"));
+const Completed = lazy(() => import("./Partials/Completed"));
 const ToRate = lazy(() => import("./Partials/ToRate"));
 const Cancelled = lazy(() => import("./Partials/Cancelled"));
 
@@ -132,6 +133,23 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status == "shipped"
+                                            ),
+                                        }))
+                                        .filter(
+                                            (bulk) => bulk.items.length > 0
+                                        )}
+                                />
+                            )}
+                            {activeTab === "completed" && (
+                                <Completed
+                                    completedData={purchases.data
+                                        .map((bulk) => ({
+                                            ...bulk,
+                                            items: bulk.items.filter(
+                                                (product) =>
+                                                    product.status ==
+                                                        "delivered" &&
+                                                    product.is_delivered
                                             ),
                                         }))
                                         .filter(
