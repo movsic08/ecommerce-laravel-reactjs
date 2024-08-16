@@ -271,20 +271,17 @@ class OrderController extends Controller
       ]);
 
       DB::commit();
-      return redirect()->route('user.myPurchases', [
-        'activeTab' => 'toReceive',
-      ])->with([
+      return redirect()->back()->with([
         'status' => 'success',
-        'message' => 'Order received success.'
+        'message' => 'Order received successfully.'
       ]);
     } catch (\Exception $e) {
       DB::rollBack();
-      return redirect()->route('user.myPurchases', [
-        'activeTab' => 'toReceive',
-      ])->with([
-        'status' => 'error',
-        'message' => 'Something went worong. ' . $e->getMessage()
-      ]);
+      return redirect()->back()
+        ->with([
+          'status' => 'error',
+          'message' => 'Something went worong. ' . $e->getMessage()
+        ]);
     }
   }
 

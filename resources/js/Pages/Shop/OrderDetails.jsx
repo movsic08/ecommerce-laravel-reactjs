@@ -1,20 +1,43 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import { RiBillLine } from "react-icons/ri";
 import { MdOutlinePayments } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 import { LuPackageCheck } from "react-icons/lu";
 import { MdOutlineStarRate } from "react-icons/md";
 import { IoChevronBackCircle } from "react-icons/io5";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function OrderDetais({ auth }) {
-    const { data } = usePage().props;
+    const { data, flash } = usePage().props;
     console.log(data);
+    const { processing, patch } = useForm();
+    const [currentId, setCurrentId] = useState();
+
+    const handleOrderReceived = (e, id) => {
+        e.preventDefault();
+        setCurrentId(id);
+
+        patch(route("order.received", { id }), {
+            onFinish: () => {
+                setCurrentId(null);
+            },
+        });
+    };
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message);
+        }
+    }, [flash]);
     return (
         <>
             <UserAuthenticatedLayout user={auth}>
                 <Head title="No. - Order Details" />
-
+                <ToastContainer />
                 <div className="max-w-4xl mx-auto p-4">
                     <div className="bg-white shadow-md rounded-md p-4 mb-6">
                         <div className="flex flex-col sm:flex-row items-center justify-between">
@@ -76,7 +99,8 @@ export default function OrderDetais({ auth }) {
                                 <div className="relative z-10 flex flex-col items-center">
                                     <div
                                         className={` flex items-center justify-center rounded-full w-10 h-10 ${
-                                            data.status == "shipped"
+                                            data.status == "shipped" ||
+                                            data.status == "delivered"
                                                 ? "bg-themeColor "
                                                 : "border-2 bg-white border-themeColor text-themeColor"
                                         }`}
@@ -99,31 +123,41 @@ export default function OrderDetais({ auth }) {
                                 <div className="relative z-10 flex flex-col items-center">
                                     <div
                                         className={` flex items-center justify-center rounded-full w-10 h-10 ${
-                                            data.status == "delivered"
+                                            data.is_out_for_delivery
                                                 ? "bg-themeColor "
                                                 : "border-2 bg-white border-themeColor"
                                         }`}
                                     >
                                         <LuPackageCheck
                                             size={25}
-                                            className={
-                                                `${data.status} == 'delivered`
-                                                    ? "text-themeColor"
-                                                    : "text-white"
-                                            }
+                                            className={`${
+                                                data.is_out_for_delivery
+                                                    ? "text-white"
+                                                    : "text-themeColor"
+                                            }`}
                                         />
                                     </div>
 
                                     <span className="text-xs mt-2 text-gray-500 text-center min-h-[2rem]">
-                                        Order Received
+                                        Out for Delivery
                                     </span>
                                 </div>
                                 {/* Order Completed */}
                                 <div className="relative z-10 flex flex-col items-center">
-                                    <div className="border-2 border-themeColor bg-white flex items-center justify-center rounded-full w-10 h-10">
+                                    <div
+                                        className={` flex items-center justify-center rounded-full w-10 h-10 ${
+                                            data.is_delivered
+                                                ? "bg-themeColor "
+                                                : "border-2 bg-white border-themeColor"
+                                        }`}
+                                    >
                                         <MdOutlineStarRate
                                             size={25}
-                                            className="text-themeColor"
+                                            className={`${
+                                                data.is_delivered
+                                                    ? "text-white"
+                                                    : "text-themeColor"
+                                            }`}
                                         />
                                     </div>
                                     <span className="text-xs mt-2 text-gray-500 text-center min-h-[2rem]">
@@ -167,7 +201,7 @@ export default function OrderDetais({ auth }) {
                                 )}
                                 {data.is_delivered ? (
                                     <li className="text-green-600 font-semibold">
-                                        <span>Out for Delivery:</span>{" "}
+                                        <span>Item Received:</span>{" "}
                                         {new Date(
                                             data.is_delivered_date
                                         ).toLocaleDateString()}{" "}
@@ -292,6 +326,23 @@ export default function OrderDetais({ auth }) {
                             </span>
                         </p>
                     </div>
+                    {data.is_out_for_delivery ? (
+                        <button
+                            disabled={processing || data.is_delivered}
+                            onClick={(e) => handleOrderReceived(e, data.id)}
+                            className={`mt-4 mb-6 w-full px-2 py-1 text-white rounded-md ${
+                                data.is_delivered
+                                    ? " bg-orange-600 cursor-default"
+                                    : " duration-200 bg-themeColor  hover:bg-orange-500 ease-in-out "
+                            }`}
+                        >
+                            {currentId == data.id
+                                ? "Processing..."
+                                : "Order Received"}
+                        </button>
+                    ) : (
+                        ""
+                    )}
                 </div>
             </UserAuthenticatedLayout>
         </>
