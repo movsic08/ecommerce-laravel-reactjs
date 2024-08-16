@@ -47,6 +47,7 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('my-purchases/order-details/{orderId}', [OrderController::class, 'orderDetails'])->name('order.details');
   Route::get('my-purchases/cancel-order/{orderId}', [OrderController::class, 'showCancelOrder'])->name('order.show.cancel');
   Route::patch('my-purchases/cancelling-order', [OrderController::class, 'cancelOrder'])->name('order.cancel');
+  Route::patch('my-purchases/order-received', [OrderController::class, 'processOrderReceived'])->name('order.received');
   Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
   Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');

@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -251,32 +252,35 @@ class OrderController extends Controller
   {
 
     try {
-      $userID = Auth()->id();
-      $item = OrderItem::findOrFail($request->id);
+      $userID = Auth::id();
+
+      $item = OrderItem::with('order')
+        ->where('id', $request->id)
+        ->whereHas('order', function ($query) use ($userID) {
+          $query->where('user_id', $userID);
+        })
+        ->first();
+
       DB::beginTransaction();
 
       $item->update([
-        'status' => 'shipped',
-        'is_preparing' => true,
-        'is_ready_for_pickup' => true,
-        'is_picked_up' => true,
-        'is_in_transit' => true,
-        'is_out_for_delivery' => true,
-        // 'is_in_transit_date' => now()
+        'status' => 'delivered',
+        'is_delivered' => true,
+        'is_delivered_date' => now(),
+        'shipment_status' => 'delivered'
       ]);
+
       DB::commit();
-      return redirect()->route('seller.shop', [
-        'activeProcessingTab' => 'forPickUp',
-        'activeTab' => 'inTransit',
+      return redirect()->route('user.myPurchases', [
+        'activeTab' => 'toReceive',
       ])->with([
         'status' => 'success',
-        'message' => 'Order sent as out for delivery.'
+        'message' => 'Order received success.'
       ]);
     } catch (\Exception $e) {
       DB::rollBack();
-      return redirect()->route('seller.shop', [
-        'activeProcessingTab' => 'forPickUp',
-        'activeTab' => 'inTransit',
+      return redirect()->route('user.myPurchases', [
+        'activeTab' => 'toReceive',
       ])->with([
         'status' => 'error',
         'message' => 'Something went worong. ' . $e->getMessage()

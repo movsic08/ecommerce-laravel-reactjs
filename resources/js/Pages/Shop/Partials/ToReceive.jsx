@@ -1,6 +1,14 @@
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
+import { useState } from "react";
 export default function ToReceive({ toReceiveData }) {
     console.log(toReceiveData);
+    const { patch, processing } = useForm();
+    const [currentId, setCurrentId] = useState();
+    const handleOrderReceived = (e, id) => {
+        e.preventDefault();
+        setCurrentId(id);
+        patch(route("order.received", { id }));
+    };
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
@@ -44,7 +52,9 @@ export default function ToReceive({ toReceiveData }) {
                                             Quantity: {product.quantity}
                                         </p>
                                         <div className="uppercase text-xs py-1 px-2 bg-green-200 text-green-800 w-fit rounded-full">
-                                            {product.status}
+                                            {product.is_out_for_delivery
+                                                ? "Order is out for delivery!"
+                                                : product.status}
                                         </div>
                                     </div>
                                 </div>
@@ -58,6 +68,24 @@ export default function ToReceive({ toReceiveData }) {
                                             )}
                                         </p>
                                     </div>
+                                    {product.is_out_for_delivery ? (
+                                        <button
+                                            disabled={processing}
+                                            onClick={(e) =>
+                                                handleOrderReceived(
+                                                    e,
+                                                    product.id
+                                                )
+                                            }
+                                            className="bg-themeColor duration-200 hover:bg-orange-500 ease-in-out  px-2 py-1 text-white rounded-md"
+                                        >
+                                            {currentId == product.id
+                                                ? "Processing..."
+                                                : "Order Received"}
+                                        </button>
+                                    ) : (
+                                        ""
+                                    )}
                                 </div>
                             </Link>
                         </div>
