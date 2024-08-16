@@ -225,6 +225,43 @@ class OrderController extends Controller
         'is_picked_up' => true,
         'is_in_transit' => true,
         'is_out_for_delivery' => true,
+        'is_out_for_delivery_date' => now()
+      ]);
+      DB::commit();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'forPickUp',
+        'activeTab' => 'inTransit',
+      ])->with([
+        'status' => 'success',
+        'message' => 'Order sent as out for delivery.'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('seller.shop', [
+        'activeProcessingTab' => 'forPickUp',
+        'activeTab' => 'inTransit',
+      ])->with([
+        'status' => 'error',
+        'message' => 'Something went worong. ' . $e->getMessage()
+      ]);
+    }
+  }
+
+  public function processOrderReceived(Request $request)
+  {
+
+    try {
+      $userID = Auth()->id();
+      $item = OrderItem::findOrFail($request->id);
+      DB::beginTransaction();
+
+      $item->update([
+        'status' => 'shipped',
+        'is_preparing' => true,
+        'is_ready_for_pickup' => true,
+        'is_picked_up' => true,
+        'is_in_transit' => true,
+        'is_out_for_delivery' => true,
         // 'is_in_transit_date' => now()
       ]);
       DB::commit();
@@ -246,4 +283,6 @@ class OrderController extends Controller
       ]);
     }
   }
+
+  // endline
 }
