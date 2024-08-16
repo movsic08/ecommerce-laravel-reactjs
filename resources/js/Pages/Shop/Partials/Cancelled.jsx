@@ -4,7 +4,7 @@ export default function Cancelled({ cancelled }) {
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold mb-2">To Pay</h2>
+                <h2 className="text-xl font-semibold mb-2">Cancelled Orders</h2>
                 {cancelled.map((bulk) => {
                     return bulk.items.map((product) => (
                         <div
