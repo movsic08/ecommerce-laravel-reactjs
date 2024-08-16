@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PurchaseDetailsResource;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -141,9 +142,14 @@ class OrderController extends Controller
 
   public function processOrderForPickUp(Request $request)
   {
-    $item = OrderItem::findOrFail($request->id);
+
     try {
+      $item = OrderItem::findOrFail($request->id);
+      $product = Products::findOrFail($item->product_id);
       DB::beginTransaction();
+      $product->update([
+        'quantity' => $product->quantity - $item->quantity
+      ]);
 
       $item->update([
         'status' => 'shipped',
