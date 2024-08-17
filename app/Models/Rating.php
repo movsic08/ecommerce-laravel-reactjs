@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rating extends Model
 {
-    use HasFactory;
+  use HasFactory;
+
+
+  public function rating()
+  {
+    return $this->belongsTo(Products::class, 'id');
+  }
 }

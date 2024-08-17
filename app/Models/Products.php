@@ -26,9 +26,7 @@ class Products extends Model
     return $this->belongsTo(Seller::class, 'seller_id');
   }
 
-  public function sellerData()
-  {
-  }
+  public function sellerData() {}
 
 
   public function images()
@@ -39,5 +37,10 @@ class Products extends Model
   public function cartItem()
   {
     return $this->hasMany(CartItem::class);
+  }
+
+  public function rating()
+  {
+    return $this->hasMany(Rating::class, 'product_id');
   }
 }
