@@ -157,7 +157,24 @@ export default function MyPurchases({ auth }) {
                                         )}
                                 />
                             )}
-                            {activeTab === "toRate" && <ToRate />}
+                            {activeTab === "toRate" && (
+                                <ToRate
+                                    toRateData={purchases.data
+                                        .map((bulk) => ({
+                                            ...bulk,
+                                            items: bulk.items.filter(
+                                                (product) =>
+                                                    product.status ==
+                                                        "delivered" &&
+                                                    product.is_delivered &&
+                                                    !product.is_rated
+                                            ),
+                                        }))
+                                        .filter(
+                                            (bulk) => bulk.items.length > 0
+                                        )}
+                                />
+                            )}
                             {activeTab === "cancelled" && (
                                 <Cancelled
                                     cancelled={purchases.data
