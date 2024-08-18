@@ -38,7 +38,7 @@ return new class extends Migration
       $table->timestamp('is_out_for_delivery_date')->nullable();
       $table->timestamp('is_delivered_date')->nullable();
       $table->timestamp('is_cancelled_date')->nullable();
-      $table->boolean('is_rated')->nullable();
+      $table->boolean('is_rated')->default(false);
       $table->string('cancelled_reason')->nullable();
       $table->enum('shipment_status', ['in_transit', 'out_for_delivery', 'delivered', 'failed_attempt'])->nullable();
       $table->decimal('amount');
