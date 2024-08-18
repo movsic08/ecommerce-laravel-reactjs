@@ -49,9 +49,15 @@ export default function ToRateList({ data }) {
                                             )}
                                         </p>
                                     </div>
-                                    <button className="px-2 py-1 bg-themeColor hover:bg-orange-600 duration-200 text-white rounded-md">
+                                    <Link
+                                        href={route(
+                                            "rate.show",
+                                            product.order_item_id
+                                        )}
+                                        className="px-2 py-1 bg-themeColor hover:bg-orange-600 duration-200 text-white rounded-md"
+                                    >
                                         Rate item
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
