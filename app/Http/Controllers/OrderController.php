@@ -260,8 +260,10 @@ class OrderController extends Controller
           $query->where('user_id', $userID);
         })
         ->first();
+      $product = Products::findOrFail($item->product_id);
 
       DB::beginTransaction();
+      $product->increment('sold');
 
       $item->update([
         'status' => 'delivered',
