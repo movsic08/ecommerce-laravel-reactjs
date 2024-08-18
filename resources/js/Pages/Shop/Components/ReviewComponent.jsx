@@ -1,6 +1,4 @@
-import ModalImage from "react-modal-image";
 import DefaultUserIcon from "../../../assets/img/default_user_profile.png";
-import DefaultImage from "../../../assets/img/Default-Product-Placeholder.svg";
 import StarRating from "@/Components/StarRating";
 
 export default function ReviewComponent({ data }) {
@@ -26,18 +24,6 @@ export default function ReviewComponent({ data }) {
                     reprehenderit perferendis sed consequuntur quisquam
                     asperiores ipsa maxime?
                 </p>
-                <div className="flex gap-2">
-                    <ModalImage
-                        small={DefaultImage}
-                        large={DefaultImage}
-                        className="w-16 h-16 rounded-lg mx-auto"
-                    />
-                    <ModalImage
-                        small={DefaultImage}
-                        large={DefaultImage}
-                        className="w-16 h-16 rounded-lg mx-auto"
-                    />
-                </div>
             </div>
         </>
     );
