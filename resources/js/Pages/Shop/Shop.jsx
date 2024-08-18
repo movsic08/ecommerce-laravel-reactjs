@@ -240,7 +240,17 @@ export default function Shop({ auth, queryParams = null }) {
                                                     }
                                                     className="absolute top-0 left-0 w-full h-full object-cover"
                                                 />
+
+                                                {/* Overlay for Out of Stock */}
+                                                {product.quantity === 0 && (
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                                        <span className="text-white text-lg font-semibold">
+                                                            Out of Stock
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
+
                                             <div className="p-4 text-center flex flex-col w-full h-full justify-between">
                                                 <p className="line-clamp-2 overflow-hidden">
                                                     {product.product_name}
