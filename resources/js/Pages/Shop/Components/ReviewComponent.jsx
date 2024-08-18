@@ -14,7 +14,6 @@ export default function ReviewComponent({ data }) {
                             className="h-8 w-8 rounded-full"
                             src={DefaultUserIcon}
                             alt=""
-                            srcset=""
                         />{" "}
                         Elmer{" "}
                     </div>
