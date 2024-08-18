@@ -18,7 +18,6 @@ export default function WriteReview({ auth }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(data);
 
         post(route("rate.create", item.id));
     };

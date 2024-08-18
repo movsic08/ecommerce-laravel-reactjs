@@ -6,6 +6,7 @@ use App\Http\Resources\PurchaseDetailsResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Products;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,9 +17,10 @@ class OrderController extends Controller
   public function index()
   {
     $purchases = Order::with('items.images')->where('user_id', auth()->id())->orderBy('updated_at', 'asc')->get();
-
+    $myReviews = Review::where('user_id', Auth::id())->get();
     return Inertia::render('Shop/MyPurchases', [
-      'purchases' => PurchaseDetailsResource::collection($purchases)
+      'purchases' => PurchaseDetailsResource::collection($purchases),
+      'myReviews' => $myReviews
     ]);
   }
 

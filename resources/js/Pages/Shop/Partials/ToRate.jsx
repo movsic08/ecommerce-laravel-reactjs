@@ -6,7 +6,7 @@ const MyReviews = lazy(() => import("./ToRateMyReviews"));
 
 export default function ToRate({ toRateData, myReviewsData }) {
     const { flash } = usePage().props;
-    console.log(flash);
+
     const [activeRateTab, setActiveRateTab] = useState();
     const tabs = [
         { id: "toRate", label: "To Rate" },
