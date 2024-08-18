@@ -213,7 +213,7 @@ export default function Shop({ auth, queryParams = null }) {
                                                 "view-product",
                                                 product.id
                                             )}
-                                            className={`bg-gray-100 duration-700 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg flex rounded relative overflow-hidden ${
+                                            className={`bg-gray-100 duration-300 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg flex rounded relative overflow-hidden ${
                                                 layout == "grid"
                                                     ? "flex-col"
                                                     : "flex-row h-[10rem]"
