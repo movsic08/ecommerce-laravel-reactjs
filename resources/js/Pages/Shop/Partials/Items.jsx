@@ -5,7 +5,7 @@ import DefaultProductIcon from "../../../assets/img/Default-Product-Placeholder.
 export default function Items({ products }) {
     console.log(products);
 
-    const layout = "grid"; // For demonstration purposes, set the layout to "grid"
+    const layout = "grid";
 
     return (
         <>
