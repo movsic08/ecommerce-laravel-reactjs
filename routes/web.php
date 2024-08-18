@@ -7,9 +7,11 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\NotVerfiedSeller;
+use App\Models\Review;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -48,6 +50,8 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('my-purchases/cancel-order/{orderId}', [OrderController::class, 'showCancelOrder'])->name('order.show.cancel');
   Route::patch('my-purchases/cancelling-order', [OrderController::class, 'cancelOrder'])->name('order.cancel');
   Route::patch('my-purchases/order-received', [OrderController::class, 'processOrderReceived'])->name('order.received');
+  Route::get('/my-purchases/rate-order/{orderId}', [ReviewController::class, 'getRatePage'])->name('rate.show');
+  Route::post('/my-purchases/create-rate-order/{orderId}', [ReviewController::class, 'creatReview'])->name('rate.create');
   Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
   Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');

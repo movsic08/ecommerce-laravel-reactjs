@@ -1,10 +1,10 @@
 import StarRating from "@/Components/StarRating";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import { FaFacebookSquare, FaTwitter, FaPinterest } from "react-icons/fa";
 import AddToCart from "@/Components/AddToCart";
 import Quantity from "@/Components/Quantity";
+import ReviewComponent from "./Components/ReviewComponent";
 
 export default function ViewProduct({ auth }) {
     const { product } = usePage().props;
@@ -35,6 +35,8 @@ export default function ViewProduct({ auth }) {
         router.post(route("checkout.show", { items: [item] }));
     };
 
+    console.log(product);
+
     return (
         <>
             <UserAuthenticatedLayout user={auth.user}>
@@ -52,11 +54,11 @@ export default function ViewProduct({ auth }) {
                     rating={product.rating}
                 />
 
-                <div className="py-2 md:py-12 bg-slate-50 min-h-screen">
+                <div className="py-2  bg-slate-50 max-h-max">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div className="container mx-auto p-4">
-                            <div className="flex flex-col md:flex-row">
-                                <div className="w-full lg:w-[40%]">
+                            <div className="flex flex-col lg:flex-row">
+                                <div className="w-full lg:w-[40%] p-4">
                                     <div className="p-3 rounded-md bg-slate-200">
                                         <div className="aspect-w-1 aspect-h-1 w-full">
                                             <img
@@ -66,9 +68,10 @@ export default function ViewProduct({ auth }) {
                                             />
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 mt-2 overflow-x-auto">
+                                    <div className="flex gap-2 mt-2 py-2 overflow-x-auto">
                                         {product.images.map((image) => (
                                             <img
+                                                key={image.id}
                                                 onClick={() =>
                                                     changePhoto(
                                                         image.image_path
@@ -86,7 +89,8 @@ export default function ViewProduct({ auth }) {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="w-full md:w-[60%] px-4 md:px-10 mt-4 md:mt-0">
+                                {/* product details */}
+                                <div className="w-full lg:w-[60%] px-4 md:px-10 mt-4 md:mt-0 h-full lg:h-[80vh] overflow-y-auto">
                                     <h1 className="text-3xl font-semibold">
                                         {product.product_name}
                                     </h1>
@@ -120,14 +124,17 @@ export default function ViewProduct({ auth }) {
                                             Add to Cart
                                         </button>
                                     </div>
-                                    <div className="">
-                                        <Quantity
-                                            currentStock={product.quantity}
-                                            quantity={1}
-                                            onQuantityChange={
-                                                handleQuantityChange
-                                            }
-                                        />
+                                    <div className="flex items-cente justify-between mt-2 md:mt-1">
+                                        <div>
+                                            <Quantity
+                                                currentStock={product.quantity}
+                                                quantity={1}
+                                                onQuantityChange={
+                                                    handleQuantityChange
+                                                }
+                                            />
+                                        </div>
+
                                         <button
                                             onClick={() =>
                                                 handleBuyNow(
@@ -140,24 +147,31 @@ export default function ViewProduct({ auth }) {
                                             disabled={product.quantity === 0}
                                             className="text-white bg-thirdColor hover:bg-thirdColor-dark font-medium rounded-md px-4 py-2 mt-4 transition duration-200 disabled:opacity-50"
                                         >
-                                            Buy It Now
+                                            Buy Now
                                         </button>
                                     </div>
-                                    <div className="flex flex-col mt-4">
-                                        <small>Share</small>
-                                        <div className="flex gap-2 items-center">
-                                            <FaFacebookSquare
-                                                size={30}
-                                                className="text-blue-600"
-                                            />
-                                            <FaTwitter
-                                                size={30}
-                                                className="text-blue-400"
-                                            />
-                                            <FaPinterest
-                                                size={30}
-                                                className="text-red-600"
-                                            />
+                                    {product.quantity === 0 ? (
+                                        <div className="mt-2 w-fit text-xs px-2 py-1 border-red-500 bg-red-100 text-red-600 rounded-sm">
+                                            This item is currently out of stock
+                                        </div>
+                                    ) : (
+                                        ""
+                                    )}
+
+                                    {/* review area */}
+                                    <div className=" mt-6 border-t-2 border-slate-300 pt-4">
+                                        <div>
+                                            <div className="w-full items-center flex justify-between">
+                                                <h1 className=" font-bold text-mainText">
+                                                    {" "}
+                                                    4.7 star Product Ratings
+                                                    (count)
+                                                </h1>{" "}
+                                                <Link className="text-themeColor duration-300 hover:text-orange-600">
+                                                    View All
+                                                </Link>
+                                            </div>
+                                            <ReviewComponent />
                                         </div>
                                     </div>
                                 </div>

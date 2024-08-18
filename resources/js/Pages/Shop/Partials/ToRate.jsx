@@ -1,9 +1,12 @@
+import { usePage } from "@inertiajs/react";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const ToRateList = lazy(() => import("./ToRateList"));
 const MyReviews = lazy(() => import("./ToRateMyReviews"));
 
 export default function ToRate({ toRateData, myReviewsData }) {
+    const { flash } = usePage().props;
+    console.log(flash);
     const [activeRateTab, setActiveRateTab] = useState();
     const tabs = [
         { id: "toRate", label: "To Rate" },
@@ -23,7 +26,6 @@ export default function ToRate({ toRateData, myReviewsData }) {
         window.history.pushState({ activeRateTab }, "", url);
     };
 
-    console.log("rate parent component", toRateData);
     return (
         <div className="bg-white px-4 pb-4 -pt-4 rounded-lg shadow-md">
             <div className="mb-6">

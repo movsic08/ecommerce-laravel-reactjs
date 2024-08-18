@@ -1,35 +1,40 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { FaStar } from "react-icons/fa";
-import { useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import InputError from "@/Components/InputError";
+import { toast, ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 export default function WriteReview({ auth }) {
-    const [qualityRating, setQualityRating] = useState(0);
-    const [serviceRating, setServiceRating] = useState(0);
-    const [review, setReview] = useState("");
-    const { item } = usePage().props;
+    const { item, flash } = usePage().props;
 
     const { post, errors, processing, data, setData } = useForm({
-        review: review,
+        review: "",
+        orderId: item.id,
+        qualityRating: 0,
+        serviceRating: 0,
     });
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log(data);
 
-        console.log({
-            qualityRating,
-            serviceRating,
-            review,
-        });
-
-        post(route("rate.create"));
+        post(route("rate.create", item.id));
     };
+
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message);
+        }
+    }, [flash]);
 
     return (
         <UserAuthenticatedLayout user={auth}>
             <Head title="Rate Product" />
-
+            <ToastContainer />
             <div className="container mx-auto max-w-6xl p-4 md:p-8">
                 <div className="bg-white p-6 rounded-md border border-slate-200 shadow-md">
                     {/* Product Details */}
@@ -59,14 +64,17 @@ export default function WriteReview({ auth }) {
                                     <FaStar
                                         key={star}
                                         className={`cursor-pointer ${
-                                            qualityRating >= star
+                                            data.qualityRating >= star
                                                 ? "text-yellow-500"
                                                 : "text-gray-400"
                                         }`}
-                                        onClick={() => setQualityRating(star)}
+                                        onClick={() =>
+                                            setData("qualityRating", star)
+                                        }
                                     />
                                 ))}
                             </div>
+                            <InputError message={errors.qualityRating} />
                         </div>
 
                         <div className="mt-4">
@@ -76,21 +84,25 @@ export default function WriteReview({ auth }) {
                                     <FaStar
                                         key={star}
                                         className={`cursor-pointer ${
-                                            serviceRating >= star
+                                            data.serviceRating >= star
                                                 ? "text-yellow-500"
                                                 : "text-gray-400"
                                         }`}
-                                        onClick={() => setServiceRating(star)}
+                                        onClick={() =>
+                                            setData("serviceRating", star)
+                                        }
                                     />
                                 ))}
                             </div>
+                            <InputError message={errors.serviceRating} />
                         </div>
 
                         <div className="mt-4">
                             <p className="font-semibold">Your Review</p>
                             <textarea
-                                value={review}
-                                onChange={(e) => setReview(e.target.value)}
+                                onChange={(e) =>
+                                    setData("review", e.target.value)
+                                }
                                 className="w-full p-2 border rounded-md mt-2"
                                 rows="4"
                                 placeholder="Write your review here..."
