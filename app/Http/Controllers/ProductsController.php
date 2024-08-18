@@ -70,7 +70,6 @@ class ProductsController extends Controller
   {
     try {
       $product = Products::with('images', 'seller', 'reviews.user', 'reviews')->findOrFail($productid);
-      // dd($product);
       return Inertia::render('Shop/ViewProduct', [
         'product' => new ViewProductResource($product)
       ]);
