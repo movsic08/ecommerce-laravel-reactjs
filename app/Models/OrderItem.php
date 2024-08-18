@@ -42,7 +42,8 @@ class OrderItem extends Model
     'is_in_transit_date',
     'is_out_for_delivery_date',
     'is_delivered_date',
-    'is_cancelled_date'
+    'is_cancelled_date',
+    'is_rated'
   ];
 
   public function order()
