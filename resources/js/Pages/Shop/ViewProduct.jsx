@@ -5,6 +5,7 @@ import { useState } from "react";
 import AddToCart from "@/Components/AddToCart";
 import Quantity from "@/Components/Quantity";
 import ReviewComponent from "./Components/ReviewComponent";
+import { FaStar } from "react-icons/fa";
 
 export default function ViewProduct({ auth }) {
     const { product } = usePage().props;
@@ -35,7 +36,7 @@ export default function ViewProduct({ auth }) {
         router.post(route("checkout.show", { items: [item] }));
     };
 
-    console.log(product);
+    console.log(product.reviews);
 
     return (
         <>
@@ -162,16 +163,31 @@ export default function ViewProduct({ auth }) {
                                     <div className=" mt-6 border-t-2 border-slate-300 pt-4">
                                         <div>
                                             <div className="w-full items-center flex justify-between">
-                                                <h1 className=" font-bold text-mainText">
-                                                    {" "}
-                                                    4.7 star Product Ratings
-                                                    (count)
-                                                </h1>{" "}
-                                                <Link className="text-themeColor duration-300 hover:text-orange-600">
-                                                    View All
-                                                </Link>
+                                                <h1 className="flex items-center gap-1 font-bold text-mainText">
+                                                    {product.rating + " "}
+                                                    <span>
+                                                        <FaStar className=" text-yellow-500" />
+                                                    </span>
+                                                    Product Ratings
+                                                </h1>
+                                                {product.reviews.length >= 5 ? (
+                                                    ""
+                                                ) : (
+                                                    <Link className="text-themeColor duration-300 hover:text-orange-600">
+                                                        View All
+                                                    </Link>
+                                                )}
                                             </div>
-                                            <ReviewComponent />
+                                            {product.reviews.length === 0
+                                                ? "This product does not have any reviews yet."
+                                                : product.reviews.map(
+                                                      (review) => (
+                                                          <ReviewComponent
+                                                              data={review}
+                                                              key={review.id}
+                                                          />
+                                                      )
+                                                  )}
                                         </div>
                                     </div>
                                 </div>
