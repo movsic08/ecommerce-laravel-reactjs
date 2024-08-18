@@ -35,6 +35,7 @@ class ItemResource extends JsonResource
       'is_out_for_delivery' => $this->is_out_for_delivery,
       'is_delivered' => $this->is_delivered,
       'is_cancelled' => $this->is_cancelled,
+      'is_rated' => $this->is_rated,
       'cancelled_reason' => $this->cancelled_reason,
       'shipment_status' => $this->shipment_status,
       'amount' => $this->amount,
