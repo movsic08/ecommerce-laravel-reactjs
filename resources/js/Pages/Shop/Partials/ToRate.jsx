@@ -54,7 +54,9 @@ export default function ToRate({ toRateData, myReviewsData }) {
                     {activeRateTab == "toRate" && (
                         <ToRateList data={toRateData} />
                     )}
-                    {activeRateTab == "myReviews" && <MyReviews />}
+                    {activeRateTab == "myReviews" && (
+                        <MyReviews data={myReviewsData} />
+                    )}
                 </Suspense>
             </div>
         </div>

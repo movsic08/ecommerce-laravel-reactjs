@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MyPurchaseResource;
 use App\Http\Resources\PurchaseDetailsResource;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -16,11 +17,14 @@ class OrderController extends Controller
 {
   public function index()
   {
-    $purchases = Order::with('items.images')->where('user_id', auth()->id())->orderBy('updated_at', 'asc')->get();
-    $myReviews = Review::where('user_id', Auth::id())->get();
+    $purchases = Order::with('items.images')->where('user_id', auth()->id())
+      ->orderBy('updated_at', 'asc')->get();
+    $myReviews = Review::where('user_id', Auth::id())
+      ->with('product.images')->get();
+
     return Inertia::render('Shop/MyPurchases', [
       'purchases' => PurchaseDetailsResource::collection($purchases),
-      'myReviews' => $myReviews
+      'myReviews' => MyPurchaseResource::collection($myReviews)
     ]);
   }
 

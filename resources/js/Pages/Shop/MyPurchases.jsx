@@ -20,7 +20,8 @@ const ToRate = lazy(() => import("./Partials/ToRate"));
 const Cancelled = lazy(() => import("./Partials/Cancelled"));
 
 export default function MyPurchases({ auth }) {
-    const { flash, purchases } = usePage().props;
+    const { flash, purchases, myReviews } = usePage().props;
+
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {
@@ -159,6 +160,7 @@ export default function MyPurchases({ auth }) {
                             )}
                             {activeTab === "toRate" && (
                                 <ToRate
+                                    myReviewsData={myReviews.data}
                                     toRateData={purchases.data
                                         .map((bulk) => ({
                                             ...bulk,

@@ -1,10 +1,13 @@
 import { Link } from "@inertiajs/react";
 export default function Completed({ completedData }) {
+    console.log(completedData);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-semibold mb-2">Order Received</h2>
-                {completedData.length == 0 ? "There is no to ship item" : ""}
+                {completedData.length == 0 || completedData == null
+                    ? "There is no to ship item"
+                    : ""}
                 {completedData.map((bulk) => {
                     return bulk.items.map((product) => (
                         <div
