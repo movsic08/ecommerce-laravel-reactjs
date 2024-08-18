@@ -54,15 +54,6 @@ export default function Cancelled({ cancelled }) {
                                             )}
                                         </p>
                                     </div>
-                                    <Link
-                                        href={route(
-                                            "order.show.cancel",
-                                            product.id
-                                        )}
-                                        className="bg-themeColor rounded-md px-2 uppercase font-bold duration-300 ease-in-out hover:bg-orange-500 text-white py-1 text-sm"
-                                    >
-                                        Cancel Order
-                                    </Link>
                                 </div>
                             </Link>
                         </div>
