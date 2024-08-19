@@ -175,19 +175,28 @@ export default function Checkout({ auth }) {
         0
     );
     const { data, setData, errors, processing, post } = useForm({
-        // _token: props.csrf_token,
         name: name,
         address: address,
         phone_no: phone_no,
         total: totalPrice,
         payment_method: "cod",
+        cart_items: products
+            .map((item) => {
+                if (item.cart_id) {
+                    return {
+                        cart_id: item.cart_id,
+                    };
+                } else {
+                    return null;
+                }
+            })
+            .filter((item) => item !== null),
         items: products.map((item) => ({
             product_id: item.product.id,
             quantity: item.buying_quantity,
             price: item.product.price,
             shop_name: "testing",
             seller_id: item.seller.id,
-            // shop_name: item.seller.store_name,
             product_name: item.product.product_name,
             category: item.product.category,
         })),

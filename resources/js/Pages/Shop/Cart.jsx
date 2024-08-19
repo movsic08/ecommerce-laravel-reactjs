@@ -23,9 +23,10 @@ export default function Cart({ auth }) {
         const checkoutData = selectedItems.map((item) => ({
             product_id: item.product.id,
             item_quantity: item.quantity,
+            cart_id: item.id,
         }));
 
-        router.post(route("checkout.show", { items: checkoutData }));
+        router.get(route("checkout.show", { items: checkoutData }));
         // router.post(router("checkout.show"), { items: checkoutData });
     };
 

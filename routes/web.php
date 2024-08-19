@@ -52,7 +52,7 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::patch('my-purchases/order-received', [OrderController::class, 'processOrderReceived'])->name('order.received');
   Route::get('/my-purchases/rate-order/{orderId}', [ReviewController::class, 'getRatePage'])->name('rate.show');
   Route::post('/my-purchases/create-rate-order/{orderId}', [ReviewController::class, 'creatReview'])->name('rate.create');
-  Route::post('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
+  Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
   Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
 });

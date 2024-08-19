@@ -223,7 +223,7 @@ export default function Shop({ auth, queryParams = null }) {
                                                 className={` ${
                                                     layout == "grid"
                                                         ? "pt-[100%] w-full"
-                                                        : "w-[10rem] h-full"
+                                                        : "w-[10rem] h-full aspect-1"
                                                 } relative`}
                                             >
                                                 <img

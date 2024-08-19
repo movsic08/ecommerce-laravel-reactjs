@@ -6,6 +6,7 @@ use App\Http\Resources\Seller\ViewProductResource;
 use App\Http\Resources\SellerProductImageResource;
 use App\Http\Resources\SellerProductList;
 use App\Http\Resources\ShopProductResource;
+use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Products;
@@ -20,7 +21,6 @@ class CheckoutController extends Controller
 {
   public function show(Request $request)
   {
-
     $products = [];
     foreach ($request->items as $item) {
       $product = Products::with('seller')
@@ -30,12 +30,18 @@ class CheckoutController extends Controller
 
 
       if ($product) {
-        $products[] = [
+        $productsData = [
           'product' => new ShopProductResource($product),
           'seller' => $product->seller,
           'images' => SellerProductImageResource::collection($product->images),
           'buying_quantity' => $item['item_quantity']
         ];
+
+        if (isset($item['cart_id'])) {
+          $productsData['cart_id'] = $item['cart_id'];
+        }
+
+        $products[] = $productsData;
       }
     }
 
@@ -48,7 +54,7 @@ class CheckoutController extends Controller
   public function store(Request $request)
   {
 
-    $validated = $request->validate([
+    $request->validate([
       'name' => 'required|string',
       'phone_no' => 'required|string',
       'address' => 'required|string',
@@ -86,8 +92,6 @@ class CheckoutController extends Controller
         'payment_option' => $request->payment_method
       ]);
 
-
-
       foreach ($request->items as $item) {
 
         do {
@@ -109,10 +113,14 @@ class CheckoutController extends Controller
           'category' => $item['category'],
           'amount' => $item['quantity'] * $item['price'],
           'delivery_address' => $request->address,
-
         ]);
       }
 
+      if (isset($request->cart_items)) {
+        foreach ($request->cart_items as $item) {
+          CartItem::destroy($item['cart_id']);
+        }
+      }
 
       DB::commit();
 

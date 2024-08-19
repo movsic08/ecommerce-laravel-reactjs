@@ -33,7 +33,7 @@ export default function ViewProduct({ auth }) {
             item_quantity: buyingQuantity,
         };
 
-        router.post(route("checkout.show", { items: [item] }));
+        router.get(route("checkout.show", { items: [item] }));
     };
 
     console.log(product.reviews);
