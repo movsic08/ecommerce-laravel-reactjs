@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Seller\ViewProductResource;
-use App\Http\Resources\SellerProductImageResource;
-use App\Http\Resources\SellerProductList;
-use App\Http\Resources\ShopProductResource;
-use App\Models\CartItem;
+use Inertia\Inertia;
 use App\Models\Order;
-use App\Models\OrderItem;
+use App\Models\CartItem;
 use App\Models\Products;
+use App\Models\OrderItem;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use App\Http\Resources\SellerProductList;
+use App\Http\Resources\ShopProductResource;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
+use App\Http\Resources\Seller\ViewProductResource;
+use App\Http\Resources\SellerProductImageResource;
+use GuzzleHttp\Client;
 
 class CheckoutController extends Controller
 {
@@ -53,13 +54,12 @@ class CheckoutController extends Controller
 
   public function store(Request $request)
   {
-
     $request->validate([
       'name' => 'required|string',
       'phone_no' => 'required|string',
       'address' => 'required|string',
       'total' => 'required|numeric',
-      'payment_method' => 'required|string|in:cod, gcash',
+      'payment_method' => 'required',
       'items' => 'required|array',
       'items.*.product_id' => 'required|integer',
       'items.*.quantity' => 'required|integer',
@@ -90,6 +90,10 @@ class CheckoutController extends Controller
         'payment_option' => $request->payment_method
       ]);
 
+
+      $line_items = [];
+      $orderItemsList = [];
+
       foreach ($request->items as $item) {
 
         do {
@@ -98,7 +102,7 @@ class CheckoutController extends Controller
           OrderItem::where('order_item_id', $generated_order_item_id)->exists()
         );
 
-        OrderItem::create([
+        $processedOrderItem = OrderItem::create([
           'order_id' => $order->id,
           'order_item_id' => strtoupper($generated_order_item_id),
           'product_id' => $item['product_id'],
@@ -112,16 +116,89 @@ class CheckoutController extends Controller
           'amount' => $item['quantity'] * $item['price'],
           'delivery_address' => $request->address,
         ]);
+
+        $line_items[] = [
+          'name' => $processedOrderItem->product_name,
+          'quantity' => (int) $processedOrderItem->quantity,
+          'amount' => (int) ($processedOrderItem->amount / $processedOrderItem->quantity . '00'),
+          'currency' => 'PHP',
+          'description' => 'Description for ' . $processedOrderItem->product_name,
+        ];
+
+        $orderItemsList[] = [
+          'order_item_id' => $processedOrderItem->id,
+        ];
       }
 
+      //remove the order from cart if its from cart
       if (isset($request->cart_items)) {
         foreach ($request->cart_items as $item) {
           CartItem::destroy($item['cart_id']);
         }
       }
 
-      DB::commit();
+      //paymongo api integration
+      if ($request->payment_method == 'gcash/paymaya') {
 
+        $client = new Client();
+        try {
+
+          $response  = $client->request('POST', 'https://api.paymongo.com/v1/checkout_sessions', [
+            'body' => json_encode([
+              'data' => [
+                'attributes' => [
+                  'billing' => [
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone_no
+                  ],
+                  'statement_descriptor' => 'TO BE CHANGED',
+                  'description' => 'TCHECKOUT DESCRIPTION TO BE CHANGED',
+                  'line_items' => $line_items,
+                  'reference_number' => $generated_order_id,
+                  'payment_method_types' => ['gcash', 'paymaya'], //payment method here
+                  'success_url' => route('checkout.success', $generated_order_id),
+                  'cancel_url' => route('pay.error'),
+                ]
+              ]
+            ]),
+            'headers' => [
+              'Content-Type' => 'application/json',
+              'accept' => 'application/json',
+              'authorization' => 'Basic ' . base64_encode(env('PAYMONGO_SECRET_KEY')),
+            ],
+          ]);
+
+
+          $responseBody = $response->getBody()->getContents();
+          $responseData = json_decode($responseBody, true);
+          $checkoutUrl = $responseData['data']['attributes']['checkout_url'];
+          $checkout_session_id = $responseData['data']['id'];
+
+
+          foreach ($orderItemsList as $orderItem) {
+            OrderItem::where('id', $orderItem['order_item_id'])
+              ->update(['status' => 'pending']);
+          }
+
+          DB::commit();
+
+          return Inertia::location($checkoutUrl);
+        } catch (\Exception $e) {
+          if ($e instanceof \GuzzleHttp\Exception\ClientException) {
+            $response = $e->getResponse();
+            if ($response) {
+              $body = $response->getBody()->getContents();
+              Log::error('Response body: ' . $body);
+              dd('api error', $body);
+            }
+          }
+          dd('error_api');
+          Log::Error('API Paymongo error:' . $e->getMessage());
+        }
+      }
+
+      DB::commit();
       return to_route('checkout.success', $generated_order_id)->with([
         'status' => 'success',
         'message' => 'Orde Placed Successfully'

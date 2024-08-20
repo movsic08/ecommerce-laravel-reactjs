@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { IoChevronBackCircleSharp } from "react-icons/io5";
+import InputError from "@/Components/InputError";
 
 export default function Checkout({ auth }) {
     const { products, flash, props } = usePage().props;
@@ -181,6 +182,7 @@ export default function Checkout({ auth }) {
         phone_no: phone_no,
         total: totalPrice,
         payment_method: "cod",
+        email: auth.user.email,
         cart_items: products
             .map((item) => {
                 if (item.cart_id) {
@@ -211,7 +213,7 @@ export default function Checkout({ auth }) {
             payment_method: e.target.value,
         });
     };
-
+    console.log(data.payment_method);
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("Form submitted with data:", data);
@@ -333,7 +335,7 @@ export default function Checkout({ auth }) {
                         <label className="flex items-center mb-2">
                             <input
                                 type="radio"
-                                name="payment_option"
+                                name="payment_method"
                                 value="cod"
                                 checked={data.payment_method === "cod"}
                                 onChange={handleChange}
@@ -344,14 +346,20 @@ export default function Checkout({ auth }) {
                         <label className="flex items-center">
                             <input
                                 type="radio"
-                                name="payment_option"
-                                value="gcash"
-                                checked={data.payment_method === "gcash"}
+                                name="payment_method"
+                                value="gcash/paymaya"
+                                checked={
+                                    data.payment_method === "gcash/paymaya"
+                                }
                                 onChange={handleChange}
                                 className="mr-2"
                             />
-                            GCash
+                            GCash/ Paymaya
                         </label>
+
+                        {errors.payment_method && (
+                            <InputError message={errors.payment_method} />
+                        )}
                     </div>
 
                     <button

@@ -43,7 +43,8 @@ class OrderItem extends Model
     'is_out_for_delivery_date',
     'is_delivered_date',
     'is_cancelled_date',
-    'is_rated'
+    'is_rated',
+    'sc_id'
   ];
 
   public function order()
