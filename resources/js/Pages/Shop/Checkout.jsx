@@ -1,5 +1,5 @@
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { FaLocationDot } from "react-icons/fa6";
 import ModalImage from "react-modal-image";
 import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
@@ -7,6 +7,7 @@ import SpinnerLoading from "@/Components/SpinnerLoading";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import { IoChevronBackCircleSharp } from "react-icons/io5";
 
 export default function Checkout({ auth }) {
     const { products, flash, props } = usePage().props;
@@ -235,9 +236,17 @@ export default function Checkout({ auth }) {
             <Head title="Checkout" />
             <ToastContainer />
             <div className="max-w-2xl mx-auto p-6 my-6 bg-white shadow-lg md:rounded-lg border border-gray-200">
-                <h1 className="text-2xl font-bold text-center text-gray-800">
-                    Checkout
-                </h1>
+                <div className=" flex items-center  justify-between">
+                    <button
+                        className="duration-200 flex items-center gap-1 ease-out font-bold hover:text-themeColor uppercase cursor-pointer text-mainText"
+                        onClick={() => window.history.back()}
+                    >
+                        <IoChevronBackCircleSharp /> back
+                    </button>
+                    <h1 className="text-xl font-bold text-center text-gray-800">
+                        Checkout
+                    </h1>
+                </div>
                 <form onSubmit={handleSubmit} className="mt-6" method="POST">
                     <div className="bg-gray-100 p-4 rounded-lg">
                         <h2 className="text-2xl mb-2 flex items-center gap-2 font-semibold text-gray-700">
