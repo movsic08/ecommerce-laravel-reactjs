@@ -80,8 +80,6 @@ class CheckoutController extends Controller
         Order::where('order_id', $generated_order_id)->exists()
       );
 
-
-
       $order = Order::create([
         'user_id' => auth()->id(),
         'order_id' => strtoupper($generated_order_id),

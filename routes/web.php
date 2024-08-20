@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
@@ -29,7 +30,6 @@ Route::get('/', function () {
 
 //Customer pages 
 Route::middleware('auth', 'customer')->group(function () {
-
   Route::get('/home', [ProductsController::class, 'customerHome'])->name('dashboard');
   Route::get('/my-profile', [UserController::class, 'showProfile'])->name('user.profile');
   Route::delete('/my-profile', [UserController::class, 'destroy'])->name('user.destroy');
@@ -54,6 +54,7 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::post('/my-purchases/create-rate-order/{orderId}', [ReviewController::class, 'creatReview'])->name('rate.create');
   Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
   Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
+  Route::get('pay', [PaymentController::class, 'pay'])->name('pay.show');
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
 });
 
@@ -65,8 +66,6 @@ Route::get('/seller-account-on-the-process', function () {
   return Inertia::render('StatusPages/PendingSellerAccount');
 })->middleware(NotVerfiedSeller::class)
   ->name('seller.pending.account');
-
-
 
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
@@ -81,7 +80,6 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::delete('view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
   Route::put('/view-seller-status/{id}', [AdminController::class, 'updateSellerStatus'])->name('admin.update.seller.status');
 });
-
 
 //seller pages
 Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
@@ -110,13 +108,9 @@ Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
   Route::get('shipping-setting', [SellerController::class, 'showShippingSetting'])->name('seller.shipping.setting');
 });
 
-
-
 Route::get('/about', function () {
   return Inertia::render('About');
 })->middleware(['auth'])->name('about');
-
-
 
 Route::get('/contact', function () {
   return Inertia::render('Contact');
@@ -130,6 +124,9 @@ Route::middleware('auth')->group(function () {
   // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//testing area here
+Route::get('pay/success', [PaymentController::class, 'success'])->name('pay.success');
+Route::get('pay/error', [PaymentController::class, 'error'])->name('pay.error');
 
 
 require __DIR__ . '/auth.php';
