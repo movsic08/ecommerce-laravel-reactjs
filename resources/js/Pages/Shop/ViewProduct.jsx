@@ -40,7 +40,10 @@ export default function ViewProduct({ auth }) {
 
     return (
         <>
-            <UserAuthenticatedLayout user={auth.user}>
+            <UserAuthenticatedLayout
+                user={auth.user}
+                cartNumber={auth.cartCount}
+            >
                 <Head title={product.product_name} />
 
                 {/* Modal */}

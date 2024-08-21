@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -34,13 +36,15 @@ class HandleInertiaRequests extends Middleware
       ...parent::share($request),
       'auth' => [
         'user' => $request->user(),
+        'cartCount' => Auth()->check() && !Auth()->user()->is_admin && !Auth()->user()->is_seller ? CartItem::where('user_id', Auth::id())->count() : 0,
       ],
-      'ziggy' => fn () => [
+      'ziggy' => fn() => [
         ...(new Ziggy)->toArray(),
         'location' => $request->url(),
-      ], 'flash' => [
-        'message' => fn () => $request->session()->get('message'),
-        'status' => fn () => $request->session()->get('status')
+      ],
+      'flash' => [
+        'message' => fn() => $request->session()->get('message'),
+        'status' => fn() => $request->session()->get('status')
       ]
     ];
   }

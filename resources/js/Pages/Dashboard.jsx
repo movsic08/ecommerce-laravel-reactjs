@@ -18,7 +18,7 @@ export default function Dashboard({ auth }) {
         // Add more images as needed
     ];
     return (
-        <AuthenticatedLayout user={auth.user}>
+        <AuthenticatedLayout user={auth.user} cartNumber={auth.cartCount}>
             <Head title="Home" />
             {/* first page full*/}
             <div className="lg:-mt-[5rem] h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">

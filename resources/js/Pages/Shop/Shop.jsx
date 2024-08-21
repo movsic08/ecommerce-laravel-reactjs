@@ -52,10 +52,10 @@ export default function Shop({ auth, queryParams = null }) {
     const toggleLayout = () => {
         setLayout((prevLayout) => (prevLayout === "grid" ? "list" : "grid"));
     };
-
+    console.log(auth);
     console.log(products);
     return (
-        <UserAuthenticatedLayout user={auth.user}>
+        <UserAuthenticatedLayout user={auth.user} cartNumber={auth.cartCount}>
             <Head title="Shop" />
             <img
                 className="object-cover h-36 w-full"

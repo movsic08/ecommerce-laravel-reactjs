@@ -9,38 +9,43 @@ import SearchIcon from "@/assets/icons/SearchIcon.svg";
 import HeartIcon from "@/assets/icons/HeartIcon.svg";
 import Logo from "@/assets/icons/Logo.svg";
 
-export default function UserAuthenticatedLayout({ user, header, children }) {
+export default function UserAuthenticatedLayout({
+    user,
+    cartNumber,
+    header,
+    children,
+}) {
+    const [cartCount, setCartCount] = useState(
+        cartNumber == null ? 0 : cartNumber
+    );
+    console.log();
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
+        useState(true);
 
-    const [cartNumber, setCartNumber] = useState(0);
+    // const [cartNumber, setCartNumber] = useState(0);
 
-    const countCartItems = async () => {
-        try {
-            const response = await fetch("/cart-count", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+    // const countCartItems = async () => {
+    //     try {
+    //         const response = await fetch("/cart-count", {
+    //             method: "GET",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //         });
 
-            if (response.ok) {
-                const data = await response.json();
-                setCartNumber(data.count);
-            } else {
-                console.error(
-                    "Failed to fetch cart count:",
-                    response.statusText
-                );
-            }
-        } catch (error) {
-            console.error("Failed to fetch cart count:", error);
-        }
-    };
-
-    useEffect(() => {
-        countCartItems();
-    }, []);
+    //         if (response.ok) {
+    //             const data = await response.json();
+    //             setCartNumber(data.count);
+    //         } else {
+    //             console.error(
+    //                 "Failed to fetch cart count:",
+    //                 response.statusText
+    //             );
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to fetch cart count:", error);
+    //     }
+    // };
 
     return (
         <div className="min-h-screen bg-white">
@@ -85,7 +90,7 @@ export default function UserAuthenticatedLayout({ user, header, children }) {
                             <NavLink href={route("user-cart")}>
                                 <div className=" relative ">
                                     <span className=" absolute -top-2 -right-2 text-sm font-bold">
-                                        {cartNumber == 0 ? "" : cartNumber}
+                                        {cartCount}
                                     </span>
                                     <img
                                         className=" h-6 "

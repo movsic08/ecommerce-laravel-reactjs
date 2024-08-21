@@ -14,7 +14,7 @@ const UserProfile = ({ auth }) => {
     const { user } = usePage().props.auth;
 
     return (
-        <UserAuthenticatedLayout user={user}>
+        <UserAuthenticatedLayout user={user} cartNumber={auth.cartCount}>
             <Head title="Update Profile" />
             <ToastContainer />
             <div className="container mx-auto p-4 flex gap-4 md:gap-5 lg:gap-6 flex-col max-w-7xl">

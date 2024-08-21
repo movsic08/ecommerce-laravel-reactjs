@@ -87,7 +87,10 @@ export default function Cart({ auth }) {
 
     return (
         <>
-            <UserAuthenticatedLayout user={auth.user}>
+            <UserAuthenticatedLayout
+                user={auth.user}
+                cartNumber={auth.cartCount}
+            >
                 <ToastContainer />
                 <Head title="Cart" />
                 <div className="py-12 h-full -z-30">
