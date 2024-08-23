@@ -41,7 +41,7 @@ export default function Dashboard({ auth }) {
                 />
             </div>
             {/* 2nd page */}
-            <div className="bg-white w-screen h-full p-6 flex flex-col items-center ">
+            <div className="bg-white w-full h-full p-6 flex flex-col items-center ">
                 <h1 className=" font-bold text-4xl py-8">
                     Artist of the Month
                 </h1>
