@@ -3,8 +3,6 @@ import { Link } from "@inertiajs/react";
 import DefaultProductIcon from "../../../assets/img/Default-Product-Placeholder.svg";
 
 export default function Items({ products }) {
-    console.log(products);
-
     const layout = "grid";
 
     return (
@@ -19,7 +17,7 @@ export default function Items({ products }) {
                 {products.data.map((product) => (
                     <Link
                         key={product.id}
-                        href="#"
+                        href={route("view-product", product.id)}
                         className={`bg-gray-100 duration-700 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg flex rounded relative overflow-hidden ${
                             layout == "grid" ? "flex-col" : "flex-row h-[10rem]"
                         }`}
