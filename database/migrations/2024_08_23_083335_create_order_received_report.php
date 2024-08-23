@@ -25,7 +25,7 @@ return new class extends Migration
       $table->string('product_name');
       $table->bigInteger('amount');
       $table->string('reference_number');
-      $table->enum('payment_method', ['gcash', 'maya', 'cod'])->default('cod');
+      $table->enum('payment_method', ['gcash/paymaya', 'cod'])->default('cod');
       $table->timestamps();
     });
   }
