@@ -12,6 +12,8 @@ class OrderReceivedReport extends Model
   protected $fillable = [
     'seller_id',
     'order_id',
+    'buyer_id',
+    'buyers_name',
     'product_id',
     'product_name',
     'amount',
