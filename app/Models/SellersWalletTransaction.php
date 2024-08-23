@@ -17,4 +17,9 @@ class SellersWalletTransaction extends Model
     'amount',
     'reference_number'
   ];
+
+  public function sellersWallet()
+  {
+    return $this->belongsTo(SellersWallets::class);
+  }
 }

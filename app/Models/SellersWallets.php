@@ -15,4 +15,9 @@ class SellersWallets extends Model
     'seller_id',
     'balance'
   ];
+
+  public function walletTransactions()
+  {
+    return  $this->hasMany(SellersWalletTransaction::class, 'wallet_id');
+  }
 }
