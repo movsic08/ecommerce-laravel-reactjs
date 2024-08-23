@@ -41,7 +41,7 @@ Route::middleware('auth', 'customer')->group(function () {
   })->name('user-messages');
   Route::get('/shop/id', [SellerController::class, 'shop'])->name('view.seller.shop');
   Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
-  Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('store-to-cart');
+  Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('cart.store');
   // Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth')->name('cart');
   Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.item.destroy');

@@ -56,26 +56,23 @@ export default function AddToCart({
 
     const { flash } = usePage().props;
 
-    const submitToCart = async (e) => {
+    const submitToCart = (e) => {
         e.preventDefault();
-        try {
-            post("/store-to-cart", {
-                onSuccess: async () => {
-                    toast.success(
-                        flash.message || "Item added to cart successfully!"
-                    );
-                    await sleep(500);
-                    closeModal();
-                },
-                onError: async () => {
-                    toast.error("Something went wrong");
-                    await sleep(500);
-                    closeModal();
-                },
-            });
-        } catch (error) {
-            console.log(error);
-        }
+
+        post(route("cart.store"), {
+            onSuccess: () => {
+                toast.success(
+                    flash.message || "Item added to cart successfully!"
+                );
+                sleep(100);
+                closeModal();
+            },
+            onError: () => {
+                toast.error("Something went wrong");
+                sleep(500);
+                closeModal();
+            },
+        });
     };
 
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
