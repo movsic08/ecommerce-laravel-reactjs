@@ -17,6 +17,7 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Seller\ViewProductResource;
 use App\Http\Resources\SellerProductImageResource;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class CheckoutController extends Controller
 {
@@ -153,7 +154,7 @@ class CheckoutController extends Controller
                     'phone' => $request->phone_no
                   ],
                   'statement_descriptor' => 'TO BE CHANGED',
-                  'description' => 'TCHECKOUT DESCRIPTION TO BE CHANGED',
+                  'description' => 'Payment for Order No. ' . $generated_order_id,
                   'line_items' => $line_items,
                   'reference_number' => $generated_order_id,
                   'payment_method_types' => ['gcash', 'paymaya'], //payment method here
@@ -175,12 +176,16 @@ class CheckoutController extends Controller
           $checkoutUrl = $responseData['data']['attributes']['checkout_url'];
           $checkout_session_id = $responseData['data']['id'];
 
-
           foreach ($orderItemsList as $orderItem) {
             OrderItem::where('id', $orderItem['order_item_id'])
-              ->update(['status' => 'pending']);
+              ->update([
+                'status' => 'pending',
+                'payment_status' => 'paid',
+                'cs_id' => $checkout_session_id
+              ]);
           }
 
+          // to expire the cs_id      
           DB::commit();
 
           return Inertia::location($checkoutUrl);
@@ -219,6 +224,15 @@ class CheckoutController extends Controller
     $order = Order::where('order_id', $orderId)->with('items')->firstOrFail();
     $categoriesFromOrder = $order->items->pluck('category')->unique();
     $products = Products::with('images')->whereIn('category', $categoriesFromOrder)->limit(10)->get();
+
+    // $client = new Client();
+
+    // $client->request('POST', 'https://api.paymongo.com/v1/checkout_sessions/' . $order->items[0]->cs_id . '/expire', [
+    //   'headers' => [
+    //     'accept' => 'application/json',
+    //     'authorization' => 'Basic ' . base64_encode(env('PAYMONGO_SECRET_KEY')),
+    //   ],
+    // ]);
 
     return Inertia::render('Shop/Status/Success', [
       'orderId' => $orderId,

@@ -23,7 +23,8 @@ return new class extends Migration
       $table->string('shop_name');
       $table->string('product_name');
       $table->string('category');
-      $table->enum('payment_status', ['paid', 'pending'])->nullable();
+      $table->string('cs_id')->nullable();
+      $table->enum('payment_status', ['paid', 'pending'])->default('pending');
       $table->enum('status', ['order placed', 'pending', 'preparing', 'shipped', 'delivered', 'cancelled']);
       $table->boolean('is_preparing')->default(false);
       $table->boolean('is_ready_for_pickup')->default(false);
