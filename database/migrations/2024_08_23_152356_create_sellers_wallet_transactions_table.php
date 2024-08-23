@@ -13,7 +13,6 @@ return new class extends Migration
   {
     Schema::create('sellers_wallet_transactions', function (Blueprint $table) {
       $table->id();
-      $table->timestamps();
       $table->unsignedBigInteger('wallet_id');
       $table->enum('type', ['income', 'withdrawal']);
       $table->decimal('amount', 15, 2);
