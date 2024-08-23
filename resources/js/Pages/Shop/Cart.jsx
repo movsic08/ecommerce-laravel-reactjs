@@ -193,7 +193,9 @@ export default function Cart({ auth }) {
                                         </span>
                                     </p>
                                     <button
-                                        disabled={checkedItems == 0}
+                                        disabled={
+                                            checkedItems == 0 || processing
+                                        }
                                         className={`bg-themeColor ${
                                             checkedItems == 0
                                                 ? ""
