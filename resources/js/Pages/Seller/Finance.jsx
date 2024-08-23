@@ -1,9 +1,11 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head, router } from "@inertiajs/react";
+import { Head, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { FaPesoSign } from "react-icons/fa6";
 
 export default function Finance({ auth }) {
+    const { balance, walletTransactions } = usePage().props;
+    console.log(walletTransactions);
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {
@@ -33,13 +35,16 @@ export default function Finance({ auth }) {
                                 <div className="flex gap-4 w-full">
                                     <div className="flex flex-col">
                                         <h1 className="mb-2 text-gray-800">
-                                            To Release
+                                            Current Balance
                                         </h1>
                                         <small className="text-gray-500">
                                             Total
                                         </small>
                                         <strong className="text-4xl flex">
-                                            <FaPesoSign /> 0.00
+                                            <FaPesoSign />{" "}
+                                            {new Intl.NumberFormat().format(
+                                                balance
+                                            )}
                                         </strong>
                                     </div>
                                     <div className="flex flex-col">
@@ -104,6 +109,18 @@ export default function Finance({ auth }) {
                                         }}`}
                                     >
                                         Release
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleTabClick("release")
+                                        }
+                                        className={`text-gray-500 ${
+                                            activeTab === "release"
+                                                ? "text-themeColor border-b cursor-default border-themeColor font-extrabold"
+                                                : "cursor-pointer"
+                                        }}`}
+                                    >
+                                        Income Statements
                                     </button>
                                 </div>
                                 <div className="overflow-x-auto">
@@ -172,10 +189,50 @@ export default function Finance({ auth }) {
                         </div>
                     </div>
                     {/* 3rd container */}
-                    <div className="p-4 bg-white drop-shadow-md w-full rounded-md max-w-md">
-                        <h1 className="font-bold text-gray-600">
-                            Income Statement
+                    <div className="p-6 bg-white shadow-lg w-full rounded-lg lg:max-w-md lg:mx-auto">
+                        <h1 className="font-semibold text-xl text-gray-800 mb-4">
+                            Wallet Transactions
                         </h1>
+                        <div className="space-y-2">
+                            {walletTransactions.length == 0
+                                ? "No Wallet transaction yet."
+                                : walletTransactions.map((transaction) => (
+                                      <div
+                                          key={transaction.id}
+                                          className="bg-slate-50 flex items-center justify-between border p-3 shadow-sm border-slate-200 rounded"
+                                      >
+                                          <div className="flex gap-1 flex-col">
+                                              <small className="text-slate-500">
+                                                  Reference No.:
+                                              </small>
+                                              <span className="font-medium text-gray-900">
+                                                  {transaction.reference_number}
+                                              </span>
+                                          </div>
+                                          <div className="flex gap-1 flex-col items-end">
+                                              <span
+                                                  className={`font-medium p-1 capitalize ${
+                                                      transaction.type ==
+                                                      "income"
+                                                          ? "bg-green-200 text-green-700"
+                                                          : "bg-red-200 text-red-700"
+                                                  } rounded text-xs `}
+                                              >
+                                                  {transaction.type}
+                                              </span>
+                                              <span className="font-medium text-green-600">
+                                                  {transaction.type == "income"
+                                                      ? "+"
+                                                      : "-"}{" "}
+                                                  ₱
+                                                  {new Intl.NumberFormat().format(
+                                                      transaction.amount
+                                                  )}
+                                              </span>
+                                          </div>
+                                      </div>
+                                  ))}
+                        </div>
                     </div>
                 </div>
             </SellerAuthenticatedLayout>

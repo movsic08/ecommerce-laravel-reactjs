@@ -12,6 +12,8 @@ use App\Models\OrderItem;
 use App\Models\Products;
 use App\Models\ProductsImages;
 use App\Models\Seller;
+use App\Models\SellersWallets;
+use App\Models\SellersWalletTransaction;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
@@ -339,7 +341,24 @@ class SellerController extends Controller
 
   public function finance()
   {
-    return Inertia::render('Seller/Finance');
+    $user = auth()->user();
+    $seller = Seller::where('user_id', $user->id)->with('wallet')->firstOrFail();
+
+    if (!$seller) {
+      abort(404, 'Seller not found');
+    }
+
+    $wallet = $seller->wallet;
+
+    if (!$wallet) {
+      abort(404, 'Wallet not found');
+    }
+    $walletTransactions = $wallet->walletTransactions;
+
+    return Inertia::render('Seller/Finance', [
+      'balance' => $wallet->balance,
+      'walletTransactions' => $walletTransactions,
+    ]);
   }
 
   /**
