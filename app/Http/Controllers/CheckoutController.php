@@ -153,8 +153,8 @@ class CheckoutController extends Controller
                     'email' => $request->email,
                     'phone' => $request->phone_no
                   ],
-                  'statement_descriptor' => 'TO BE CHANGED',
-                  'description' => 'Payment for Order No. ' . $generated_order_id,
+                  'statement_descriptor' => 'Payment for buying an item in MadeByHands.',
+                  'description' =>  $generated_order_id . ' (Payment for Order No.)',
                   'line_items' => $line_items,
                   'reference_number' => $generated_order_id,
                   'payment_method_types' => ['gcash', 'paymaya'], //payment method here
