@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -39,7 +42,8 @@ class CartController extends Controller
       return back()->with('message', 'Item added successfully!');
     } catch (\Exception $e) {
       return response()->json([
-        'message' => 'Something went wrong!', 500
+        'message' => 'Something went wrong!',
+        500
       ]);
     };
   }
@@ -51,15 +55,33 @@ class CartController extends Controller
     return response()->json(['count' => $count]);
   }
 
-  public function destroy($id)
+  public function destroy($id): RedirectResponse
   {
     try {
-      $cartItem = CartItem::where('id', $id)->where('user_id', Auth()->id());
-      $cartItem->delete();
+      DB::beginTransaction();
+      $cartItem = CartItem::where('id', $id)
+        ->where('user_id', auth()->id())
+        ->firstOrFail();
 
-      return response()->json(['message' => 'Item removed successfully!'], 200);
+      $cartItem->delete();
+      DB::commit();
+      return Redirect::route('user-cart')->with([
+        'status' => 'success',
+        'message' => 'Item removed successfully!',
+      ]);
+      // return redirect()->route('user-cart')->with([
+      //   'status' => 'success',
+      //   'message' => 'Item removed successfully!',
+      // ]);
     } catch (\Exception $e) {
-      return response()->json(['message' => 'Failed to remove item from cart.'], 500);
+      DB::rollBack();
+      return redirect()->route('user-cart')->with([
+        'status' => 'error',
+        'message' => $e->getMessage(),
+      ]);
     }
   }
+
+
+  // endline here
 }

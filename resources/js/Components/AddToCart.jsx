@@ -59,7 +59,7 @@ export default function AddToCart({
     const submitToCart = async (e) => {
         e.preventDefault();
         try {
-            await post("/store-to-cart", {
+            post("/store-to-cart", {
                 onSuccess: async () => {
                     toast.success(
                         flash.message || "Item added to cart successfully!"

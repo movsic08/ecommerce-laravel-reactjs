@@ -1,23 +1,23 @@
 import Checkbox from "@/Components/Checkbox";
 import Quantity from "@/Components/Quantity";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import defaultImgIcon from "../../assets/img/Default-Product-Placeholder.svg";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 
 export default function Cart({ auth }) {
-    const { props } = usePage();
-    const [items, setItems] = useState(props.cartsItem);
-    const [checkedItems, setCheckedItems] = useState([]);
+    const { cartsItem, flash } = usePage().props;
+    console.log("carts item", cartsItem);
 
+    const [checkedItems, setCheckedItems] = useState([]);
+    console.log(flash);
     const [totalAmount, setTotalAmount] = useState(0);
 
     const handleCheckout = () => {
-        const selectedItems = items.filter((item) =>
+        const selectedItems = cartsItem.filter((item) =>
             checkedItems.includes(item.id)
         );
         const checkoutData = selectedItems.map((item) => ({
@@ -53,7 +53,7 @@ export default function Cart({ auth }) {
 
     useEffect(() => {
         const calculateTotalAmount = () => {
-            return items
+            return cartsItem
                 .filter((item) => checkedItems.includes(item.id))
                 .reduce(
                     (acc, item) => acc + item.product.price * item.quantity,
@@ -63,27 +63,29 @@ export default function Cart({ auth }) {
         };
 
         setTotalAmount(calculateTotalAmount());
-    }, [items, checkedItems]);
+    }, [cartsItem, checkedItems]);
 
-    const deleteItem = async (id) => {
-        try {
-            const response = await axios.delete(`/cart/${id}`);
+    const { processing, delete: deleteItemForm } = useForm({});
 
-            if (response.status === 200) {
-                toast.success("Item deleted successfully");
-                setItems((prevItems) =>
-                    prevItems.filter((item) => item.id !== id)
-                );
-                setCheckedItems((prevCheckedItems) =>
-                    prevCheckedItems.filter((itemId) => itemId !== id)
-                );
-            } else {
-                toast.error("Failed to delete item");
-            }
-        } catch (error) {
-            toast.error("Failed to delete item");
-        }
+    const deleteItem = (e, id) => {
+        e.preventDefault();
+        deleteItemForm(route("cart.item.destroy", id), {
+            method: "delete",
+            // onFinish: (page) => {
+            //     router.reload({
+            //         only: ["cartsItems"],
+            //     });
+            // },
+        });
     };
+
+    useEffect(() => {
+        if (flash?.status === "success") {
+            toast.success(flash.message);
+        } else if (flash?.status === "error") {
+            toast.error(flash.message);
+        }
+    }, [flash]);
 
     return (
         <>
@@ -95,13 +97,13 @@ export default function Cart({ auth }) {
                 <Head title="Cart" />
                 <div className="py-12 h-full -z-30">
                     <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 -z-30">
-                        {props.cartsItem == 0 ? (
+                        {cartsItem == 0 ? (
                             <div className="container mx-auto p-4 bg-slate-50 -z-50 rounded-lg drop-shadow-md">
                                 Cart is empty.
                             </div>
                         ) : (
                             <div className="container mx-auto p-4 bg-slate-50 -z-50 rounded-lg shadow-md ">
-                                {items.map((item) => (
+                                {cartsItem.map((item) => (
                                     <div
                                         key={item.id}
                                         className="flex items-center -z-50 justify-between p-4 border-b border-gray-200"
@@ -170,8 +172,8 @@ export default function Cart({ auth }) {
                                             </p>
                                             <button
                                                 type="button"
-                                                onClick={() =>
-                                                    deleteItem(item.id)
+                                                onClick={(e) =>
+                                                    deleteItem(e, item.id)
                                                 }
                                                 className="text-lg  text-red-600 font-semibold"
                                             >

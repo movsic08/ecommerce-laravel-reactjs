@@ -36,7 +36,11 @@ class HandleInertiaRequests extends Middleware
       ...parent::share($request),
       'auth' => [
         'user' => $request->user(),
-        'cartCount' => Auth()->check() && !Auth()->user()->is_admin && !Auth()->user()->is_seller ? CartItem::where('user_id', Auth::id())->count() : 0,
+        'cartCount' => function () use ($request) {
+          return $request->user() && !$request->user()->is_admin && !$request->user()->is_seller
+            ? CartItem::where('user_id', $request->user()->id)->count()
+            : 0;
+        },
       ],
       'ziggy' => fn() => [
         ...(new Ziggy)->toArray(),

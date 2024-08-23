@@ -40,11 +40,11 @@ Route::middleware('auth', 'customer')->group(function () {
     return Inertia::render('User/UserMessages');
   })->name('user-messages');
   Route::get('/shop/id', [SellerController::class, 'shop'])->name('view.seller.shop');
-  Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
   Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
   Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('store-to-cart');
-  Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth');
-  Route::delete('/cart/{id}', [CartController::class, 'destroy'])->middleware('auth')->name('cartItem.destroy');
+  // Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth')->name('cart');
+  Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
+  Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.item.destroy');
   Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
   Route::get('my-purchases/order-details/{orderId}', [OrderController::class, 'orderDetails'])->name('order.details');
   Route::get('my-purchases/cancel-order/{orderId}', [OrderController::class, 'showCancelOrder'])->name('order.show.cancel');

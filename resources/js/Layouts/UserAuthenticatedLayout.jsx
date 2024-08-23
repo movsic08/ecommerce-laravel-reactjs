@@ -18,34 +18,12 @@ export default function UserAuthenticatedLayout({
     const [cartCount, setCartCount] = useState(
         cartNumber == null ? 0 : cartNumber
     );
-    console.log();
+
+    useEffect(() => {
+        setCartCount(cartNumber);
+    }, [cartNumber]);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(true);
-
-    // const [cartNumber, setCartNumber] = useState(0);
-
-    // const countCartItems = async () => {
-    //     try {
-    //         const response = await fetch("/cart-count", {
-    //             method: "GET",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //         });
-
-    //         if (response.ok) {
-    //             const data = await response.json();
-    //             setCartNumber(data.count);
-    //         } else {
-    //             console.error(
-    //                 "Failed to fetch cart count:",
-    //                 response.statusText
-    //             );
-    //         }
-    //     } catch (error) {
-    //         console.error("Failed to fetch cart count:", error);
-    //     }
-    // };
 
     return (
         <div className="min-h-screen bg-white">
