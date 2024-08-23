@@ -36,6 +36,12 @@ class Seller extends Model
   {
     return $this->hasMany(Products::class, 'seller_id');
   }
+
+  public function wallet()
+  {
+    return $this->hasOne(SellersWallets::class, 'seller_id');
+  }
+
   public function orders()
   {
     return $this->hasMany(OrderItem::class);
