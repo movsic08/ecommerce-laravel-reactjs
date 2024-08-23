@@ -13,7 +13,11 @@ return new class extends Migration
   {
     Schema::create('order_received_report', function (Blueprint $table) {
       $table->id();
-      $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
+      $table->unsignedBigInteger('seller_id');
+      $table->unsignedBigInteger('buyer_id');
+      $table->unsignedBigInteger('order_id');
+      $table->unsignedBigInteger('product_id');
+      $table->foreign('seller_id')->references('user_id')->on('sellers')->onDelete('cascade');
       $table->foreign('buyer_id')->references('id')->on('users');
       $table->string('buyers_name');
       $table->foreign('order_id')->references('id')->on('order_items');
