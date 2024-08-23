@@ -9,6 +9,8 @@ use App\Models\OrderItem;
 use App\Models\OrderReceivedReport;
 use App\Models\Products;
 use App\Models\Review;
+use App\Models\SellersWallets;
+use App\Models\SellersWalletTransaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -293,6 +295,16 @@ class OrderController extends Controller
         'payment_method' => $item->order->payment_option,
       ]);
 
+      $wallet = SellersWallets::firstOrCreate(['seller_id' => $item->seller_id]);
+      $wallet->increment('balance', $item->amount);
+
+      SellersWalletTransaction::create([
+        'wallet_id' => $wallet->id,
+        'type' => 'income',
+        'amount' => $item->amount,
+        'reference_number' => $this->generateWalletTransactionReference(),
+      ]);
+
       DB::commit();
       return redirect()->back()->with([
         'status' => 'success',
@@ -307,6 +319,14 @@ class OrderController extends Controller
           'message' => 'Something went worong. ' . $e->getMessage()
         ]);
     }
+  }
+
+  private function generateWalletTransactionReference($prefix = 'WLT')
+  {
+    $timestamp = now()->format('YmdHis'); // Current timestamp in YmdHis format
+    $randomNumber = mt_rand(1000, 9999);  // Random 4-digit number
+
+    return $prefix . $timestamp . $randomNumber;
   }
 
   // endline
