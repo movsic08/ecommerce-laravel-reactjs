@@ -44,7 +44,8 @@ class OrderItem extends Model
     'is_delivered_date',
     'is_cancelled_date',
     'is_rated',
-    'sc_id'
+    'sc_id',
+    'payment_status'
   ];
 
   public function order()
