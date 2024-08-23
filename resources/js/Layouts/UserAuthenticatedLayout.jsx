@@ -68,7 +68,7 @@ export default function UserAuthenticatedLayout({
                             <NavLink href={route("user-cart")}>
                                 <div className=" relative ">
                                     <span className=" absolute -top-2 -right-2 text-sm font-bold">
-                                        {cartCount}
+                                        {cartCount == 0 ? "" : cartCount}
                                     </span>
                                     <img
                                         className=" h-6 "
