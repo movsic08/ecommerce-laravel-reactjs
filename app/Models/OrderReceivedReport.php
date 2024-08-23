@@ -9,6 +9,8 @@ class OrderReceivedReport extends Model
 {
   use HasFactory;
 
+  protected $table = 'order_received_report';
+
   protected $fillable = [
     'seller_id',
     'order_id',

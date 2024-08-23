@@ -6,11 +6,13 @@ use App\Http\Resources\MyPurchaseResource;
 use App\Http\Resources\PurchaseDetailsResource;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderReceivedReport;
 use App\Models\Products;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -278,6 +280,19 @@ class OrderController extends Controller
         'shipment_status' => 'delivered'
       ]);
 
+
+      OrderReceivedReport::create([
+        'seller_id' => $item->seller_id,
+        'order_id' => $item->id,
+        'buyer_id' => Auth::id(),
+        'buyers_name' => auth()->user()->first_name . ' ' . auth()->user()->last_name,
+        'product_id' => $product->id,
+        'product_name' => $product->product_name,
+        'amount' => $item->amount,
+        'reference_number' => $item->order->order_id,
+        'payment_method' => $item->order->payment_option,
+      ]);
+
       DB::commit();
       return redirect()->back()->with([
         'status' => 'success',
@@ -285,6 +300,7 @@ class OrderController extends Controller
       ]);
     } catch (\Exception $e) {
       DB::rollBack();
+      Log::error($e->getMessage());
       return redirect()->back()
         ->with([
           'status' => 'error',
