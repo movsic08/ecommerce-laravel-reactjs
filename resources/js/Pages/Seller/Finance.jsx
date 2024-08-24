@@ -40,7 +40,7 @@ export default function Finance({ auth }) {
                                             : " duration-300 cursor-pointer ease-in-out hover:bg-orange-500 "
                                     }`}
                                 >
-                                    Withdraw Balance
+                                    Request Payout
                                 </Link>
                             </div>
                             <div className="mt-4 flex w-full gap-4">
