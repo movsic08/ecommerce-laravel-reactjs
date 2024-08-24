@@ -344,15 +344,17 @@ class SellerController extends Controller
     $user = auth()->user();
     $seller = Seller::where('user_id', $user->id)->with('wallet')->firstOrFail();
 
-    if (!$seller) {
-      abort(404, 'Seller not found');
+    if (!$seller || !$seller->wallet) {
+      return Inertia::render('Seller/Finance', [
+        'balance' => 0,
+        'walletTransactions' => [],
+      ]);
     }
+
+
 
     $wallet = $seller->wallet;
 
-    if (!$wallet) {
-      abort(404, 'Wallet not found');
-    }
     $walletTransactions = $wallet->walletTransactions;
 
     return Inertia::render('Seller/Finance', [
