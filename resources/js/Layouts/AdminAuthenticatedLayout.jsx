@@ -58,6 +58,14 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     >
                                         Permission
                                     </NavLink>
+                                    <NavLink
+                                        href={route("paymongo.payments")}
+                                        active={route().current(
+                                            "paymongo.payments"
+                                        )}
+                                    >
+                                        Paymongo
+                                    </NavLink>
                                 </div>
                             </div>
                             <div className=" gap-3 flex sm:items-center sm:ms-6">
