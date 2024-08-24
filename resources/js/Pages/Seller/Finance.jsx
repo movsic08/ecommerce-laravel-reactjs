@@ -1,5 +1,5 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head, router, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { FaPesoSign } from "react-icons/fa6";
 
@@ -28,9 +28,21 @@ export default function Finance({ auth }) {
                     <div className="w-full space-y-6">
                         {/* 1st container */}
                         <div className="p-4 bg-white drop-shadow-md w-full rounded-md">
-                            <h1 className="font-bold text-gray-600">
-                                Income Overview
-                            </h1>
+                            <div className="flex items-center justify-between">
+                                <h1 className="font-bold text-gray-600">
+                                    Income Overview
+                                </h1>
+                                <Link
+                                    disabled={balance == 0}
+                                    className={`py-1  px-2 rounded-lg font-medium bg-themeColor text-white ${
+                                        balance == 0
+                                            ? " cursor-not-allowed "
+                                            : " duration-300 cursor-pointer ease-in-out hover:bg-orange-500 "
+                                    }`}
+                                >
+                                    Withdraw Balance
+                                </Link>
+                            </div>
                             <div className="mt-4 flex w-full gap-4">
                                 <div className="flex gap-4 w-full">
                                     <div className="flex flex-col">
