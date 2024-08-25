@@ -1,8 +1,9 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 export default function PaymongoPayments({ auth }) {
+    const { paymongoSecretKey } = usePage().props;
     const [beforeCursor, setBeforeCursor] = useState(null);
     const [afterCursor, setAfterCursor] = useState(null);
 
@@ -16,29 +17,13 @@ export default function PaymongoPayments({ auth }) {
         params: { limit: "10" },
         headers: {
             accept: "application/json",
-            authorization:
-                "Basic c2tfdGVzdF9EWktndjZLbVJrMnBUTUdtVnlkNUdtTFA6c2tfdGVzdF9EWktndjZLbVJrMnBUTUdtVnlkNUdtTFA=",
+            authorization: paymongoSecretKey,
         },
     };
 
-    const fetchPayments = async (before = null, after = null) => {
-        const options = {
-            method: "GET",
-            url: "https://api.paymongo.com/v1/payments",
-            params: {
-                limit: "10",
-                ...(before && { before }),
-                ...(after && { after }),
-            },
-            headers: {
-                accept: "application/json",
-                authorization:
-                    "Basic c2tfdGVzdF9EWktndjZLbVJrMnBUTUdtVnlkNUdtTFA6c2tfdGVzdF9EWktndjZLbVJrMnBUTUdtVnlkNUdtTFA=",
-            },
-        };
-
+    const fetchPayments = async () => {
         try {
-            const response = await axios.request(options);
+            const response = await axios.request(api);
 
             console.log(response.data);
             setPaymongoData(response.data);
@@ -47,7 +32,13 @@ export default function PaymongoPayments({ auth }) {
             setLoading(false);
         } catch (error) {
             console.error("Error fetching payments:", error);
-            setError("Failed to fetch payments.");
+            setError(
+                error.response.status +
+                    " - " +
+                    error.response.data.errors[0].code +
+                    " - " +
+                    error.response.data.errors[0].detail
+            );
         }
     };
 

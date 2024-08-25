@@ -365,7 +365,9 @@ class AdminController extends Controller
 
   public function paymongoPaymentsIndex()
   {
-    return Inertia::render('Admin/PaymongoPayments');
+    return Inertia::render('Admin/PaymongoPayments', [
+      'paymongoSecretKey' => 'Basic ' . base64_encode(env('PAYMONGO_SECRET_KEY'))
+    ]);
   }
 
   public function paymentInfo($id)
