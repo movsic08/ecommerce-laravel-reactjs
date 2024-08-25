@@ -79,7 +79,8 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::put('view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
   Route::delete('view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
   Route::put('/view-seller-status/{id}', [AdminController::class, 'updateSellerStatus'])->name('admin.update.seller.status');
-  Route::get('paymongo-all-payments',  [AdminController::class, 'paymongoPaymentsIndex'])->name('paymongo.payments');
+  Route::get('paymongo/payments',  [AdminController::class, 'paymongoPaymentsIndex'])->name('paymongo.payments');
+  Route::get('paymongo/payments/{id}',  [AdminController::class, 'paymentInfo'])->name('paymongo.payment.info');
 });
 
 //seller pages

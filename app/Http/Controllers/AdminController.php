@@ -365,22 +365,15 @@ class AdminController extends Controller
 
   public function paymongoPaymentsIndex()
   {
-    // $payMongoSecretKey = env('PAYMONGO_SECRET_KEY');
-    // $pageLimit = 10;
-    // $client = new Client([
-    //   'base_uri' => 'https://api.paymongo.com/v1/payments?' . $pageLimit,
-    //   'headers' => [
-    //     'Authorization' => 'Basic ' . base64_encode($payMongoSecretKey . ':'),
-    //     'Content-Type' => 'application/json',
-    //   ],
-    // ]);
-
-    // $response = $client->get('payments');
-    // $data = json_decode($response->getBody(), true);
-    // dd($data['meta']['pagination']);
-
-    // return [];
     return Inertia::render('Admin/PaymongoPayments');
+  }
+
+  public function paymentInfo($id)
+  {
+
+    return Inertia::render('Admin/PaymongoPaymentInfo', [
+      'id' => $id
+    ]);
   }
 
   // endline

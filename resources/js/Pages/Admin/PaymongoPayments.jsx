@@ -1,5 +1,5 @@
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 export default function PaymongoPayments({ auth }) {
@@ -102,7 +102,15 @@ export default function PaymongoPayments({ auth }) {
                                     {paymongoData.data.map((payment) => (
                                         <tr key={payment.id}>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                {payment.id}
+                                                <Link
+                                                    className="duration-100 ease-in hover:underline hover:text-themeColor"
+                                                    href={route(
+                                                        "paymongo.payment.info",
+                                                        payment.id
+                                                    )}
+                                                >
+                                                    {payment.id}
+                                                </Link>
                                             </td>
                                             <td className="px-3 py-4 capitalize whitespace-nowrap">
                                                 {payment.attributes.source.type}
