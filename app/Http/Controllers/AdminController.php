@@ -14,8 +14,10 @@ use App\Models\Seller;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -360,4 +362,26 @@ class AdminController extends Controller
       ]);
     }
   }
+
+  public function paymongoPaymentsIndex()
+  {
+    // $payMongoSecretKey = env('PAYMONGO_SECRET_KEY');
+    // $pageLimit = 10;
+    // $client = new Client([
+    //   'base_uri' => 'https://api.paymongo.com/v1/payments?' . $pageLimit,
+    //   'headers' => [
+    //     'Authorization' => 'Basic ' . base64_encode($payMongoSecretKey . ':'),
+    //     'Content-Type' => 'application/json',
+    //   ],
+    // ]);
+
+    // $response = $client->get('payments');
+    // $data = json_decode($response->getBody(), true);
+    // dd($data['meta']['pagination']);
+
+    // return [];
+    return Inertia::render('Admin/PaymongoPayments');
+  }
+
+  // endline
 }

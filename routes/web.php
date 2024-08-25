@@ -79,6 +79,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::put('view-seller/{id}', [AdminController::class, 'updateSeller'])->name('admin.update-seller');
   Route::delete('view-seller/{id}', [AdminController::class, 'destroySellerData'])->name('admin.destroy.sellerdata');
   Route::put('/view-seller-status/{id}', [AdminController::class, 'updateSellerStatus'])->name('admin.update.seller.status');
+  Route::get('paymongo-all-payments',  [AdminController::class, 'paymongoPaymentsIndex'])->name('paymongo.payments');
 });
 
 //seller pages
@@ -116,7 +117,6 @@ Route::get('/contact', function () {
   return Inertia::render('Contact');
 })->middleware(['auth'])->name('contact');
 
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
