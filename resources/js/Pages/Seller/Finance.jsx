@@ -33,6 +33,7 @@ export default function Finance({ auth }) {
                                     Income Overview
                                 </h1>
                                 <Link
+                                    href={route("seller.request.withdraw")}
                                     disabled={balance == 0}
                                     className={`py-1  px-2 rounded-lg font-medium bg-themeColor text-white ${
                                         balance == 0
