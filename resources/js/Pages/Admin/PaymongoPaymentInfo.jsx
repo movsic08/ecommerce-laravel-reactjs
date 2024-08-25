@@ -49,9 +49,17 @@ export default function PaymongoPaymentInfo({ auth }) {
                     </div>
                 ) : (
                     <div className="max-w-2xl mx-auto p-4 bg-white border border-slate-200 shadow-lg rounded-lg">
-                        <h2 className="text-2xl font-bold mb-4">
-                            Payment Details
-                        </h2>
+                        <div className="flex items-center justify-between flex-row-reverse">
+                            <button
+                                className="text-themeColor"
+                                onClick={() => window.history.back()}
+                            >
+                                Go Back
+                            </button>
+                            <h2 className="text-xl font-bold mb-4">
+                                Payment Details
+                            </h2>
+                        </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                             <div>
                                 <p className="text-gray-600">Name</p>
