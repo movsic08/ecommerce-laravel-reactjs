@@ -2,9 +2,10 @@ import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { FaPesoSign } from "react-icons/fa6";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Finance({ auth }) {
-    const { balance, walletTransactions } = usePage().props;
+    const { balance, walletTransactions, flash } = usePage().props;
     console.log(walletTransactions);
     const [activeTab, setActiveTab] = useState();
 
@@ -20,10 +21,19 @@ export default function Finance({ auth }) {
         window.history.pushState(null, "", `?activeTab=${tab}`);
     };
 
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.info(flash.message);
+        }
+    }, [flash]);
+
     return (
         <>
             <SellerAuthenticatedLayout user={auth}>
                 <Head title="Finance - Seller" />
+                <ToastContainer />
                 <div className="mx-auto max-w-6xl flex mt-2 md:mt-4 lg:mt-6 flex-col lg:flex-row gap-6">
                     <div className="w-full space-y-6">
                         {/* 1st container */}

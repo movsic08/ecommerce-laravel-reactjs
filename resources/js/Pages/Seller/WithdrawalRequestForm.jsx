@@ -1,3 +1,4 @@
+import InputError from "@/Components/InputError";
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import React from "react";
@@ -9,9 +10,20 @@ const WithdrawalRequestForm = ({ auth }) => {
         amount: "",
     });
 
+    const handleAmountChange = (e) => {
+        const value = e.target.value.replace(/,/g, "");
+        if (!isNaN(value)) {
+            setData("amount", value);
+        }
+    };
+
+    const formatAmount = (value) => {
+        return new Intl.NumberFormat().format(value);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        post("/withdrawals", {
+        post(route("seller.store.withdraw"), {
             onSuccess: () => {
                 reset();
             },
@@ -33,12 +45,7 @@ const WithdrawalRequestForm = ({ auth }) => {
                     PHP {new Intl.NumberFormat().format(balance)}
                 </div>
 
-                {errors.amount && (
-                    <div className="mb-4 p-2 bg-red-200 text-red-800 rounded">
-                        {errors.amount}
-                    </div>
-                )}
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit}>
                     <div>
                         <label
                             htmlFor="amount"
@@ -47,19 +54,29 @@ const WithdrawalRequestForm = ({ auth }) => {
                             Amount
                         </label>
                         <input
-                            type="number"
+                            type="text"
                             id="amount"
                             name="amount"
-                            value={data.amount}
-                            onChange={(e) => setData("amount", e.target.value)}
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            placeholder="Enter amount"
+                            value={formatAmount(data.amount)}
+                            onChange={handleAmountChange}
+                            onFocus={(e) => (e.target.value = data.amount)}
+                            onBlur={(e) =>
+                                (e.target.value = formatAmount(data.amount))
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm appearance-none"
+                            placeholder="0"
                         />
                     </div>
+                    {errors.amount && (
+                        <InputError
+                            className="w-full mt-2 mb-4"
+                            message={errors.amount}
+                        />
+                    )}
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400"
+                        className="w-full px-4 py-2 my-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-400"
                     >
                         {processing ? "Submitting..." : "Submit Request"}
                     </button>
