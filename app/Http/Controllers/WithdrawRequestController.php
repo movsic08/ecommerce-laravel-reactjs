@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seller;
+use App\Models\WithdrawRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class WithdrawRequestController extends Controller
@@ -32,9 +34,29 @@ class WithdrawRequestController extends Controller
       'amount' => 'integer|min:10|max:' . $wallet->balance,
     ]);
 
+    try {
+      DB::beginTransaction();
 
+      WithdrawRequest::create([
+        'seller_id' => $seller->id,
+        'amount' => $request->amount,
+        'status' => 'pending',
+      ]);
 
-    dd($request->all());
+      $wallet->decrement('balance', $request->amount);
+      DB::commit();
+
+      return redirect()->route('seller.finance')->with([
+        'status' => 'success',
+        'message' => 'Request withdrawal success.'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return redirect()->route('seller.request.withdraw')->with([
+        'status' => 'error',
+        'message' => 'An error occurred during the withdrawal process.' . $e->getMessage(),
+      ]);
+    }
   }
 
 

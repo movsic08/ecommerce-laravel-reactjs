@@ -3,6 +3,7 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { FaPesoSign } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Finance({ auth }) {
     const { balance, walletTransactions, flash } = usePage().props;

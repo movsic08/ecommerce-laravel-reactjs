@@ -1,11 +1,12 @@
 import InputError from "@/Components/InputError";
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
-import React from "react";
-import "tailwindcss/tailwind.css";
+import React, { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const WithdrawalRequestForm = ({ auth }) => {
-    const { balance } = usePage().props;
+    const { balance, flash } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         amount: "",
     });
@@ -33,9 +34,18 @@ const WithdrawalRequestForm = ({ auth }) => {
         });
     };
 
+    useEffect(() => {
+        if (flash.status == "success") {
+            toast.success(flash.message);
+        } else {
+            toast.info(flash.message);
+        }
+    }, [flash]);
+
     return (
         <SellerAuthenticatedLayout user={auth}>
             <Head title="Request withdraw" />
+            <ToastContainer />
             <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
                 <h2 className="text-2xl font-semibold text-mainText mb-4">
                     Request Withdrawal
