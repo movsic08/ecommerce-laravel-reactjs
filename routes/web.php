@@ -82,6 +82,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::put('/view-seller-status/{id}', [AdminController::class, 'updateSellerStatus'])->name('admin.update.seller.status');
   Route::get('paymongo/payments',  [AdminController::class, 'paymongoPaymentsIndex'])->name('paymongo.payments');
   Route::get('paymongo/payments/{id}',  [AdminController::class, 'paymentInfo'])->name('paymongo.payment.info');
+  Route::get('widthdrawal-lists', [WithdrawRequestController::class, 'index'])->name('widthdrawal.request.index');
 });
 
 //seller pages
