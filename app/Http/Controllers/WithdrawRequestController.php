@@ -68,6 +68,11 @@ class WithdrawRequestController extends Controller
     ]);
   }
 
+  public function updateRequest(Request $request, $id)
+  {
+    dd($request->all());
+  }
+
 
 
 

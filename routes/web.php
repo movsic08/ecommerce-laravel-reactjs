@@ -83,6 +83,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('paymongo/payments',  [AdminController::class, 'paymongoPaymentsIndex'])->name('paymongo.payments');
   Route::get('paymongo/payments/{id}',  [AdminController::class, 'paymentInfo'])->name('paymongo.payment.info');
   Route::get('widthdrawal-lists', [WithdrawRequestController::class, 'index'])->name('widthdrawal.request.index');
+  Route::post('widthdrawal-lists/update/{id}', [WithdrawRequestController::class, 'updateRequest'])->name('widthdrawal.request.update');
 });
 
 //seller pages
