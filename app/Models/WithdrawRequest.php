@@ -17,8 +17,8 @@ class WithdrawRequest extends Model
     'updated_at'
   ];
 
-  public function sellerRequest()
+  public function sellerData()
   {
-    $this->belongsTo(Seller::class);
+    return $this->belongsTo(Seller::class, 'seller_id', 'id');
   }
 }
