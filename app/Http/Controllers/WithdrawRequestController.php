@@ -63,7 +63,7 @@ class WithdrawRequestController extends Controller
   {
     $requestsLists = WithdrawRequest::with('sellerData', 'sellerData.user')->orderBy('created_at')->get();
 
-    return Inertia::render('Admin/WidthdrawalRequest', [
+    return Inertia::render('Admin/WithdrawalRequests', [
       'requestsLists' => $requestsLists
     ]);
   }
