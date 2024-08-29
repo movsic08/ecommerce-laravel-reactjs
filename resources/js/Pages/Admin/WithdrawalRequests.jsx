@@ -19,6 +19,8 @@ const WithdrawalRequests = ({ auth }) => {
         status: "",
     });
 
+    console.log(selectedRequest);
+
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const param = urlParams.get("activeTab") || "pending";
@@ -245,24 +247,70 @@ const WithdrawalRequests = ({ auth }) => {
                     onClose={() => setShowModal(false)}
                     maxWidth="md"
                 >
-                    <div className="p-6">
-                        <h3 className="text-lg font-bold mb-4">
+                    <div className="p-6 bg-white rounded-lg shadow-lg">
+                        <h3 className="text-2xl font-semibold mb-4 border-b pb-2 text-gray-800">
                             Account Details
                         </h3>
-                        <p className="mb-2">
-                            <strong>Account Name:</strong>{" "}
-                            {selectedRequest.seller_data.account_name}
-                        </p>
-                        <p className="mb-2">
-                            <strong>Account Number:</strong>{" "}
-                            {selectedRequest.seller_data.account_number}
-                        </p>
-                        <p className="mb-2">
-                            <strong>Payment Method:</strong>{" "}
-                            {selectedRequest.seller_data.payment_method}
-                        </p>
+                        <div className="space-y-4">
+                            <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-700">
+                                    Account Name:
+                                </span>
+                                <span className="text-gray-900">
+                                    {selectedRequest.account_name}
+                                </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-700">
+                                    Account Number:
+                                </span>
+                                <span className="text-gray-900">
+                                    {selectedRequest.account_number}
+                                </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-700">
+                                    Payment Method:
+                                </span>
+                                <span className="text-gray-900">
+                                    {selectedRequest.payment_method}
+                                </span>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-700">
+                                    Date Requested:
+                                </span>
+                                <span className="text-gray-900">
+                                    {format(
+                                        new Date(selectedRequest.created_at),
+                                        "MMMM d, yyyy h:mm a"
+                                    )}
+                                </span>
+                            </div>
+                            {selectedRequest.status !== "pending" ? (
+                                <div className="flex items-center space-x-2">
+                                    <span className="font-medium text-gray-700">
+                                        Date of Withdrawal{" "}
+                                        {selectedRequest.status == "rejected"
+                                            ? "Rejected"
+                                            : "Sent"}
+                                        :
+                                    </span>
+                                    <span className="text-gray-900">
+                                        {format(
+                                            new Date(
+                                                selectedRequest.updated_at
+                                            ),
+                                            "MMMM d, yyyy h:mm a"
+                                        )}
+                                    </span>
+                                </div>
+                            ) : (
+                                ""
+                            )}
+                        </div>
                         <button
-                            className="mt-4 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-medium"
+                            className="mt-6 px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 font-medium"
                             onClick={() => setShowModal(false)}
                         >
                             Close
