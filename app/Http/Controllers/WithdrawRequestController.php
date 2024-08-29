@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WithdrawalNotification;
 use App\Models\Seller;
 use App\Models\SellersWallets;
 use App\Models\SellersWalletTransaction;
 use App\Models\WithdrawRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class WithdrawRequestController extends Controller
@@ -80,12 +82,14 @@ class WithdrawRequestController extends Controller
   {
     try {
       DB::beginTransaction();
-      $request = WithdrawRequest::findOrFail($id);
+      $request = WithdrawRequest::with('sellerData.user')->findOrFail($id);
       $request->update([
         'status' => $status
       ]);
 
       $sellers_wallet = SellersWallets::where('seller_id', $request->seller_id)->first();
+      $email = $request->sellerData->user->email;
+
       if ($status == 'rejected') {
 
         $sellers_wallet->increment('balance', $amount);
@@ -97,6 +101,7 @@ class WithdrawRequestController extends Controller
           'reference_number' => $this->generateWalletTransactionReference()
         ]);
       } else {
+
         SellersWalletTransaction::create([
           'wallet_id' => $sellers_wallet->id,
           'type' => 'withdrawal',
@@ -104,7 +109,7 @@ class WithdrawRequestController extends Controller
           'reference_number' => $this->generateWalletTransactionReference()
         ]);
       }
-
+      Mail::to($email)->send(new WithdrawalNotification($amount, $amount));
       DB::commit();
       return to_route('widthdrawal.request.index')->with([
         'status' => 'success',
