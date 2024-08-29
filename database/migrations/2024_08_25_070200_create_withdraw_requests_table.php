@@ -16,6 +16,9 @@ return new class extends Migration
       $table->unsignedBigInteger('seller_id');
       $table->decimal('amount', 10, 2);
       $table->enum('status', ['pending', 'approved', 'rejected']);
+      $table->enum('payment_method', ['gcash', 'maya']);
+      $table->string('account_name');
+      $table->string('account_number');
       $table->timestamps();
 
       $table->foreign('seller_id')->references('id')->on('sellers')->onDelete('cascade');
