@@ -236,24 +236,29 @@ export default function Finance({ auth }) {
                                           <div className="flex gap-1 flex-col items-end">
                                               <span
                                                   className={`font-medium p-1 capitalize ${
-                                                      transaction.type ==
-                                                          "income" ||
-                                                      "withdraw_revert"
-                                                          ? "bg-green-200 text-green-700"
-                                                          : "bg-red-200 text-red-700"
-                                                  } rounded text-xs `}
+                                                      transaction.type ===
+                                                      "withdrawal"
+                                                          ? "bg-red-200 text-red-700"
+                                                          : "bg-green-200 text-green-700"
+                                                  } rounded text-xs`}
                                               >
-                                                  {transaction.type ==
-                                                  "withdraw_revert"
-                                                      ? "Withdraw revert"
+                                                  {transaction.type ===
+                                                  "withdrawal_revert"
+                                                      ? "withdrawal revert"
                                                       : transaction.type}
                                               </span>
-                                              <span className="font-medium text-green-600">
-                                                  {transaction.type ==
-                                                      "income" ||
-                                                  "withdraw_revert"
-                                                      ? "+"
-                                                      : "-"}{" "}
+                                              <span
+                                                  className={`font-medium ${
+                                                      transaction.type ===
+                                                      "withdrawal"
+                                                          ? "text-red-600"
+                                                          : "text-green-600"
+                                                  }`}
+                                              >
+                                                  {transaction.type ===
+                                                  "withdrawal"
+                                                      ? "-"
+                                                      : "+"}{" "}
                                                   ₱
                                                   {new Intl.NumberFormat().format(
                                                       transaction.amount
