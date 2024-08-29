@@ -237,15 +237,21 @@ export default function Finance({ auth }) {
                                               <span
                                                   className={`font-medium p-1 capitalize ${
                                                       transaction.type ==
-                                                      "income"
+                                                          "income" ||
+                                                      "withdraw_revert"
                                                           ? "bg-green-200 text-green-700"
                                                           : "bg-red-200 text-red-700"
                                                   } rounded text-xs `}
                                               >
-                                                  {transaction.type}
+                                                  {transaction.type ==
+                                                  "withdraw_revert"
+                                                      ? "Withdraw revert"
+                                                      : transaction.type}
                                               </span>
                                               <span className="font-medium text-green-600">
-                                                  {transaction.type == "income"
+                                                  {transaction.type ==
+                                                      "income" ||
+                                                  "withdraw_revert"
                                                       ? "+"
                                                       : "-"}{" "}
                                                   ₱
