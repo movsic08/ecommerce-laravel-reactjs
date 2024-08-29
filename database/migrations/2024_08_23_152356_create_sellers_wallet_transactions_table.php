@@ -14,7 +14,7 @@ return new class extends Migration
     Schema::create('sellers_wallet_transactions', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('wallet_id');
-      $table->enum('type', ['income', 'withdrawal']);
+      $table->enum('type', ['income', 'withdrawal', 'withdraw_revert']);
       $table->decimal('amount', 15, 2);
       $table->string('reference_number'); // For linking to orders, withdrawals, etc.
       $table->timestamps();
