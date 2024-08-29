@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seller;
+use App\Models\SellersWallets;
+use App\Models\SellersWalletTransaction;
 use App\Models\WithdrawRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -67,20 +69,64 @@ class WithdrawRequestController extends Controller
 
   public function index()
   {
-    $requestsLists = WithdrawRequest::with('sellerData', 'sellerData.user')->orderBy('created_at')->get();
+    $requestsLists = WithdrawRequest::with('sellerData', 'sellerData.user')->orderBy('updated_at', 'desc')->get();
 
     return Inertia::render('Admin/WithdrawalRequests', [
       'requestsLists' => $requestsLists
     ]);
   }
 
-  public function updateRequest(Request $request, $id)
+  public function updateRequest($id, $status, $amount)
   {
-    dd($request->all());
+    try {
+      DB::beginTransaction();
+      $request = WithdrawRequest::findOrFail($id);
+      $request->update([
+        'status' => $status
+      ]);
+
+      $sellers_wallet = SellersWallets::where('seller_id', $request->seller_id)->first();
+      if ($status == 'rejected') {
+
+        $sellers_wallet->increment('balance', $amount);
+
+        SellersWalletTransaction::create([
+          'wallet_id' => $sellers_wallet->id,
+          'type' => 'withdraw_revert',
+          'amount' => $amount,
+          'reference_number' => $this->generateWalletTransactionReference()
+        ]);
+      } else {
+        SellersWalletTransaction::create([
+          'wallet_id' => $sellers_wallet->id,
+          'type' => 'withdrawal',
+          'amount' => $amount,
+          'reference_number' => $this->generateWalletTransactionReference()
+        ]);
+      }
+
+      DB::commit();
+      return to_route('widthdrawal.request.index')->with([
+        'status' => 'success',
+        'message' => $status == 'rejected' ? 'Withdraw request rejected ' : 'Payment Confirmation sent!'
+      ]);
+    } catch (\Exception $e) {
+      DB::rollBack();
+      return to_route('widthdrawal.request.index')->with([
+        'status' => 'error',
+        'message' => $e->getMessage()
+      ]);
+    }
   }
 
 
 
+  private function generateWalletTransactionReference($prefix = 'WLT')
+  {
+    $timestamp = now()->format('YmdHis'); // Current timestamp in YmdHis format
+    $randomNumber = mt_rand(1000, 9999);  // Random 4-digit number
 
+    return $prefix . $timestamp . $randomNumber;
+  }
   // endline
 }
