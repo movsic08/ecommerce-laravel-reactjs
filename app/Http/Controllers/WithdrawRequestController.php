@@ -32,6 +32,9 @@ class WithdrawRequestController extends Controller
 
     $request->validate([
       'amount' => 'integer|min:10|max:' . $wallet->balance,
+      'payment_method' => 'required|in:gcash,maya',
+      'account_name' => 'required|string',
+      'account_number' => 'required|string',
     ]);
 
     try {
@@ -41,6 +44,9 @@ class WithdrawRequestController extends Controller
         'seller_id' => $seller->id,
         'amount' => $request->amount,
         'status' => 'pending',
+        'payment_method' => $request->payment_method,
+        'account_name' => $request->account_name,
+        'account_number' => $request->account_number,
       ]);
 
       $wallet->decrement('balance', $request->amount);

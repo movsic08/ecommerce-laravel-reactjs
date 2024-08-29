@@ -9,6 +9,9 @@ const WithdrawalRequestForm = ({ auth }) => {
     const { balance, flash } = usePage().props;
     const { data, setData, post, processing, errors, reset } = useForm({
         amount: "",
+        payment_method: "",
+        account_name: "",
+        account_number: "",
     });
 
     const handleAmountChange = (e) => {
@@ -83,6 +86,90 @@ const WithdrawalRequestForm = ({ auth }) => {
                             message={errors.amount}
                         />
                     )}
+
+                    {/* Payment Method Selection */}
+                    <div className="mt-4">
+                        <label
+                            htmlFor="payment_method"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Payment Method
+                        </label>
+                        <select
+                            id="payment_method"
+                            name="payment_method"
+                            value={data.payment_method}
+                            onChange={(e) =>
+                                setData("payment_method", e.target.value)
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        >
+                            <option value="">Select Payment Method</option>
+                            <option value="gcash">GCash</option>
+                            <option value="maya">Maya</option>
+                        </select>
+                    </div>
+                    {errors.payment_method && (
+                        <InputError
+                            className="w-full mt-2 mb-4"
+                            message={errors.payment_method}
+                        />
+                    )}
+
+                    {/* Account Name */}
+                    <div className="mt-4">
+                        <label
+                            htmlFor="account_name"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Account Name
+                        </label>
+                        <input
+                            type="text"
+                            id="account_name"
+                            name="account_name"
+                            value={data.account_name}
+                            onChange={(e) =>
+                                setData("account_name", e.target.value)
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Account Name"
+                        />
+                    </div>
+                    {errors.account_name && (
+                        <InputError
+                            className="w-full mt-2 mb-4"
+                            message={errors.account_name}
+                        />
+                    )}
+
+                    {/* Account Number */}
+                    <div className="mt-4">
+                        <label
+                            htmlFor="account_number"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Account Number
+                        </label>
+                        <input
+                            type="text"
+                            id="account_number"
+                            name="account_number"
+                            value={data.account_number}
+                            onChange={(e) =>
+                                setData("account_number", e.target.value)
+                            }
+                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Account Number"
+                        />
+                    </div>
+                    {errors.account_number && (
+                        <InputError
+                            className="w-full mt-2 mb-4"
+                            message={errors.account_number}
+                        />
+                    )}
+
                     <button
                         type="submit"
                         disabled={processing}
