@@ -342,7 +342,15 @@ class SellerController extends Controller
   public function finance()
   {
     $user = auth()->user();
-    $seller = Seller::where('user_id', $user->id)->with('wallet')->firstOrFail();
+    $seller = Seller::where('user_id', $user->id)
+      ->with(['wallet' => function ($query) {
+        // Eager load wallet transactions and sort by created_at in descending order
+        $query->with(['walletTransactions' => function ($query) {
+          $query->orderBy('created_at', 'desc');
+        }]);
+      }])
+      ->orderBy('created_at')
+      ->firstOrFail();
 
     if (!$seller || !$seller->wallet) {
       return Inertia::render('Seller/Finance', [
@@ -351,10 +359,7 @@ class SellerController extends Controller
       ]);
     }
 
-
-
     $wallet = $seller->wallet;
-
     $walletTransactions = $wallet->walletTransactions;
 
     return Inertia::render('Seller/Finance', [
@@ -362,6 +367,7 @@ class SellerController extends Controller
       'walletTransactions' => $walletTransactions,
     ]);
   }
+
 
   /**
    * Show the form for editing the specified resource.
