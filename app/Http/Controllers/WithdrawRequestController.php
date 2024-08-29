@@ -109,7 +109,7 @@ class WithdrawRequestController extends Controller
           'reference_number' => $this->generateWalletTransactionReference()
         ]);
       }
-      Mail::to($email)->send(new WithdrawalNotification($amount, $amount));
+      Mail::to($email)->send(new WithdrawalNotification($status, $amount));
       DB::commit();
       return to_route('widthdrawal.request.index')->with([
         'status' => 'success',
