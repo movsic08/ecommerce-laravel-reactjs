@@ -124,6 +124,34 @@ class WithdrawRequestController extends Controller
     }
   }
 
+  public function walletTransactionList()
+  {
+    $user = auth()->user();
+    $seller = Seller::where('user_id', $user->id)
+      ->with(['wallet' => function ($query) {
+        // Eager load wallet transactions and sort by created_at in descending order
+        $query->with(['walletTransactions' => function ($query) {
+          $query->orderBy('created_at', 'desc');
+        }]);
+      }])
+      ->orderBy('created_at')
+      ->firstOrFail();
+
+    if (!$seller || !$seller->wallet) {
+      return Inertia::render('Seller/WalletTransactionList', [
+        'walletTransactions' => [],
+      ]);
+    }
+
+    $wallet = $seller->wallet;
+    $walletTransactions = $wallet->walletTransactions;
+
+
+    return Inertia::render('Seller/WalletTransactionList', [
+      'walletTransactions' => $walletTransactions
+    ]);
+  }
+
 
 
   private function generateWalletTransactionReference($prefix = 'WLT')

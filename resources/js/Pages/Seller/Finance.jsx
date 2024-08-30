@@ -268,6 +268,17 @@ export default function Finance({ auth }) {
                                       </div>
                                   ))}
                         </div>
+
+                        {walletTransactions.length == 0 ? (
+                            ""
+                        ) : (
+                            <Link
+                                href={route("seller.walletTransactionList")}
+                                className="w-full flex items-center justify-center mt-4 hover:underline hover:text-themeColor duration-200 ease-in-out"
+                            >
+                                See all wallet transaction
+                            </Link>
+                        )}
                     </div>
                 </div>
             </SellerAuthenticatedLayout>

@@ -346,7 +346,7 @@ class SellerController extends Controller
       ->with(['wallet' => function ($query) {
         // Eager load wallet transactions and sort by created_at in descending order
         $query->with(['walletTransactions' => function ($query) {
-          $query->orderBy('created_at', 'desc');
+          $query->orderBy('created_at', 'desc')->limit(5);
         }]);
       }])
       ->orderBy('created_at')

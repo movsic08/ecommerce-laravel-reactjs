@@ -110,6 +110,7 @@ Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
   Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
   Route::patch('/notifications/{id}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('notifications.markAsUnread');
   Route::get('finance', [SellerController::class, 'finance'])->name('seller.finance');
+  Route::get('finance/wallet-transactions', [WithdrawRequestController::class, 'walletTransactionList'])->name('seller.walletTransactionList');
   Route::get('finance/request', [WithdrawRequestController::class, 'requestPayoutForm'])->name('seller.request.withdraw');
   Route::post('finance/request/create', [WithdrawRequestController::class, 'createWithdraw'])->name('seller.store.withdraw');
   Route::get('shipping-setting', [SellerController::class, 'showShippingSetting'])->name('seller.shipping.setting');

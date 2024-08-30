@@ -50,14 +50,6 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                             >
                                 Products
                             </NavLink>
-                            <NavLink
-                                href={route("seller.shipping.setting")}
-                                active={route().current(
-                                    "seller.shipping.setting"
-                                )}
-                            >
-                                Shipping Settings
-                            </NavLink>
                         </div>
 
                         <div className="hidden  gap-2 md:flex sm:items-center sm:ms-6">
