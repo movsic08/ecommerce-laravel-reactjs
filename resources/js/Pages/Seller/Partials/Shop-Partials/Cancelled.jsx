@@ -15,7 +15,9 @@ export default function Cancelled({ canceledData }) {
         <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {canceledData.length == 0 ? (
-                    <div>No Data</div>
+                    <div className=" mt-4 bg-blue-100 text-blue-800 p-3 col-span-3  w-full max-w-md mx-auto rounded-lg border text-center border-blue-500">
+                        No Cancelled orders found.
+                    </div>
                 ) : (
                     canceledData.map((item) => (
                         <div
