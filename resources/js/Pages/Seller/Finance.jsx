@@ -62,51 +62,32 @@ export default function Finance({ auth }) {
                                     Request Payout
                                 </Link>
                             </div>
-                            <div className="mt-4 flex w-full gap-4">
-                                <div className="flex gap-4 w-full">
-                                    <div className="flex flex-col">
-                                        <h1 className="mb-2 text-gray-800">
-                                            Current Balance
-                                        </h1>
-                                        <small className="text-gray-500">
-                                            Total
-                                        </small>
-                                        <strong className="text-4xl flex">
-                                            <FaPesoSign />{" "}
-                                            {new Intl.NumberFormat().format(
-                                                balance
-                                            )}
-                                        </strong>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <h1 className="mb-2 text-gray-800">
-                                            To Release
-                                        </h1>
-                                        <small className="text-gray-500">
-                                            Total
-                                        </small>
-                                        <strong className="text-4xl flex">
-                                            <FaPesoSign /> 0.00
-                                        </strong>
-                                    </div>
+
+                            <div className="flex gap-4 mt-4 px-3 items-center justify-between w-full">
+                                <div className="flex flex-col">
+                                    <h1 className="mb-2 text-gray-800">
+                                        Current Balance
+                                    </h1>
+                                    <small className="text-gray-500">
+                                        Total
+                                    </small>
+                                    <strong className="text-4xl flex">
+                                        <FaPesoSign />{" "}
+                                        {new Intl.NumberFormat().format(
+                                            balance
+                                        )}
+                                    </strong>
                                 </div>
-                                <div className="flex gap-4 w-full items-end">
-                                    <div className="flex flex-col">
-                                        <small className="text-gray-500">
-                                            Total
-                                        </small>
-                                        <strong className="text-2xl flex">
-                                            <FaPesoSign /> 0.00
-                                        </strong>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <small className="text-gray-500">
-                                            Total
-                                        </small>
-                                        <strong className="text-2xl flex">
-                                            <FaPesoSign /> 0.00
-                                        </strong>
-                                    </div>
+                                <div className="flex flex-col">
+                                    <h1 className="mb-2 text-gray-800">
+                                        Total Earnings
+                                    </h1>
+                                    <small className="text-gray-500">
+                                        Total
+                                    </small>
+                                    <strong className="text-4xl flex">
+                                        <FaPesoSign /> 0.00
+                                    </strong>
                                 </div>
                             </div>
                         </div>
@@ -184,7 +165,12 @@ export default function Finance({ auth }) {
                                                     <>
                                                         {orderReceived.map(
                                                             (list) => (
-                                                                <tr className="border-b text-sm bg-gray-50">
+                                                                <tr
+                                                                    key={
+                                                                        list.id
+                                                                    }
+                                                                    className="border-b text-sm bg-gray-50"
+                                                                >
                                                                     <td className="py-2 px-4">
                                                                         {
                                                                             list.reference_number

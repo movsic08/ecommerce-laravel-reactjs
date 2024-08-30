@@ -430,7 +430,12 @@ class SellerController extends Controller
 
   public function orderReceiptReportIndex()
   {
-    return Inertia::render('Seller/OrderReceiptReport');
+    $user = auth()->user();
+    $seller = $user->seller->first();
+    $orders = OrderReceivedReport::where('seller_id', $seller->id)->get();
+    return Inertia::render('Seller/OrderReceiptReport', [
+      'orders' => $orders
+    ]);
   }
 
   // endline

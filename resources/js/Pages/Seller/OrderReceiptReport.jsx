@@ -1,37 +1,8 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 
 export default function OrderReceiptReport({ auth }) {
-    const orders = [
-        {
-            id: 1,
-            seller_id: 1,
-            buyer_id: 6,
-            order_id: 4,
-            product_id: 1,
-            buyers_name: "Elmer Tirao",
-            product_name: "Chandelier Shells with lights from Hundred Islands",
-            amount: 1000,
-            reference_number: "MBHCDBIRQQVSV5LFO",
-            payment_method: "gcash/paymaya",
-            created_at: "2024-08-23T15:14:24.000000Z",
-            updated_at: "2024-08-23T15:14:24.000000Z",
-        },
-        {
-            id: 6,
-            seller_id: 1,
-            buyer_id: 6,
-            order_id: 5,
-            product_id: 1,
-            buyers_name: "Elmer Tirao",
-            product_name: "Chandelier Shells with lights from Hundred Islands",
-            amount: 1000,
-            reference_number: "MBHXIGPHD5EAS4SFA",
-            payment_method: "gcash/paymaya",
-            created_at: "2024-08-23T15:42:15.000000Z",
-            updated_at: "2024-08-23T15:42:15.000000Z",
-        },
-    ];
+    const { orders } = usePage().props;
 
     return (
         <>
