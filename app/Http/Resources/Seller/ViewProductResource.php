@@ -28,6 +28,7 @@ class ViewProductResource extends JsonResource
       'product_name' => $this->product_name,
       'description' => $this->description,
       'reviews' => $this->reviews,
+      'created_at' => $this->created_at,
       'images' => SellerProductImageResource::collection($this->whenLoaded('images')),
     ];
   }
