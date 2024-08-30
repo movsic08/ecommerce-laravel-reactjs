@@ -47,7 +47,11 @@ export default function Finance({ auth }) {
                                     Income Overview
                                 </h1>
                                 <Link
-                                    href={route("seller.request.withdraw")}
+                                    href={
+                                        balance == 0
+                                            ? ""
+                                            : route("seller.request.withdraw")
+                                    }
                                     disabled={balance == 0}
                                     className={`py-1  px-2 rounded-lg font-medium bg-themeColor text-white ${
                                         balance == 0
@@ -165,7 +169,7 @@ export default function Finance({ auth }) {
                                         <tbody>
                                             {activeTab ==
                                             "orderReceivedReport" ? (
-                                                orderReceived.length == 0 ? (
+                                                orderReceived == null ? (
                                                     <tr className="border-b bg-gray-50">
                                                         <td
                                                             className="py-2 px-4"
