@@ -22,6 +22,7 @@ export default function Dashboard() {
         isInTransit,
         cancelled,
         soldOut,
+        monthlySales,
     } = usePage().props;
 
     const data = [
@@ -35,33 +36,22 @@ export default function Dashboard() {
             sales: 3000,
             amt: 2210,
         },
-        {
-            name: "March",
-            sales: 2000,
-            amt: 2290,
-        },
-        {
-            name: "April",
-            sales: 2780,
-            amt: 2000,
-        },
-        {
-            name: "May",
-            sales: 1890,
-            amt: 2181,
-        },
-        {
-            name: "June",
-            sales: 2390,
-            amt: 2500,
-        },
-        {
-            name: "July",
-            sales: 3490,
-            amt: 2100,
-        },
     ];
 
+    const formatData = (data) => {
+        return data.map((item) => ({
+            ...item,
+            total_sales: parseFloat(item.total_sales),
+            report_date: format(new Date(item.report_date), "MMMM yyyy"),
+        }));
+    };
+
+    // Formatter function for tooltip
+    const formatTooltipValue = (value) => {
+        return value.toLocaleString(); // Add commas to the number
+    };
+    const formattedData = formatData(monthlySales);
+    console.log(formattedData);
     return (
         <>
             <SellerAuthenticatedLayout>
@@ -158,14 +148,13 @@ export default function Dashboard() {
                         <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
                             <div>
                                 <div className=" mb-1 flex flex-col">
-                                    <small>Total Sales Revenue</small>
-                                    <strong>PHP 23,000</strong>
+                                    <small>Total Sales Revenue Per Month</small>
                                 </div>
                             </div>
                             <div style={{ width: "100%", height: 300 }}>
                                 <ResponsiveContainer>
                                     <AreaChart
-                                        data={data}
+                                        data={formattedData}
                                         margin={{
                                             top: 10,
                                             right: 30,
@@ -193,12 +182,21 @@ export default function Dashboard() {
                                                 />
                                             </linearGradient>
                                         </defs>
-                                        <XAxis dataKey="name" />
-                                        <YAxis />
-                                        <Tooltip />
+                                        <XAxis dataKey="report_date" />
+                                        <YAxis
+                                            domain={[0, "auto"]}
+                                            tickFormatter={(value) =>
+                                                value.toLocaleString()
+                                            }
+                                        />
+                                        <Tooltip
+                                            formatter={(value) =>
+                                                formatTooltipValue(value)
+                                            } // Format tooltip values
+                                        />
                                         <Area
                                             type="monotone"
-                                            dataKey="sales"
+                                            dataKey="total_sales"
                                             stroke="#8884d8"
                                             strokeWidth={3}
                                             fill="url(#colorUv)"

@@ -8,6 +8,7 @@ use App\Http\Resources\Seller\ViewProductResource;
 use App\Http\Resources\SellerDataResource;
 use App\Http\Resources\SellerProductList;
 use App\Models\Category;
+use App\Models\MonthlySalesReport;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderReceivedReport;
@@ -17,6 +18,7 @@ use App\Models\Seller;
 use App\Models\SellersWallets;
 use App\Models\SellersWalletTransaction;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\RedirectResponse;
@@ -122,28 +124,46 @@ class SellerController extends Controller
   public function dashboard()
   {
     $user = auth()->user();
-    $seller = $user->seller->first();
+    $seller = $user->seller;
 
     $newOrders = OrderItem::where('seller_id', $seller->id)
-      ->where('status', 'order placed')->count();
+      ->where('status', 'order placed')
+      ->count();
     $toProcess = OrderItem::where('seller_id', $seller->id)
       ->where('is_preparing', 1)
-      ->where('is_ready_for_pickup', 0)->count();
+      ->where('is_ready_for_pickup', 0)
+      ->count();
     $isInTransit = OrderItem::where('seller_id', $seller->id)
       ->where('is_in_transit', 1)
-      ->where('is_out_for_delivery', 0)->count();
+      ->where('is_out_for_delivery', 0)
+      ->count();
     $unpaid = OrderItem::where('seller_id', $seller->id)
-      ->where('shipment_status', 'out_for_delivery')->count();
+      ->where(
+        'shipment_status',
+        'out_for_delivery'
+      )->count();
     $cancelled = OrderItem::where('seller_id', $seller->id)
-      ->where('status', 'cancelled')->count();
+      ->where('status', 'cancelled')
+      ->count();
+
     $soldOut = $seller->products->where('quantity', 0)->count();
 
-
     $totalProducts = $seller->products->count();
-    $products = $seller->products()->with('images')->orderBy('created_at', 'desc')->take(5)->get();
 
+    $products = $seller->products()
+      ->with('images')
+      ->orderBy('created_at', 'desc')
+      ->take(5)
+      ->get();
 
     $totalSold = OrderReceivedReport::where('seller_id', $seller->id)->count();
+
+    $monthlySales  = MonthlySalesReport::where('seller_id', $seller->id)
+      ->orderBy('report_date', 'asc')
+      ->take(12)
+      ->get();
+
+    // dd($monthlySales);
 
     return Inertia::render('Seller/Dashboard', [
       'totalSold' => $totalSold,
@@ -154,8 +174,8 @@ class SellerController extends Controller
       'isInTransit' => $isInTransit,
       'unpaid' => $unpaid,
       'cancelled' => $cancelled,
-      'soldOut' => $soldOut
-
+      'soldOut' => $soldOut,
+      'monthlySales' => $monthlySales
     ]);
   }
 
