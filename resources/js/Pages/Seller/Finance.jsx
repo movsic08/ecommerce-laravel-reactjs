@@ -130,70 +130,34 @@ export default function Finance({ auth }) {
                                         Income Statements
                                     </button>
                                 </div>
-                                <div className="overflow-x-auto">
-                                    <table className="min-w-full bg-white">
-                                        <thead className="bg-gray-200">
-                                            <tr className="text-sm">
-                                                <th className="w-1/5 py-2 px-4">
-                                                    Order Ref No.
-                                                </th>
-                                                <th className="w-1/5 py-2 px-4">
-                                                    Product Name
-                                                </th>
-                                                <th className="w-1/5 py-2 px-4">
-                                                    Release Date
-                                                </th>
-                                                <th className="w-1/5 py-2 px-4">
-                                                    Payment Method
-                                                </th>
-                                                <th className="w-1/5 py-2 px-4">
-                                                    Amount
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {activeTab ==
-                                            "orderReceivedReport" ? (
-                                                orderReceived == null ? (
-                                                    <tr className="border-b bg-gray-50">
-                                                        <td
-                                                            className="py-2 px-4"
-                                                            colSpan="5"
-                                                        >
-                                                            No order has been
-                                                            received by
-                                                            customers.
-                                                        </td>
-                                                    </tr>
-                                                ) : (
-                                                    <>
-                                                        <FinanceOrderReceivedReport
-                                                            data={orderReceived}
-                                                        />
-                                                    </>
-                                                )
-                                            ) : (
-                                                <tr className="border-b bg-gray-50">
-                                                    <td className="py-2 px-4">
-                                                        release
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                </tr>
-                                            )}
-                                        </tbody>
-                                    </table>
-                                </div>
+
+                                {activeTab == "orderReceivedReport" ? (
+                                    orderReceived == null ? (
+                                        <div className="border-b bg-gray-50">
+                                            <div
+                                                className="py-2 px-4"
+                                                colSpan="5"
+                                            >
+                                                No order has been received by
+                                                customers.
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <FinanceOrderReceivedReport
+                                                data={orderReceived}
+                                            />
+                                        </>
+                                    )
+                                ) : (
+                                    <div className="border-b bg-gray-50">
+                                        <div className="py-2 px-4">release</div>
+                                        <div className="py-2 px-4">--</div>
+                                        <div className="py-2 px-4">--</div>
+                                        <div className="py-2 px-4">--</div>
+                                        <div className="py-2 px-4">--</div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
