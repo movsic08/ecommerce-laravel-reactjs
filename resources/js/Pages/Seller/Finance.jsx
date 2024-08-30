@@ -14,7 +14,8 @@ export default function Finance({ auth }) {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const activetabURL = urlParams.get("activeTab") || "toRelease";
+        const activetabURL =
+            urlParams.get("activeTab") || "orderReceivedReport";
         setActiveTab(activetabURL);
     });
 
@@ -216,7 +217,12 @@ export default function Finance({ auth }) {
                                                         )}
                                                         <tr className=" text-center ">
                                                             <td className=" pt-1.5">
-                                                                <Link className="duration-200 ease-out hover:text-themeColor">
+                                                                <Link
+                                                                    href={route(
+                                                                        "seller.order-receipt-report"
+                                                                    )}
+                                                                    className="duration-200 ease-out hover:text-themeColor"
+                                                                >
                                                                     View all
                                                                     order
                                                                     receipt list

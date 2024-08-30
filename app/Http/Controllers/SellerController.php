@@ -427,4 +427,11 @@ class SellerController extends Controller
       ]);
     }
   }
+
+  public function orderReceiptReportIndex()
+  {
+    return Inertia::render('Seller/OrderReceiptReport');
+  }
+
+  // endline
 }
