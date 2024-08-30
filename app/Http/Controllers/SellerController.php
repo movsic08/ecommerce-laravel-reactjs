@@ -9,6 +9,7 @@ use App\Http\Resources\SellerProductList;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\OrderReceivedReport;
 use App\Models\Products;
 use App\Models\ProductsImages;
 use App\Models\Seller;
@@ -346,7 +347,7 @@ class SellerController extends Controller
       ->with(['wallet' => function ($query) {
         // Eager load wallet transactions and sort by created_at in descending order
         $query->with(['walletTransactions' => function ($query) {
-          $query->orderBy('created_at', 'desc')->limit(5);
+          $query->orderBy('created_at', 'desc')->limit(2);
         }]);
       }])
       ->orderBy('created_at')
@@ -359,12 +360,15 @@ class SellerController extends Controller
       ]);
     }
 
+    $orderReceived = OrderReceivedReport::where('seller_id', $seller->id)->limit(5)->get();
+
     $wallet = $seller->wallet;
     $walletTransactions = $wallet->walletTransactions;
 
     return Inertia::render('Seller/Finance', [
       'balance' => $wallet->balance,
       'walletTransactions' => $walletTransactions,
+      'orderReceived' => $orderReceived
     ]);
   }
 

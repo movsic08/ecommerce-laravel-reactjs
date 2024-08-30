@@ -1,13 +1,15 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
+import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import { FaPesoSign } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Finance({ auth }) {
-    const { balance, walletTransactions, flash } = usePage().props;
-    console.log(walletTransactions);
+    const { balance, walletTransactions, flash, orderReceived } =
+        usePage().props;
+    console.log(orderReceived);
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {
@@ -112,34 +114,25 @@ export default function Finance({ auth }) {
                                 <div className="flex gap-8 mb-2 mt-4">
                                     <button
                                         onClick={() =>
-                                            handleTabClick("toRelease")
+                                            handleTabClick(
+                                                "orderReceivedReport"
+                                            )
                                         }
                                         className={`text-gray-500 ${
-                                            activeTab === "toRelease"
+                                            activeTab === "orderReceivedReport"
                                                 ? "text-themeColor border-b cursor-default border-themeColor font-extrabold"
                                                 : "cursor-pointer"
                                         }}`}
                                     >
-                                        To Release
+                                        Order Received Report
                                     </button>
+
                                     <button
                                         onClick={() =>
-                                            handleTabClick("release")
+                                            handleTabClick("incomeStatement")
                                         }
                                         className={`text-gray-500 ${
-                                            activeTab === "release"
-                                                ? "text-themeColor border-b cursor-default border-themeColor font-extrabold"
-                                                : "cursor-pointer"
-                                        }}`}
-                                    >
-                                        Release
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleTabClick("release")
-                                        }
-                                        className={`text-gray-500 ${
-                                            activeTab === "release"
+                                            activeTab === "incomeStatement"
                                                 ? "text-themeColor border-b cursor-default border-themeColor font-extrabold"
                                                 : "cursor-pointer"
                                         }}`}
@@ -152,13 +145,13 @@ export default function Finance({ auth }) {
                                         <thead className="bg-gray-200">
                                             <tr className="text-sm">
                                                 <th className="w-1/5 py-2 px-4">
-                                                    Order
+                                                    Order Ref No.
+                                                </th>
+                                                <th className="w-1/5 py-2 px-4">
+                                                    Product Name
                                                 </th>
                                                 <th className="w-1/5 py-2 px-4">
                                                     Release Date
-                                                </th>
-                                                <th className="w-1/5 py-2 px-4">
-                                                    Status
                                                 </th>
                                                 <th className="w-1/5 py-2 px-4">
                                                     Payment Method
@@ -169,24 +162,69 @@ export default function Finance({ auth }) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {activeTab == "toRelease" ? (
-                                                <tr className="border-b bg-gray-50">
-                                                    <td className="py-2 px-4">
-                                                        52345234535
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                    <td className="py-2 px-4">
-                                                        --
-                                                    </td>
-                                                </tr>
+                                            {activeTab ==
+                                            "orderReceivedReport" ? (
+                                                orderReceived.length == 0 ? (
+                                                    <tr className="border-b bg-gray-50">
+                                                        <td
+                                                            className="py-2 px-4"
+                                                            colSpan="5"
+                                                        >
+                                                            No order has been
+                                                            received by
+                                                            customers.
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    <>
+                                                        {orderReceived.map(
+                                                            (list) => (
+                                                                <tr className="border-b text-sm bg-gray-50">
+                                                                    <td className="py-2 px-4">
+                                                                        {
+                                                                            list.reference_number
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-2 px-4">
+                                                                        {
+                                                                            list.product_name
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-2 px-4">
+                                                                        {formatDistanceToNow(
+                                                                            new Date(
+                                                                                list.created_at
+                                                                            ),
+                                                                            {
+                                                                                addSuffix: true,
+                                                                            }
+                                                                        )}
+                                                                    </td>
+                                                                    <td className="py-2 px-4">
+                                                                        {
+                                                                            list.payment_method
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-2 px-4">
+                                                                        PHP{" "}
+                                                                        {new Intl.NumberFormat().format(
+                                                                            list.amount
+                                                                        )}
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        )}
+                                                        <tr className=" text-center ">
+                                                            <td className=" pt-1.5">
+                                                                <Link className="duration-200 ease-out hover:text-themeColor">
+                                                                    View all
+                                                                    order
+                                                                    receipt list
+                                                                </Link>
+                                                            </td>
+                                                        </tr>
+                                                    </>
+                                                )
                                             ) : (
                                                 <tr className="border-b bg-gray-50">
                                                     <td className="py-2 px-4">
@@ -213,7 +251,7 @@ export default function Finance({ auth }) {
                         </div>
                     </div>
                     {/* 3rd container */}
-                    <div className="p-6 bg-white shadow-lg w-full rounded-lg lg:max-w-md lg:mx-auto">
+                    <div className="p-6 bg-white h-fit shadow-lg w-full rounded-lg lg:max-w-md lg:mx-auto">
                         <h1 className="font-semibold text-xl text-gray-800 mb-4">
                             Wallet Transactions
                         </h1>
