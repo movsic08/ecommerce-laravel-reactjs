@@ -7,9 +7,9 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Finance({ auth }) {
-    const { balance, walletTransactions, flash, orderReceived } =
+    const { balance, walletTransactions, flash, orderReceived, totalIncome } =
         usePage().props;
-    console.log(orderReceived);
+    console.log(totalIncome);
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {
@@ -86,7 +86,10 @@ export default function Finance({ auth }) {
                                         Total
                                     </small>
                                     <strong className="text-4xl flex">
-                                        <FaPesoSign /> 0.00
+                                        <FaPesoSign />{" "}
+                                        {new Intl.NumberFormat().format(
+                                            totalIncome
+                                        )}
                                     </strong>
                                 </div>
                             </div>

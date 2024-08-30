@@ -421,10 +421,13 @@ class SellerController extends Controller
     $wallet = $seller->wallet;
     $walletTransactions = $wallet->walletTransactions;
 
+    $totalIncome = SellersWalletTransaction::where('wallet_id', $wallet->id)->where('type', 'income')->sum('amount');
+
     return Inertia::render('Seller/Finance', [
       'balance' => $wallet->balance,
       'walletTransactions' => $walletTransactions,
-      'orderReceived' => $orderReceived
+      'orderReceived' => $orderReceived,
+      'totalIncome' => $totalIncome
     ]);
   }
 
