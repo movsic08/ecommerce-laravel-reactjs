@@ -249,7 +249,7 @@ export default function Dashboard() {
                                             ? "No Product yet."
                                             : products.data.map((product) => (
                                                   <tr key={product.id}>
-                                                      <td className="px-6 py-4 whitespace-nowrap">
+                                                      <td className="px-6 py-1 whitespace-nowrap">
                                                           <img
                                                               src={
                                                                   product
@@ -257,7 +257,7 @@ export default function Dashboard() {
                                                                       .image_path
                                                               }
                                                               alt="Product"
-                                                              className="w-16 h-16 object-cover"
+                                                              className="w-10 h-10 object-cover"
                                                           />
                                                       </td>
                                                       <td className="px-6 py-4 whitespace-nowrap">
