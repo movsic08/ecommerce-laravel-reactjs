@@ -6,11 +6,20 @@ import { FaPesoSign } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FinanceOrderReceivedReport from "./Partials/FinanceOrderReceivedReport";
+import FinanceIncomeStatement from "./Partials/FinanceIncomeStatement";
 
 export default function Finance({ auth }) {
-    const { balance, walletTransactions, flash, orderReceived, totalIncome } =
-        usePage().props;
+    const {
+        balance,
+        walletTransactions,
+        flash,
+        orderReceived,
+        totalIncome,
+        weeklyReport,
+        MonthylReport,
+    } = usePage().props;
 
+    console.log(weeklyReport);
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {
@@ -150,13 +159,10 @@ export default function Finance({ auth }) {
                                         </>
                                     )
                                 ) : (
-                                    <div className="border-b bg-gray-50">
-                                        <div className="py-2 px-4">release</div>
-                                        <div className="py-2 px-4">--</div>
-                                        <div className="py-2 px-4">--</div>
-                                        <div className="py-2 px-4">--</div>
-                                        <div className="py-2 px-4">--</div>
-                                    </div>
+                                    <FinanceIncomeStatement
+                                        weekly={weeklyReport}
+                                        monthly={MonthylReport}
+                                    />
                                 )}
                             </div>
                         </div>

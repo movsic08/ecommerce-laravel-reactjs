@@ -18,6 +18,7 @@ use App\Models\Seller;
 use App\Models\SellersWallets;
 use App\Models\SellersWalletTransaction;
 use App\Models\User;
+use App\Models\WeeklySalesReport;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Cache\Store;
@@ -423,11 +424,17 @@ class SellerController extends Controller
 
     $totalIncome = SellersWalletTransaction::where('wallet_id', $wallet->id)->where('type', 'income')->sum('amount');
 
+    $weeklyReport = WeeklySalesReport::where('seller_id', $seller->id)->limit(3)->get();
+    $MonthylReport = MonthlySalesReport::where('seller_id', $seller->id)->limit(3)->get();
+
+
     return Inertia::render('Seller/Finance', [
       'balance' => $wallet->balance,
       'walletTransactions' => $walletTransactions,
       'orderReceived' => $orderReceived,
-      'totalIncome' => $totalIncome
+      'totalIncome' => $totalIncome,
+      'weeklyReport' => $weeklyReport,
+      'MonthylReport' => $MonthylReport
     ]);
   }
 
