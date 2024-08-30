@@ -9,23 +9,23 @@ use App\Models\WeeklySalesReport;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class GenerateSalesReport extends Command
+class GenerateWeeklySalesReport extends Command
 {
 
-  protected $signature = 'app:generate-sales-report';
-  protected $description  = 'Generate weekly and monthly sales report for each sellers';
+  protected $signature = 'app:generate-weekly-sales-report';
+  protected $description  = 'Generate weekly sales report for each sellers';
 
   /**
    * Execute the console command.
    */
   public function handle()
   {
-    $this->info('Generating weekly and monthly sales report for each seller....');
+    $this->info('Generating weekly sales report for each seller....');
 
     $this->generateWeeklyReports();
-    $this->generateMonthlyReports();
+    // $this->generateMonthlyReports();
 
-    $this->info('Sales reports generated Successfully!.');
+    $this->info('Weekly Sales reports generated Successfully!.');
   }
 
   private function generateWeeklyReports()
