@@ -5,11 +5,12 @@ import { useEffect, useState } from "react";
 import { FaPesoSign } from "react-icons/fa6";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FinanceOrderReceivedReport from "./Partials/FinanceOrderReceivedReport";
 
 export default function Finance({ auth }) {
     const { balance, walletTransactions, flash, orderReceived, totalIncome } =
         usePage().props;
-    console.log(totalIncome);
+
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {
@@ -166,62 +167,9 @@ export default function Finance({ auth }) {
                                                     </tr>
                                                 ) : (
                                                     <>
-                                                        {orderReceived.map(
-                                                            (list) => (
-                                                                <tr
-                                                                    key={
-                                                                        list.id
-                                                                    }
-                                                                    className="border-b text-sm bg-gray-50"
-                                                                >
-                                                                    <td className="py-2 px-4">
-                                                                        {
-                                                                            list.reference_number
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-2 px-4">
-                                                                        {
-                                                                            list.product_name
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-2 px-4">
-                                                                        {formatDistanceToNow(
-                                                                            new Date(
-                                                                                list.created_at
-                                                                            ),
-                                                                            {
-                                                                                addSuffix: true,
-                                                                            }
-                                                                        )}
-                                                                    </td>
-                                                                    <td className="py-2 px-4">
-                                                                        {
-                                                                            list.payment_method
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-2 px-4">
-                                                                        PHP{" "}
-                                                                        {new Intl.NumberFormat().format(
-                                                                            list.amount
-                                                                        )}
-                                                                    </td>
-                                                                </tr>
-                                                            )
-                                                        )}
-                                                        <tr className=" text-center ">
-                                                            <td className=" pt-1.5">
-                                                                <Link
-                                                                    href={route(
-                                                                        "seller.order-receipt-report"
-                                                                    )}
-                                                                    className="duration-200 ease-out hover:text-themeColor"
-                                                                >
-                                                                    View all
-                                                                    order
-                                                                    receipt list
-                                                                </Link>
-                                                            </td>
-                                                        </tr>
+                                                        <FinanceOrderReceivedReport
+                                                            data={orderReceived}
+                                                        />
                                                     </>
                                                 )
                                             ) : (
