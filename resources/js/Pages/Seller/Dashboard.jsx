@@ -1,5 +1,6 @@
 import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
+import { format } from "date-fns";
 import {
     AreaChart,
     Area,
@@ -11,6 +12,18 @@ import {
 } from "recharts";
 
 export default function Dashboard() {
+    const {
+        totalSold,
+        totalProducts,
+        products,
+        newOrdersCount,
+        toProcess,
+        unpaid,
+        isInTransit,
+        cancelled,
+        soldOut,
+    } = usePage().props;
+
     const data = [
         {
             name: "January",
@@ -65,39 +78,43 @@ export default function Dashboard() {
                             </small>
                             <div className=" flex gap-4 flex-row mt-4 lg:flex-col">
                                 <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
-                                    <span className="text-themeColor">0</span>
+                                    <span className="text-themeColor">
+                                        {toProcess}
+                                    </span>
                                     <h2 className=" font-bold text-mainText text-center">
                                         To-Process Shipment
                                     </h2>
                                 </div>
                                 <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
-                                    <span className="text-themeColor">0</span>
+                                    <span className="text-themeColor">
+                                        {isInTransit}
+                                    </span>
                                     <h2 className=" font-bold text-mainText text-center">
                                         Processed Shipment
                                     </h2>
                                 </div>
                                 <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
-                                    <span className="text-themeColor">0</span>
+                                    <span className="text-themeColor">
+                                        {unpaid}
+                                    </span>
                                     <h2 className=" font-bold text-mainText text-center">
                                         Unpaid
                                     </h2>
                                 </div>
                                 <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
-                                    <span className="text-themeColor">0</span>
+                                    <span className="text-themeColor">
+                                        {cancelled}
+                                    </span>
                                     <h2 className=" font-bold text-mainText text-center">
-                                        Pending Cancellation
+                                        Cancelled Orders
                                     </h2>
                                 </div>
                                 <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
-                                    <span className="text-themeColor">0</span>
+                                    <span className="text-themeColor">
+                                        {soldOut}
+                                    </span>
                                     <h2 className=" font-bold text-mainText text-center">
                                         Sold Out Products
-                                    </h2>
-                                </div>
-                                <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
-                                    <span className="text-themeColor">0</span>
-                                    <h2 className=" font-bold text-mainText text-center">
-                                        Banned Products
                                     </h2>
                                 </div>
                             </div>
@@ -110,7 +127,7 @@ export default function Dashboard() {
                                     New orders
                                 </small>
                                 <h1 className=" text-2xl font-bold text-themeColor">
-                                    23
+                                    {newOrdersCount}
                                 </h1>
                             </div>
                             <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
@@ -118,7 +135,7 @@ export default function Dashboard() {
                                     Total sold
                                 </small>
                                 <h1 className=" text-2xl font-bold text-themeColor">
-                                    23
+                                    {totalSold}
                                 </h1>
                             </div>
                             <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
@@ -126,17 +143,17 @@ export default function Dashboard() {
                                     Products
                                 </small>
                                 <h1 className=" text-2xl font-bold text-themeColor">
-                                    23
+                                    {totalProducts}
                                 </h1>
                             </div>
-                            <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
+                            {/* <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
                                 <small className="text-slate-700 text-base font-semibold">
                                     Total Review
                                 </small>
                                 <h1 className=" text-2xl font-bold text-themeColor">
                                     23
                                 </h1>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="py-3 px-5 rounded-xl w-full bg-white drop-shadow-lg">
                             <div>
@@ -211,7 +228,7 @@ export default function Dashboard() {
                                                 scope="col"
                                                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                             >
-                                                Amount
+                                                Price
                                             </th>
                                             <th
                                                 scope="col"
@@ -228,30 +245,53 @@ export default function Dashboard() {
                                         </tr>
                                     </thead>
                                     <tbody className="bg-white divide-y divide-gray-200">
-                                        <tr>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <img
-                                                    src="product_image_url"
-                                                    alt="Product"
-                                                    className="w-16 h-16 object-cover"
-                                                />
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                Product Name
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                Amount
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                    Status
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                Date Created
-                                            </td>
-                                        </tr>
-                                        {/* Repeat <tr> for more products */}
+                                        {products == null
+                                            ? "No Product yet."
+                                            : products.data.map((product) => (
+                                                  <tr key={product.id}>
+                                                      <td className="px-6 py-4 whitespace-nowrap">
+                                                          <img
+                                                              src={
+                                                                  product
+                                                                      .images[0]
+                                                                      .image_path
+                                                              }
+                                                              alt="Product"
+                                                              className="w-16 h-16 object-cover"
+                                                          />
+                                                      </td>
+                                                      <td className="px-6 py-4 whitespace-nowrap">
+                                                          {product.product_name}
+                                                      </td>
+                                                      <td className="px-6 py-4 whitespace-nowrap">
+                                                          PHP{" "}
+                                                          {new Intl.NumberFormat().format(
+                                                              product.price
+                                                          )}
+                                                      </td>
+                                                      <td className="px-6 py-4 whitespace-nowrap">
+                                                          <span
+                                                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full  ${
+                                                                  product.is_verified
+                                                                      ? "bg-green-100 text-green-800"
+                                                                      : "bg-red-100 text-red-800"
+                                                              }`}
+                                                          >
+                                                              {product.is_verified
+                                                                  ? "Verified"
+                                                                  : "Not Verified"}
+                                                          </span>
+                                                      </td>
+                                                      <td className="px-6 py-4 whitespace-nowrap">
+                                                          {format(
+                                                              new Date(
+                                                                  product.created_at
+                                                              ),
+                                                              "MMM d, yyyy h:mm a"
+                                                          )}
+                                                      </td>
+                                                  </tr>
+                                              ))}
                                     </tbody>
                                 </table>
                             </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\OrdersResource;
+use App\Http\Resources\Seller\ViewProductResource;
 use App\Http\Resources\SellerDataResource;
 use App\Http\Resources\SellerProductList;
 use App\Models\Category;
@@ -120,7 +121,42 @@ class SellerController extends Controller
 
   public function dashboard()
   {
-    return Inertia::render('Seller/Dashboard');
+    $user = auth()->user();
+    $seller = $user->seller->first();
+
+    $newOrders = OrderItem::where('seller_id', $seller->id)
+      ->where('status', 'order placed')->count();
+    $toProcess = OrderItem::where('seller_id', $seller->id)
+      ->where('is_preparing', 1)
+      ->where('is_ready_for_pickup', 0)->count();
+    $isInTransit = OrderItem::where('seller_id', $seller->id)
+      ->where('is_in_transit', 1)
+      ->where('is_out_for_delivery', 0)->count();
+    $unpaid = OrderItem::where('seller_id', $seller->id)
+      ->where('shipment_status', 'out_for_delivery')->count();
+    $cancelled = OrderItem::where('seller_id', $seller->id)
+      ->where('status', 'cancelled')->count();
+    $soldOut = $seller->products->where('quantity', 0)->count();
+
+
+    $totalProducts = $seller->products->count();
+    $products = $seller->products()->with('images')->orderBy('created_at', 'desc')->take(5)->get();
+
+
+    $totalSold = OrderReceivedReport::where('seller_id', $seller->id)->count();
+
+    return Inertia::render('Seller/Dashboard', [
+      'totalSold' => $totalSold,
+      'totalProducts' => $totalProducts,
+      'products' => ViewProductResource::collection($products),
+      'newOrdersCount' => $newOrders,
+      'toProcess' => $toProcess,
+      'isInTransit' => $isInTransit,
+      'unpaid' => $unpaid,
+      'cancelled' => $cancelled,
+      'soldOut' => $soldOut
+
+    ]);
   }
 
   public function myShop()
