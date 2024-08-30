@@ -63,13 +63,13 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
                                     23
                                 </div> */}
                             </div>
-                            <NavLink href={route("user-messages")}>
+                            {/* <NavLink href={route("user-messages")}>
                                 <img
                                     className=" h-6 "
                                     src={UserChatIcon}
                                     alt="chat icon"
                                 />
-                            </NavLink>
+                            </NavLink> */}
                             <NavLink href={route("seller.profile")}>
                                 <FaUserGear size={20} />
                             </NavLink>
