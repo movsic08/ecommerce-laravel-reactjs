@@ -1,22 +1,13 @@
 import StarRating from "@/Components/StarRating";
 import AuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, usePage } from "@inertiajs/react";
 import frame_1 from "../assets/img/Frame_1.png";
+import { useState } from "react";
 
 export default function Dashboard({ auth }) {
-    const images = [
-        {
-            url: "https://i.ytimg.com/vi/wy7-Y-C3P34/maxresdefault.jpg",
-            alt: "Random Image 1",
-            caption: "Caption for Random Image 1",
-        },
-        {
-            url: "https://media-cdn.socastsrm.com/wordpress/wp-content/blogs.dir/1050/files/2022/02/diy-capiz-lamp.png",
-            alt: "Random Image 2",
-            caption: "Caption for Random Image 2",
-        },
-        // Add more images as needed
-    ];
+    const { sellerData, sellerProducts } = usePage().props;
+    console.log(sellerData, sellerProducts);
+    const [layout, setLayout] = useState("grid"); // State for layout type
     return (
         <AuthenticatedLayout user={auth.user} cartNumber={auth.cartCount}>
             <Head title="Home" />
@@ -53,66 +44,101 @@ export default function Dashboard({ auth }) {
                     />
                     <div className=" ml-8">
                         <h2 className=" font-semibold text-3xl">Seller Name</h2>
-                        <div className="mt-4">Store name</div>
+                        <div className="mt-4">{sellerData.shop_name}</div>
 
                         <table className="min-w-full overflow-hidden">
                             <tr className="text-left">
                                 <td className=" font-bold pr-6 pt-2">Name</td>
-                                <td className="pt-2 font-italic">John Doe</td>
+                                <td className="pt-2 font-italic">
+                                    {sellerData.user.first_name +
+                                        " " +
+                                        sellerData.user.last_name}
+                                </td>
                             </tr>
                             <tr>
                                 <td className=" font-bold pr-6 pt-2">
                                     Location
                                 </td>
                                 <td className="pt-2 font-italic">
-                                    Lucap Wharf
+                                    {sellerData.shop_address}
                                 </td>
                             </tr>
                             <tr>
                                 <td className=" font-bold pr-6 pt-2">Join</td>
                                 <td className="pt-2 font-italic">
-                                    March 24, 2002
+                                    {new Intl.DateTimeFormat("en-US", {
+                                        month: "long",
+                                        day: "2-digit",
+                                        year: "numeric",
+                                    }).format(new Date(sellerData.created_at))}
                                 </td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <div className="grid mt-10 grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 justify-items-center">
-                    {" "}
-                    <Link
-                        href=""
-                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden"
-                    >
-                        <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                            alt=""
-                            className="mx-auto h-48 w-full object-cover"
-                        />
-                        <div className="p-4 text-center h-fit flex flex-col">
-                            <p className="line-clamp-2 h-[5vw] grow ">name</p>
-                            <div className="flex  flex-none flex-col ">
-                                <StarRating rating={4} />
-                                <p className="font-semibold">Php 200</p>
+                <div className="grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3 md:mt-6 grid max-w-5xl ">
+                    {sellerProducts.data.map((product) => (
+                        <Link
+                            key={product.id}
+                            href={route("view-product", product.id)}
+                            className={`bg-gray-100 duration-300 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg flex rounded relative overflow-hidden ${
+                                layout == "grid"
+                                    ? "flex-col"
+                                    : "flex-row h-[10rem]"
+                            }`}
+                        >
+                            <div
+                                className={` ${
+                                    layout == "grid"
+                                        ? "pt-[100%] w-full"
+                                        : "w-[10rem] h-full aspect-1"
+                                } relative`}
+                            >
+                                <img
+                                    src={
+                                        product.images.length == 0
+                                            ? DefaultProductIcon
+                                            : product.images[0].image_path
+                                    }
+                                    alt={product.product_name + " Image"}
+                                    className="absolute top-0 left-0 w-full h-full object-cover"
+                                />
+
+                                {/* Overlay for Out of Stock */}
+                                {product.quantity === 0 && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                                        <span className="text-white text-lg font-semibold">
+                                            Out of Stock
+                                        </span>
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    </Link>
-                    <Link
-                        href=""
-                        className="bg-[#ECECEC] drop-shadow-lg rounded relative overflow-hidden"
-                    >
-                        <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEEWvj-brrQLo63rYQe-vQ8sUi5495fskgQw&s"
-                            alt=""
-                            className="mx-auto h-48 w-full object-cover"
-                        />
-                        <div className="p-4 text-center h-fit flex flex-col">
-                            <p className="line-clamp-2 h-[5vw] grow ">name</p>
-                            <div className="flex  flex-none flex-col ">
-                                <StarRating rating={4} />
-                                <p className="font-semibold">Php 200</p>
+
+                            <div className="p-4 text-center flex flex-col w-full h-full justify-between">
+                                <p className="line-clamp-2 overflow-hidden">
+                                    {product.product_name}
+                                </p>
+                                <div
+                                    className={`flex flex-col w-full ${
+                                        layout == "grid"
+                                            ? "items-center"
+                                            : "items-start"
+                                    }`}
+                                >
+                                    <StarRating rating={product.rating} />
+                                    <div className="flex items-center w-full justify-between">
+                                        <p className="font-semibold">
+                                            Php{" "}
+                                            {new Intl.NumberFormat().format(
+                                                product.price
+                                            )}
+                                        </p>
+                                        <small>Stock: {product.quantity}</small>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </Link>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </AuthenticatedLayout>

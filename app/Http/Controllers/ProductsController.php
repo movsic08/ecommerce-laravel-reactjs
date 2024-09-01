@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Seller\ViewProductResource;
 use App\Models\Category;
+use App\Models\MonthlySalesReport;
 use Inertia\Inertia;
 use App\Models\Products;
 use App\Models\ProductsImages;
+use App\Models\Seller;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -19,7 +21,28 @@ class ProductsController extends Controller
 {
   public function customerHome()
   {
-    return Inertia::render('Dashboard',);
+    $sellerOfTheMonth = MonthlySalesReport::orderBy('total_orders', 'desc')
+      ->first();
+    if ($sellerOfTheMonth) {
+      $sellerOfTheMonthId = $sellerOfTheMonth->seller_id;
+    } else {
+      $sellerOfTheMonthId = Seller::with('user')->orderBy('created_at', 'desc')
+        ->first();
+    }
+
+    $seller = Seller::with('user')->where('id', $sellerOfTheMonthId)->first();
+    $sellerProducts = Products::with('images')
+      ->where('is_verified', 1)
+      ->where('seller_id', $seller->id)
+      ->take(4)->get();
+
+    return Inertia::render(
+      'Dashboard',
+      [
+        'sellerData' => $seller,
+        'sellerProducts' =>  ViewProductResource::collection($sellerProducts)
+      ]
+    );
   }
 
 
