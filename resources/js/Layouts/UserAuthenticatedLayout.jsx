@@ -77,13 +77,13 @@ export default function UserAuthenticatedLayout({
                                     />
                                 </div>
                             </NavLink>
-                            <NavLink href={route("user-messages")}>
+                            {/* <NavLink href={route("user-messages")}>
                                 <img
                                     className=" h-6 "
                                     src={UserChatIcon}
                                     alt="chat icon"
                                 />
-                            </NavLink>
+                            </NavLink> */}
 
                             <div className=" relative">
                                 <Dropdown>
