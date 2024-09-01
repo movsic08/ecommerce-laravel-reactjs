@@ -5,7 +5,7 @@ import { Head, router, usePage } from "@inertiajs/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function Notification() {
+export default function Notification({ auth }) {
     const { notifications, flash } = usePage().props;
     const [notificationList, setNotificationList] = useState(notifications);
     const [isDeleting, setIsDeleting] = useState(null);
@@ -17,11 +17,9 @@ export default function Notification() {
             preserveScroll: true,
             onSuccess: (page) => {
                 setNotificationList(page.props.notifications);
-                toast.success("Notification deleted successfully!");
             },
             onError: () => {
                 console.error("Failed to delete notification.");
-                toast.error("Failed to delete notification.");
             },
             onFinish: () => {
                 setIsDeleting(null);
@@ -37,11 +35,9 @@ export default function Notification() {
                 preserveScroll: true,
                 onSuccess: (page) => {
                     setNotificationList(page.props.notifications);
-                    toast.success("Notification marked as read!");
                 },
                 onError: () => {
                     console.error("Failed to mark notification as read.");
-                    toast.error("Failed to mark notification as read.");
                 },
             }
         );
@@ -55,11 +51,9 @@ export default function Notification() {
                 preserveScroll: true,
                 onSuccess: (page) => {
                     setNotificationList(page.props.notifications);
-                    toast.success("Notification marked as unread!");
                 },
                 onError: () => {
                     console.error("Failed to mark notification as unread.");
-                    toast.error("Failed to mark notification as unread.");
                 },
             }
         );
@@ -67,7 +61,9 @@ export default function Notification() {
 
     return (
         <>
-            <SellerAuthenticatedLayout>
+            <SellerAuthenticatedLayout
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Seller - Notification" />
                 <ToastContainer />
                 <div className="max-w-2xl mx-auto p-4">
