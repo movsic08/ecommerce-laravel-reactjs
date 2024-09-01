@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\WithdrawalNotification;
+use App\Models\Notification;
 use App\Models\Seller;
 use App\Models\SellersWallets;
 use App\Models\SellersWalletTransaction;
@@ -100,6 +101,12 @@ class WithdrawRequestController extends Controller
           'amount' => $amount,
           'reference_number' => $this->generateWalletTransactionReference()
         ]);
+
+        Notification::create([
+          'title' => 'Withdrawal Request Rejected',
+          'body' => "Your withdrawal request for the amount of $amount has been rejected. The amount has been credited back to your wallet and is now reflected in your current balance.",
+          'to_user_id' => $request->sellerData->user->id
+        ]);
       } else {
 
         SellersWalletTransaction::create([
@@ -107,6 +114,12 @@ class WithdrawRequestController extends Controller
           'type' => 'withdrawal',
           'amount' => $amount,
           'reference_number' => $this->generateWalletTransactionReference()
+        ]);
+
+        Notification::create([
+          'title' => 'Withdrawal Request Processed',
+          'body' => "Your withdrawal request for the amount of $amount has been successfully processed. The funds have been transferred to your preferred bank account.",
+          'to_user_id' => $request->sellerData->user->id
         ]);
       }
       Mail::to($email)->send(new WithdrawalNotification($status, $amount));
