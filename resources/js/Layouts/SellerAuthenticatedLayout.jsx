@@ -9,9 +9,22 @@ import Logo from "@/assets/icons/Logo.svg";
 import { IoNotifications } from "react-icons/io5";
 import { FaUserGear } from "react-icons/fa6";
 
-export default function SellerAuthenticatedLayout({ user, header, children }) {
+export default function SellerAuthenticatedLayout({
+    user,
+    header,
+    notificationCount,
+    children,
+}) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const [notification, setNotification] = useState(
+        notificationCount == null ? null : notificationCount
+    );
+
+    useEffect(() => {
+        setNotification(notificationCount);
+    }, [notificationCount]);
 
     return (
         <div className="min-h-screen bg-slate-50">
@@ -54,6 +67,13 @@ export default function SellerAuthenticatedLayout({ user, header, children }) {
 
                         <div className="hidden  gap-2 md:flex sm:items-center sm:ms-6">
                             <div className="relative flex items-center justify-center">
+                                {notification == 0 || notification == null ? (
+                                    ""
+                                ) : (
+                                    <small className="absolute -top-0.5 -right-0.5 z-10 text-white text-[0.50rem] bg-slate-900 p-1 flex items-center justify-center h-4 w-4 rounded-lg border-2 border-white">
+                                        {notification}
+                                    </small>
+                                )}
                                 <NavLink
                                     href={route("seller.showNotification")}
                                 >

@@ -46,7 +46,10 @@ const WithdrawalRequestForm = ({ auth }) => {
     }, [flash]);
 
     return (
-        <SellerAuthenticatedLayout user={auth}>
+        <SellerAuthenticatedLayout
+            user={auth}
+            notificationCount={auth.notificationCount}
+        >
             <Head title="Request withdraw" />
             <ToastContainer />
             <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">

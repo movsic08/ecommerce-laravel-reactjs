@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\CartItem;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -41,6 +42,10 @@ class HandleInertiaRequests extends Middleware
             ? CartItem::where('user_id', $request->user()->id)->count()
             : 0;
         },
+        'notificationCount' => Notification::where('to_user_id', auth()->id())
+          ->where('is_read', 0)
+          ->count()
+
       ],
       'ziggy' => fn() => [
         ...(new Ziggy)->toArray(),

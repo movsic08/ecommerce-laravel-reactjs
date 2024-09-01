@@ -6,12 +6,11 @@ import {
     Area,
     XAxis,
     YAxis,
-    CartesianGrid,
     Tooltip,
     ResponsiveContainer,
 } from "recharts";
 
-export default function Dashboard() {
+export default function Dashboard({ auth }) {
     const {
         totalSold,
         totalProducts,
@@ -24,19 +23,6 @@ export default function Dashboard() {
         soldOut,
         monthlySales,
     } = usePage().props;
-
-    const data = [
-        {
-            name: "January",
-            sales: 4000,
-            amt: 2400,
-        },
-        {
-            name: "February",
-            sales: 3000,
-            amt: 2210,
-        },
-    ];
 
     const formatData = (data) => {
         return data.map((item) => ({
@@ -51,10 +37,11 @@ export default function Dashboard() {
         return value.toLocaleString(); // Add commas to the number
     };
     const formattedData = formatData(monthlySales);
-    console.log(formattedData);
     return (
         <>
-            <SellerAuthenticatedLayout>
+            <SellerAuthenticatedLayout
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Seller - Dashboard" />
 
                 <div className="flex flex-col lg:flex-row gap-4  mx-auto">

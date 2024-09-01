@@ -45,7 +45,10 @@ export default function Finance({ auth }) {
 
     return (
         <>
-            <SellerAuthenticatedLayout user={auth}>
+            <SellerAuthenticatedLayout
+                user={auth}
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Finance - Seller" />
                 <ToastContainer />
                 <div className="mx-auto max-w-6xl flex mt-2 md:mt-4 lg:mt-6 flex-col lg:flex-row gap-6">

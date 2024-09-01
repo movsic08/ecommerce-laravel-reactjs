@@ -54,7 +54,10 @@ export default function Shop({ auth }) {
 
     return (
         <>
-            <SellerAuthenticatedLayout user={auth}>
+            <SellerAuthenticatedLayout
+                user={auth}
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Seller - Dashboard" />
                 <ToastContainer />
                 <div className="container mx-auto p-6">

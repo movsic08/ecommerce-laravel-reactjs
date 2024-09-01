@@ -5,7 +5,10 @@ export default function WalletTransactionList({ auth }) {
     const { walletTransactions } = usePage().props;
     return (
         <>
-            <SellerAuthenticatedLayout user={auth}>
+            <SellerAuthenticatedLayout
+                user={auth}
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="WalletTransactionList" />
                 <div className="p-6 bg-white shadow-lg w-full rounded-lg lg:max-w-xl lg:mx-auto">
                     <h1 className="font-semibold text-xl text-gray-800 mb-4">

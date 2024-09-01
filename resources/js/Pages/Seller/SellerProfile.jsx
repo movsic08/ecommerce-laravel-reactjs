@@ -7,7 +7,10 @@ import DeleteSellerProfileForm from "./Partials/DeleteSellerProfileForm";
 export default function SellerProfile({ auth }) {
     return (
         <>
-            <SellerAuthenticatedLayout user={auth}>
+            <SellerAuthenticatedLayout
+                user={auth}
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Seller Profile" />
                 <div className="flex gap-4 md:gap-6 lg:gap-8 py-2 flex-col md:px-4 lg:px-8">
                     <UpdateSellerProfileForm />

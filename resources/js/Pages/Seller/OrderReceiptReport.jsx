@@ -6,7 +6,10 @@ export default function OrderReceiptReport({ auth }) {
 
     return (
         <>
-            <SellerAuthenticatedLayout user={auth}>
+            <SellerAuthenticatedLayout
+                user={auth}
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Order Receipt Report" />
                 <div className="container mx-auto p-6">
                     <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">

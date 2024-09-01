@@ -7,7 +7,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
 
-export default function Products() {
+export default function Products({ auth }) {
     const { products, flash } = usePage().props;
     const [data, setData] = useState(products.data);
     console.log(data);
@@ -34,7 +34,9 @@ export default function Products() {
 
     return (
         <>
-            <SellerAuthenticatedLayout>
+            <SellerAuthenticatedLayout
+                notificationCount={auth.notificationCount}
+            >
                 <Head title="Seller - Products" />
                 <ToastContainer />
                 <div>
