@@ -44,12 +44,12 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     >
                                         Sellers
                                     </NavLink>{" "}
-                                    <NavLink
+                                    {/* <NavLink
                                         href={route("admin.users")}
                                         active={route().current("admin.users")}
                                     >
                                         Users
-                                    </NavLink>
+                                    </NavLink> */}
                                     <NavLink
                                         href={route("admin.permission")}
                                         active={route().current(
