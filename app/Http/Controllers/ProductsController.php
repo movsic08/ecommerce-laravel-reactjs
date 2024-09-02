@@ -96,8 +96,8 @@ class ProductsController extends Controller
       return Inertia::render('Shop/ViewProduct', [
         'product' => new ViewProductResource($product)
       ]);
-    } catch (ModelNotFoundException $e) {
-      return response()->json(['message' => 'Product not found.']);
+    } catch (\Exception $e) {
+      abort(403, 'Product not found');
     }
   }
 
