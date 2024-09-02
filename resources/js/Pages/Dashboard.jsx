@@ -3,6 +3,7 @@ import AuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, Link, usePage } from "@inertiajs/react";
 import frame_1 from "../assets/img/Frame_1.png";
 import { useState } from "react";
+import { FaShop } from "react-icons/fa6";
 
 export default function Dashboard({ auth }) {
     const { sellerData, sellerProducts } = usePage().props;
@@ -43,8 +44,13 @@ export default function Dashboard({ auth }) {
                         alt=""
                     />
                     <div className=" ml-8">
-                        <h2 className=" font-semibold text-3xl">Seller Name</h2>
-                        <div className="mt-4">{sellerData.shop_name}</div>
+                        <Link
+                            href={route("shop.profile", sellerData.id)}
+                            className="mt-4 flex items-center text-xl text-themeColor gap-1 font-bold "
+                        >
+                            <FaShop size={30} className="text-themeColor" />
+                            {sellerData.shop_name}
+                        </Link>
 
                         <table className="min-w-full overflow-hidden">
                             <tr className="text-left">
