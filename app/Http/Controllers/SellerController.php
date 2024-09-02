@@ -397,6 +397,21 @@ class SellerController extends Controller
     return Inertia::render('Seller/ShippingSetting');
   }
 
+  public function showShop($shopid)
+  {
+    $sellerData = Seller::find($shopid);
+
+    if (!$sellerData || $sellerData->is_verified == 0) {
+      return abort(403, 'Shop is not accessible.');
+    }
+
+    return Inertia::render('Shop/ShopProfile', [
+      'sellerData' => $sellerData,
+      'products' => ViewProductResource::collection($sellerData->products()->with('images')->get())
+    ]);
+  }
+
+
   public function finance()
   {
     $user = auth()->user();

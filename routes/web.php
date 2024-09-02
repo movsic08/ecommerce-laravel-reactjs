@@ -37,13 +37,15 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::put('/my-profile', [UserController::class, 'updatePassword'])->name('user.update.password');
   Route::post('/my-profile', [UserController::class, 'updateUserInformation'])->name('user.update.info');
   Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
+  Route::get('/shop/{shopid}', [SellerController::class, 'showShop'])->name('shop.profile');
+  Route::get('/product/{productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
+
+  Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('cart.store');
+  // Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth')->name('cart');  
+  // Route::get('/shop/id', [SellerController::class, 'shop'])->name('view.seller.shop');
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
   })->name('user-messages');
-  Route::get('/shop/id', [SellerController::class, 'shop'])->name('view.seller.shop');
-  Route::get('/shop/product={productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
-  Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('cart.store');
-  // Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth')->name('cart');
   Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
   Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.item.destroy');
   Route::get('/my-purchases', [OrderController::class, 'index'])->name('user.myPurchases');
