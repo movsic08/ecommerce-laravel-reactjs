@@ -405,11 +405,29 @@ class SellerController extends Controller
       return abort(403, 'Shop is not accessible.');
     }
 
+    $query = $sellerData->products()->with('images');
+
+    // Filter by category if provided
+    if (request()->has('category') && request('category') !== 'all') {
+      $query->where('category', request('category'));
+    }
+
+    // Filter by search query if provided
+    if (request()->has('search')) {
+      $query->where('product_name', 'like', '%' . request('search') . '%');
+    }
+
+    $sellersCategory = $sellerData->products()->distinct()->pluck('category');
+
     return Inertia::render('Shop/ShopProfile', [
       'sellerData' => $sellerData,
-      'products' => ViewProductResource::collection($sellerData->products()->with('images')->get())
+      'products' => ViewProductResource::collection($query->paginate(5)),
+      'sellersCategory' => $sellersCategory,
+      'searchQuery' => request('search') // Pass the search query back to the view
     ]);
   }
+
+
 
 
   public function finance()

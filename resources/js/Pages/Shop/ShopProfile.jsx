@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { BsGrid3X3GapFill, BsStarFill } from "react-icons/bs";
 import { TbListDetails } from "react-icons/tb";
@@ -9,48 +9,47 @@ import StarRating from "@/Components/StarRating";
 import SelectInput from "@/Components/SelectInput";
 import Pagination from "@/Components/Pagination";
 
-const fakeShop = {
-    name: "Shop Name",
-    address: "1234 Shop St, City, Country",
-    categories: ["Category 1", "Category 2", "Category 3"],
-    products: [
-        {
-            id: 1,
-            name: "Product 1",
-            price: 100,
-            rating: 4,
-            image: null,
-        },
-        {
-            id: 2,
-            name: "Product 2",
-            price: 200,
-            rating: 5,
-            image: null,
-        },
-        {
-            id: 3,
-            name: "Product 3",
-            price: 300,
-            rating: 3,
-            image: null,
-        },
-        // Add more fake products as needed
-    ],
-};
-
-const ShopProfile = ({ auth }) => {
+const ShopProfile = ({ auth, queryParams = null }) => {
     const [layout, setLayout] = useState("grid"); // State for layout type
     const toggleLayout = () => {
         setLayout((prevLayout) => (prevLayout === "grid" ? "list" : "grid"));
     };
+    const [currentCategory, setCurrentCategory] = useState();
+    const { sellerData, products, sellersCategory } = usePage().props;
+    queryParams = queryParams || {};
+    const [searchTerm, setSearchTerm] = useState(queryParams.search || "");
+    const findByCategory = (category, value) => {
+        setCurrentCategory(value);
+        const url = new URL(window.location);
 
-    const { sellerData, products } = usePage().props;
-    console.log(products);
+        url.searchParams.set("category", value);
+        url.searchParams.set("search", searchTerm); // Keep the current search term
+
+        window.location.href = url.toString();
+    };
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+        const url = new URL(window.location);
+
+        url.searchParams.set("search", e.target.value);
+        url.searchParams.set("category", currentCategory || "all");
+
+        window.location.href = url.toString();
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get("category") || "all";
+        const search = urlParams.get("search") || "";
+        setCurrentCategory(category);
+        setSearchTerm(search);
+    }, []);
+
     return (
         <UserAuthenticatedLayout user={auth} cartNumber={auth.cartCount}>
             <Head title="Profile" />
-            <div className="container mx-auto p-4">
+            <div className="container mx-auto p-4 mt-2 md:mt-4 lg:mt-8">
                 <div className="flex flex-col md:flex-row mb-8 md:gap-2 lg:gap-6">
                     {/* Shop Profile Section */}
                     <div className="w-full md:w-1/3 lg:w-1/4 bg-white border border-slate-200 h-fit p-4 rounded-lg shadow-md mb-4 md:mb-0">
@@ -74,28 +73,45 @@ const ShopProfile = ({ auth }) => {
                             </h2>
                             <div className="flex md:block overflow-x-scroll md:overflow-x-hidden space-x-2 md:space-x-0 md:space-y-2">
                                 <ul className="flex md:flex-col gap-2 lg:gap-0 text-mainText">
-                                    {fakeShop.categories.map(
-                                        (category, index) => (
-                                            <li
-                                                key={index}
-                                                className="mb-1 whitespace-nowrap p-2 bg-gray-50 rounded-lg"
-                                            >
-                                                <a
-                                                    href="#"
-                                                    className="hover:underline"
-                                                >
-                                                    {category}
-                                                </a>
-                                            </li>
-                                        )
-                                    )}
+                                    <li
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            findByCategory("category", "all");
+                                        }}
+                                        className={`mb-1 whitespace-nowrap duration-200 ease-in-out cursor-pointer p-2 rounded-lg ${
+                                            currentCategory == "all"
+                                                ? "bg-themeColor text-slate-100"
+                                                : "hover:bg-themeColor bg-gray-50 hover:text-slate-100"
+                                        }`}
+                                    >
+                                        All
+                                    </li>
+                                    {sellersCategory.map((category, index) => (
+                                        <li
+                                            key={index}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                findByCategory(
+                                                    "category",
+                                                    category
+                                                );
+                                            }}
+                                            className={`mb-1 whitespace-nowrap duration-200 ease-in-out cursor-pointer p-2 rounded-lg ${
+                                                currentCategory == category
+                                                    ? "bg-themeColor text-slate-100"
+                                                    : "hover:bg-themeColor bg-gray-50 hover:text-slate-100"
+                                            }`}
+                                        >
+                                            {category}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>
                     </div>
 
                     {/* Products Section */}
-                    <div className="w-full md:w-2/3 lg:w-3/4 px-4 pb-4  ">
+                    <div className="w-full md:w-2/3 lg:w-3/4 px-4   ">
                         {/* search */}
                         <div className="w-full flex items-center mb-3 gap-2">
                             <span className="font-bold">Search</span>
@@ -107,6 +123,8 @@ const ShopProfile = ({ auth }) => {
                                         "Search product in " +
                                         sellerData.shop_name
                                     }
+                                    value={searchTerm}
+                                    onChange={handleSearch}
                                 />
                                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                             </div>
@@ -259,7 +277,7 @@ const ShopProfile = ({ auth }) => {
                             ))}
                         </div>
                         {/* pagination */}
-                        {/* <Pagination links={products.links} className="pb-4" /> */}
+                        <Pagination links={products.links} className="-mb-4" />
                     </div>
                 </div>
             </div>
