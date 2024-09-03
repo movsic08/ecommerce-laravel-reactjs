@@ -18,9 +18,8 @@ class GenerateMontlyNewCustomers extends Command
   {
     $this->info('Generating montly new customers, creating now.....');
 
-    $startDate = Carbon::now()->startOfMonth()->subMonth();
-    $endDate = Carbon::now()->startOfMonth();
-
+    $startDate = Carbon::now()->subMonth()->startOfMonth();
+    $endDate = Carbon::now()->subMonth()->endOfMonth();
 
     $newCustomersCount = User::where('is_seller', 0)
       ->where('is_admin', 0)
