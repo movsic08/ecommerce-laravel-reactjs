@@ -99,13 +99,21 @@ class AdminController extends Controller
         'verified_at' => Carbon::now()
       ]);
 
-
       if ($request->is_verified == 1) {
-
+        Notification::create([
+          'title' => 'Account Verified',
+          'body'  => 'Your account has been verified. You can now edit your profile and start uploading products.',
+          'to_user_id' => $seller->user->id,
+        ]);
         Mail::to($user->email)->send(new SellerVerified((object) $request->all()));
       }
 
       if ($request->is_verified == 0) {
+        Notification::create([
+          'title' => 'Account Not Verified',
+          'body'  => 'Your account verification was unsuccessful. If you believe this is an error, please contact admin for assistance.',
+          'to_user_id' => $seller->user->id,
+        ]);
         Mail::to($user->email)->send(new SellerUnverified((object) $request->all()));
       }
 
