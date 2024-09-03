@@ -332,28 +332,6 @@ export default function ViewSellersData({ auth }) {
                                                 className="mt-1 block w-full rounded-md border-none bg-gray-100 "
                                             />
                                         </div>
-                                        <div className="mt-4">
-                                            <label
-                                                htmlFor="motto"
-                                                className="block text-sm font-medium text-gray-700"
-                                            >
-                                                Motto
-                                            </label>
-
-                                            <textarea
-                                                name="motto"
-                                                value={
-                                                    seller.seller.motto || ""
-                                                }
-                                                onChange={handleChange}
-                                                disabled={!isEditing}
-                                                className={`mt-1 block w-full rounded-md ${
-                                                    isEditing
-                                                        ? "border-gray-300"
-                                                        : "border-none bg-gray-100"
-                                                }`}
-                                            ></textarea>
-                                        </div>
                                     </div>
                                     <div className=" w-1/2 flex gap-6">
                                         <div className="w-fit">
