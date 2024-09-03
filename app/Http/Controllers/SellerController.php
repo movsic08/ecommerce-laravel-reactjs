@@ -318,6 +318,14 @@ class SellerController extends Controller
    */
   public function store(Request $request)
   {
+    $seller = Seller::where('user_id', auth()->id())->first();
+
+    if ($seller->shop_name == null || $seller->shop_address == null) {
+      return back()->with([
+        'status' => 'error',
+        'message' => 'Please complete your account details first by clicking the gear icon or <a href="' . route('seller.profile') . '">clicking here</a>.'
+      ]);
+    }
 
 
     $request->validate([
@@ -332,7 +340,7 @@ class SellerController extends Controller
 
 
     try {
-      $seller = Seller::where('user_id', auth()->id())->first();
+
       if (!$seller) {
         return redirect()->route('seller.showAddProduct')->with([
           'message' => 'Failed referencing Seller data',

@@ -46,9 +46,13 @@ export default function AddProduct({ auth }) {
 
     useEffect(() => {
         if (flash?.status === "success") {
-            toast.success(flash.message);
+            toast.success(
+                <div dangerouslySetInnerHTML={{ __html: flash.message }} />
+            );
         } else if (flash?.status === "error") {
-            toast.error(flash.message);
+            toast.error(
+                <div dangerouslySetInnerHTML={{ __html: flash.message }} />
+            );
         }
     }, [flash]);
 
