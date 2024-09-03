@@ -16,3 +16,7 @@ Schedule::command('app:generate-weekly-sales-report')
 Schedule::command('app:generate-monthly-sales-report')
   ->monthlyOn(1, '00:00')
   ->timezone('Asia/Manila');
+
+Schedule::command('app:generate-montly-new-customers')
+  ->monthlyOn(1, '00:00')
+  ->timezone('Asia/Manila');
