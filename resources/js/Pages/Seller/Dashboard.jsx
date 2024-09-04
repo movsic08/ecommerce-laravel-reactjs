@@ -53,7 +53,7 @@ export default function Dashboard({ auth }) {
                             <small className="text-slate-400 mb-4 -my-2">
                                 Things you need to deal with
                             </small>
-                            <div className=" flex gap-4 flex-row mt-4 lg:flex-col">
+                            <div className=" flex gap-4 flex-row mt-4 lg:flex-col overflow-y-auto">
                                 <div className="flex gap-2 flex-col items-center rounded-xl p-4 bg-sky-50">
                                     <span className="text-themeColor">
                                         {toProcess}
