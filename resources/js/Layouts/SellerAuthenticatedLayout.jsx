@@ -153,23 +153,32 @@ export default function SellerAuthenticatedLayout({
                 >
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
+                            href={route("seller.dashboard")}
+                            active={route().current("seller.dashboard")}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("seller.finance")}
+                            active={route().current("seller.finance")}
+                        >
+                            Finance
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("seller.shop")}
+                            active={route().current("seller.shop")}
+                        >
+                            Your Shop
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("seller.products")}
+                            active={route().current("seller.products")}
+                        >
+                            Products
                         </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
-                        <div className="px-4">
-                            {/* <div className="font-medium text-base text-gray-800">
-                                {user.name}
-                            </div>
-                            <div className="font-medium text-sm text-gray-500">
-                                {user.email}
-                            </div> */}
-                        </div>
-
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("seller.profile")}>
                                 Profile
