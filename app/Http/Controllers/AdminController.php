@@ -8,6 +8,8 @@ use App\Http\Resources\SellerDataResource;
 use App\Http\Resources\SellerProductList;
 use App\Mail\SellerUnverified;
 use App\Mail\SellerVerified;
+use App\Models\MontlyNewCustomersReport;
+use App\Models\MontlyPaymentsReport;
 use App\Models\Notification;
 use App\Models\Products;
 use App\Models\Seller;
@@ -136,10 +138,23 @@ class AdminController extends Controller
       ->where('is_admin', false)
       ->count();
 
+    $monthlyPaymentReport = MontlyPaymentsReport::where('month', '<=', Carbon::now()->format('Y-m'))
+      ->orderBy('month', 'desc')
+      ->take(12)
+      ->get();
+    $monthlyCustomerReport = MontlyNewCustomersReport::where('month', '<=', Carbon::now()->format('Y-m'))
+      ->orderBy('month', 'desc')
+      ->take(12)
+      ->get();
+
+
+
     return Inertia::render('Admin/Index', [
       'products' => SellerProductList::collection($products),
       'totalSellers' => $totalSellers,
-      'totalCustomer' => $totalCustomer
+      'totalCustomer' => $totalCustomer,
+      'monthlyPaymentReport' => $monthlyPaymentReport,
+      'monthlyCustomerReport' => $monthlyCustomerReport
     ]);
   }
 

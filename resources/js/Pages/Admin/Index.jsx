@@ -20,55 +20,61 @@ import {
 import { useState } from "react";
 import Modal from "@/Components/Modal";
 import ModalImage from "react-modal-image";
+import { format } from "date-fns";
 
 export default function Index({ auth }) {
-    const { products, totalSellers, totalCustomer } = usePage().props;
-    const [dataProduct, setDataProduct] = useState([products.data]);
-    console.log(products);
-    const data = [
-        {
-            name: "January",
-            users: 4000,
-            sales: 2400,
-            amt: 2400,
-        },
-        {
-            name: "PFebruary",
-            users: 3000,
-            sales: 1398,
-            amt: 2210,
-        },
-        {
-            name: "March",
-            users: 2000,
-            sales: 9800,
-            amt: 2290,
-        },
-        {
-            name: "April",
-            users: 2780,
-            sales: 3908,
-            amt: 2000,
-        },
-        {
-            name: "May",
-            users: 1890,
-            sales: 4800,
-            amt: 2181,
-        },
-        {
-            name: "June",
-            users: 2390,
-            sales: 3800,
-            amt: 2500,
-        },
-        {
-            name: "July",
-            users: 3490,
-            sales: 4300,
-            amt: 2100,
-        },
-    ];
+    const {
+        products,
+        totalSellers,
+        totalCustomer,
+        monthlyCustomerReport,
+        monthlyPaymentReport,
+    } = usePage().props;
+
+    const currentMonthCustomers =
+        monthlyCustomerReport.length > 0
+            ? monthlyCustomerReport[0].customers_count
+            : 0;
+    const currentMonthIncome =
+        monthlyPaymentReport.length > 0
+            ? monthlyPaymentReport[0].total_payments
+            : 0;
+
+    const previousMonthCustomers =
+        monthlyCustomerReport.length > 1
+            ? monthlyCustomerReport[1].customers_count
+            : 0;
+    const previousMonthIncome =
+        monthlyPaymentReport.length > 1
+            ? monthlyPaymentReport[1].total_payments
+            : 0;
+
+    const customerGrowth =
+        previousMonthCustomers > 0
+            ? ((currentMonthCustomers - previousMonthCustomers) /
+                  previousMonthCustomers) *
+              100
+            : 0;
+    const incomeGrowth =
+        previousMonthIncome > 0
+            ? ((currentMonthIncome - previousMonthIncome) /
+                  previousMonthIncome) *
+              100
+            : 0;
+
+    const data = monthlyCustomerReport.map((item, index) => ({
+        name: format(new Date(item.month), "MMMM yyyy"),
+        users: item.customers_count,
+        sales: parseFloat(monthlyPaymentReport[index]?.total_payments) || 0,
+    }));
+
+    // Formatter function for tooltip
+    const formatTooltipValue = (value) => {
+        return value.toLocaleString();
+    };
+
+    console.log(data);
+
     return (
         <>
             <AdminAuthenticatedLayout user={auth.user}>
@@ -84,22 +90,55 @@ export default function Index({ auth }) {
                                     <IoAnalyticsSharp />
                                     This Month
                                 </h1>
-                                <p className="font-bold text-3xl">Php 12,000</p>
-                                <small className="flex gap-1 items-center text-green-400">
-                                    <ImArrowUpRight />
-                                    +100 (50%)
+                                <p className="font-bold text-3xl">
+                                    Php{" "}
+                                    {parseFloat(
+                                        currentMonthIncome
+                                    ).toLocaleString()}
+                                </p>
+                                <small
+                                    className={`flex gap-1 items-center ${
+                                        incomeGrowth >= 0
+                                            ? "text-green-400"
+                                            : "text-red-400"
+                                    }`}
+                                >
+                                    <ImArrowUpRight
+                                        className={
+                                            incomeGrowth < 1
+                                                ? "rotate-[180deg]"
+                                                : ""
+                                        }
+                                    />
+                                    {incomeGrowth.toFixed(2)}%
                                 </small>
                             </div>
                             <div className="py-4 border-t-2 border-slate-700">
                                 <h1 className="font-thin flex gap-1 items-center tracking-widest">
                                     <ImUser />
-                                    New Customers
+                                    New Customer
+                                    {currentMonthCustomers >= 1 ? "" : "s"}
                                 </h1>
                                 <p className="font-bold text-3xl">
-                                    500 Customers
+                                    {currentMonthCustomers.toLocaleString()}{" "}
+                                    Customer
+                                    {currentMonthCustomers >= 1 ? "" : "s"}
                                 </p>
-                                <small className="flex gap-1 items-center text-green-400">
-                                    <ImArrowUpRight /> +100 (50%)
+                                <small
+                                    className={`flex gap-1 items-center ${
+                                        customerGrowth >= 0
+                                            ? "text-green-400"
+                                            : "text-red-400"
+                                    }`}
+                                >
+                                    <ImArrowUpRight
+                                        className={
+                                            customerGrowth < 1
+                                                ? "rotate-[180deg]"
+                                                : ""
+                                        }
+                                    />{" "}
+                                    {customerGrowth.toFixed(2)}%
                                 </small>
                             </div>
                         </div>
@@ -116,26 +155,32 @@ export default function Index({ auth }) {
                                         bottom: 5,
                                     }}
                                 >
-                                    <XAxis dataKey="name" />
-                                    <YAxis />
+                                    <YAxis yAxisId="left" />
+                                    <YAxis
+                                        yAxisId="right"
+                                        orientation="right"
+                                    />
                                     <Tooltip
                                         wrapperStyle={{
                                             backgroundColor: "#443434",
                                             color: "black",
                                         }}
+                                        formatter={(value) =>
+                                            formatTooltipValue(value)
+                                        } // Format tooltip values
                                     />
                                     <Legend />
                                     <Bar
+                                        yAxisId="left"
                                         barSize={15}
                                         dataKey="users"
                                         fill="#D9D9D9"
-                                        activeBar={<Rectangle fill="blue" />}
                                     />
                                     <Bar
+                                        yAxisId="right"
                                         barSize={15}
                                         dataKey="sales"
                                         fill="#676767"
-                                        activeBar={<Rectangle fill="green" />}
                                     />
                                 </BarChart>
                             </ResponsiveContainer>
@@ -187,7 +232,7 @@ export default function Index({ auth }) {
                                         </strong>
                                         <div>
                                             Seller
-                                            {totalSellers.length < 1 ? "" : "s"}
+                                            {totalSellers === 1 ? "" : "s"}
                                         </div>
                                     </div>
                                 </div>
@@ -201,9 +246,7 @@ export default function Index({ auth }) {
                                         </strong>
                                         <div>
                                             Customer
-                                            {totalCustomer.length < 1
-                                                ? ""
-                                                : "s"}
+                                            {totalCustomer === 1 ? "" : "s"}
                                         </div>
                                     </div>
                                 </div>
