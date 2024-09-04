@@ -106,9 +106,9 @@ export default function Cart({ auth }) {
                                 {cartsItem.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="flex items-center -z-50 justify-between p-4 border-b border-gray-200"
+                                        className="flex items-center -z-50 justify-between p-4  w-full  border-b border-gray-200"
                                     >
-                                        <div className="flex items-center">
+                                        <div className="flex items-center w-full">
                                             <Checkbox
                                                 className=" mr-6"
                                                 checked={checkedItems.includes(
@@ -121,64 +121,87 @@ export default function Cart({ auth }) {
                                                     )
                                                 }
                                             />
-                                            <img
-                                                src={
-                                                    item.product.img_path ??
-                                                    defaultImgIcon
-                                                }
-                                                alt={item.product.product_name}
-                                                className="w-16 h-16 mr-4"
-                                            />
 
-                                            <div className="flex flex-col">
-                                                <h2 className="text-lg font-semibold">
-                                                    {item.product.product_name}
-                                                </h2>
-                                                <small>
-                                                    Stock:{" "}
-                                                    {item.product.quantity}
-                                                </small>
-                                                <small>
-                                                    Price: {item.product.price}
-                                                </small>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center">
-                                            <div className="mr-6">
-                                                <div className="mt-1 relative rounded-md shadow-sm">
-                                                    <Quantity
-                                                        onQuantityChange={(
-                                                            newQuantity
-                                                        ) =>
-                                                            handleQuantityChange(
-                                                                item.id,
-                                                                newQuantity
-                                                            )
-                                                        }
-                                                        quantity={item.quantity}
-                                                        currentStock={
+                                            <div className="flex w-full flex-col lg:flex-row gap-3 items-center justify-between ">
+                                                <div className="flex gap-1 items-center justify-start">
+                                                    <img
+                                                        src={
                                                             item.product
-                                                                .quantity
+                                                                .img_path ??
+                                                            defaultImgIcon
                                                         }
+                                                        alt={
+                                                            item.product
+                                                                .product_name
+                                                        }
+                                                        className="w-16 h-16 mr-4 whitespace-nowrap"
                                                     />
+
+                                                    <div className="flex flex-col">
+                                                        <h2 className="text-lg font-semibold">
+                                                            {
+                                                                item.product
+                                                                    .product_name
+                                                            }
+                                                        </h2>
+                                                        <small>
+                                                            Stock:{" "}
+                                                            {
+                                                                item.product
+                                                                    .quantity
+                                                            }
+                                                        </small>
+                                                        <small>
+                                                            Price:{" "}
+                                                            {item.product.price}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center justify-between lg:justify-end w-full lg:w-fit gap-2">
+                                                    <div className="mt-1 mr-6 relative rounded-md shadow-sm">
+                                                        <Quantity
+                                                            onQuantityChange={(
+                                                                newQuantity
+                                                            ) =>
+                                                                handleQuantityChange(
+                                                                    item.id,
+                                                                    newQuantity
+                                                                )
+                                                            }
+                                                            quantity={
+                                                                item.quantity
+                                                            }
+                                                            currentStock={
+                                                                item.product
+                                                                    .quantity
+                                                            }
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex  items-center gap-2">
+                                                        <p className="text-lg mr-4 font-semibold whitespace-wrap">
+                                                            ₱{" "}
+                                                            {new Intl.NumberFormat().format(
+                                                                item.product
+                                                                    .price *
+                                                                    item.quantity
+                                                            )}
+                                                        </p>
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) =>
+                                                                deleteItem(
+                                                                    e,
+                                                                    item.id
+                                                                )
+                                                            }
+                                                            className="text-lg  text-red-600 font-semibold"
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <p className="text-lg mr-4 font-semibold whitespace-wrap">
-                                                ₱{" "}
-                                                {new Intl.NumberFormat().format(
-                                                    item.product.price *
-                                                        item.quantity
-                                                )}
-                                            </p>
-                                            <button
-                                                type="button"
-                                                onClick={(e) =>
-                                                    deleteItem(e, item.id)
-                                                }
-                                                className="text-lg  text-red-600 font-semibold"
-                                            >
-                                                <FaTrash />
-                                            </button>
                                         </div>
                                     </div>
                                 ))}
