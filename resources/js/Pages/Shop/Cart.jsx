@@ -64,16 +64,18 @@ export default function Cart({ auth }) {
         e.preventDefault();
         deleteItemForm(route("cart.item.destroy", id), {
             method: "delete",
+            onSuccess: () => {
+                // Update cartsItem state to remove the deleted item
+                setCartsItem((prevItems) =>
+                    prevItems.filter((item) => item.id !== id)
+                );
+            },
+            onError: (errors) => {
+                // Handle errors
+                toast.error("Failed to remove item. Please try again.");
+            },
         });
     };
-
-    useEffect(() => {
-        if (flash?.status === "success") {
-            toast.success(flash.message);
-        } else if (flash?.status === "error") {
-            toast.error(flash.message);
-        }
-    }, [flash]);
 
     return (
         <>

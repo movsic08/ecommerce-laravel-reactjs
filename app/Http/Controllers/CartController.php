@@ -56,7 +56,7 @@ class CartController extends Controller
     return response()->json(['count' => $count]);
   }
 
-  public function destroy($id): RedirectResponse
+  public function destroy($id)
   {
     try {
       DB::beginTransaction();
@@ -66,14 +66,10 @@ class CartController extends Controller
 
       $cartItem->delete();
       DB::commit();
-      return Redirect::route('user-cart')->with([
+      return redirect()->route('user-cart')->with([
         'status' => 'success',
         'message' => 'Item removed successfully!',
       ]);
-      // return redirect()->route('user-cart')->with([
-      //   'status' => 'success',
-      //   'message' => 'Item removed successfully!',
-      // ]);
     } catch (\Exception $e) {
       DB::rollBack();
       return redirect()->route('user-cart')->with([
