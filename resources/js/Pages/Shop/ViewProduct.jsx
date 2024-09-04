@@ -6,6 +6,7 @@ import AddToCart from "@/Components/AddToCart";
 import Quantity from "@/Components/Quantity";
 import ReviewComponent from "./Components/ReviewComponent";
 import { FaStar } from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
 
 export default function ViewProduct({ auth }) {
     const { product } = usePage().props;
@@ -36,7 +37,7 @@ export default function ViewProduct({ auth }) {
         router.get(route("checkout.show", { items: [item] }));
     };
 
-    console.log(product.reviews);
+    console.log(product);
 
     return (
         <>
@@ -98,6 +99,19 @@ export default function ViewProduct({ auth }) {
                                     <h1 className="text-3xl font-semibold">
                                         {product.product_name}
                                     </h1>
+                                    <Link
+                                        href={route(
+                                            "shop.profile",
+                                            product.seller.id
+                                        )}
+                                        className="mt-4 flex items-center text-xl text-themeColor gap-1 font-bold "
+                                    >
+                                        <FaShop
+                                            size={30}
+                                            className="text-themeColor"
+                                        />
+                                        {product.seller.shop_name}
+                                    </Link>
                                     <p className="mt-2 text-2xl text-green-600">
                                         Php{" "}
                                         {new Intl.NumberFormat().format(
@@ -173,7 +187,7 @@ export default function ViewProduct({ auth }) {
                                                     </span>
                                                     Product Ratings
                                                 </h1>
-                                                {product.reviews.length >= 5 ? (
+                                                {product.reviews.length <= 5 ? (
                                                     ""
                                                 ) : (
                                                     <Link className="text-themeColor duration-300 hover:text-orange-600">
