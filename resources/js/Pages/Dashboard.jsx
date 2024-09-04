@@ -34,16 +34,16 @@ export default function Dashboard({ auth }) {
             </div>
             {/* 2nd page */}
             <div className="bg-white w-full h-full p-6 flex flex-col items-center ">
-                <h1 className=" font-bold text-4xl py-8">
+                <h1 className=" font-bold text-center text-4xl py-8">
                     Artist of the Month
                 </h1>
-                <div className="flex-col md:flex-row flex items-start justify-center ">
+                <div className="flex-col md:flex-row flex items-center lg:items-start justify-center ">
                     <img
                         src="https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg"
                         className=" rounded-full object-cover h-52 w-52"
                         alt=""
                     />
-                    <div className=" ml-8">
+                    <div className=" ml-8 mb-6 lg:mb-0 flex items-center  flex-col">
                         <Link
                             href={route("shop.profile", sellerData.id)}
                             className="mt-4 flex items-center text-xl text-themeColor gap-1 font-bold "
