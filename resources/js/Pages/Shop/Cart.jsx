@@ -9,11 +9,11 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Cart({ auth }) {
-    const { cartsItem, flash } = usePage().props;
+    const { list, flash } = usePage().props;
+    const [cartsItem, setCartsItem] = useState(list.data);
     console.log("carts item", cartsItem);
 
     const [checkedItems, setCheckedItems] = useState([]);
-    console.log(flash);
     const [totalAmount, setTotalAmount] = useState(0);
 
     const handleCheckout = () => {
@@ -71,11 +71,6 @@ export default function Cart({ auth }) {
         e.preventDefault();
         deleteItemForm(route("cart.item.destroy", id), {
             method: "delete",
-            // onFinish: (page) => {
-            //     router.reload({
-            //         only: ["cartsItems"],
-            //     });
-            // },
         });
     };
 
@@ -122,12 +117,13 @@ export default function Cart({ auth }) {
                                                 }
                                             />
 
-                                            <div className="flex w-full flex-col lg:flex-row gap-3 items-center justify-between ">
-                                                <div className="flex gap-1 items-center justify-start">
+                                            <div className="flex w-full flex-col lg:flex-row gap-3 lg:items-center justify-between lg:justify-start  ">
+                                                <div className="flex gap-1 items-center lg:justify-start max-w-[57.5rem]  lg:min-w-[40.5rem]">
                                                     <img
                                                         src={
                                                             item.product
-                                                                .img_path ??
+                                                                .images[0]
+                                                                .image_path ??
                                                             defaultImgIcon
                                                         }
                                                         alt={
@@ -157,7 +153,7 @@ export default function Cart({ auth }) {
                                                         </small>
                                                     </div>
                                                 </div>
-                                                <div className="flex items-center justify-between lg:justify-end w-full lg:w-fit gap-2">
+                                                <div className="flex items-center justify-between w-full  gap-2">
                                                     <div className="mt-1 mr-6 relative rounded-md shadow-sm">
                                                         <Quantity
                                                             onQuantityChange={(

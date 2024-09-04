@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CartItemsResource;
 use App\Models\CartItem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -16,11 +17,11 @@ class CartController extends Controller
   {
     $currentUser = $request->user();
     $cartsItem = CartItem::where('user_id', $currentUser->id)
-      ->with('product')
+      ->with('product.images')
       ->orderBy('created_at', 'desc')
       ->get();
     return Inertia::render('Shop/Cart', [
-      'cartsItem' => $cartsItem
+      'list' => CartItemsResource::collection($cartsItem)
     ]);
   }
 
