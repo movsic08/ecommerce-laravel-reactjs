@@ -156,6 +156,7 @@ export default function Index({ auth }) {
                                     }}
                                 >
                                     <YAxis yAxisId="left" />
+                                    <XAxis dataKey="name" />
                                     <YAxis
                                         yAxisId="right"
                                         orientation="right"
