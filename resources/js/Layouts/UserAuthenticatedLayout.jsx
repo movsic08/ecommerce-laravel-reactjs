@@ -77,13 +77,6 @@ export default function UserAuthenticatedLayout({
                                     />
                                 </div>
                             </NavLink>
-                            {/* <NavLink href={route("user-messages")}>
-                                <img
-                                    className=" h-6 "
-                                    src={UserChatIcon}
-                                    alt="chat icon"
-                                />
-                            </NavLink> */}
 
                             <div className=" relative">
                                 <Dropdown>
@@ -184,6 +177,20 @@ export default function UserAuthenticatedLayout({
                             active={route().current("dashboard")}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                    </div>
+
+                    <div className="pt-2space-y-1">
+                        <ResponsiveNavLink
+                            className=" flex items-center "
+                            href={route("user-cart")}
+                            active={route().current("user-cart")}
+                        >
+                            Cart
+                            <div className=" ml-2 text-white rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 bg-slate-800">
+                                {" "}
+                                {cartCount == 0 ? "" : cartCount}
+                            </div>
                         </ResponsiveNavLink>
                     </div>
                     <div className="pt-2space-y-1">
