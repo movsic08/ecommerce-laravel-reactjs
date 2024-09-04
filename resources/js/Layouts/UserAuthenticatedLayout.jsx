@@ -23,7 +23,7 @@ export default function UserAuthenticatedLayout({
         setCartCount(cartNumber);
     }, [cartNumber]);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(true);
+        useState(false);
 
     return (
         <div className="min-h-screen bg-white">
