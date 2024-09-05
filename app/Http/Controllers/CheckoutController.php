@@ -159,7 +159,7 @@ class CheckoutController extends Controller
                   'reference_number' => $generated_order_id,
                   'payment_method_types' => ['gcash', 'paymaya'], //payment method here
                   'success_url' => route('checkout.success', $generated_order_id),
-                  'cancel_url' => route('pay.error'),
+                  'cancel_url' => $request->current_url,
                 ]
               ]
             ]),
