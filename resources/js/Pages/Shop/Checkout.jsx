@@ -139,9 +139,15 @@ export default function Checkout({ auth }) {
                                         <p className="font-semibold text-gray-700">
                                             {item.product.product_name}
                                         </p>
-                                        <p className="text-gray-500">
-                                            Shop: {item.product.shop_name}
-                                        </p>
+                                        <Link
+                                            href={route(
+                                                "shop.profile",
+                                                item.seller.id
+                                            )}
+                                            className="text-gray-500 hover:text-themeColor duration-100 ease-in-out"
+                                        >
+                                            Shop: {item.seller.shop_name}
+                                        </Link>
                                         <p className="text-gray-500">
                                             Category: {item.product.category}
                                         </p>
