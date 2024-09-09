@@ -187,7 +187,11 @@ export default function UserAuthenticatedLayout({
                             active={route().current("user-cart")}
                         >
                             Cart
-                            <div className=" ml-2 text-white rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 bg-slate-800">
+                            <div
+                                className={`ml-2 text-white rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 ${
+                                    cartCount == 0 ? "" : "bg-slate-800 "
+                                }`}
+                            >
                                 {" "}
                                 {cartCount == 0 ? "" : cartCount}
                             </div>
