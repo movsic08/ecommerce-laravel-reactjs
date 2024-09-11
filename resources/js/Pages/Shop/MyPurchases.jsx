@@ -56,7 +56,10 @@ export default function MyPurchases({ auth }) {
 
     return (
         <>
-            <UserAuthenticatedLayout user={auth} cartNumber={auth.cartCount}>
+            <UserAuthenticatedLayout
+                user={auth.user}
+                cartNumber={auth.cartCount}
+            >
                 <Head title="My Purchases" />
                 <ToastContainer />
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6">
