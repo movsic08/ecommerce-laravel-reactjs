@@ -24,13 +24,19 @@ class ProductsController extends Controller
     $sellerOfTheMonth = MonthlySalesReport::orderBy('total_orders', 'desc')
       ->first();
     if ($sellerOfTheMonth) {
+
       $sellerOfTheMonthId = $sellerOfTheMonth->seller_id;
     } else {
-      $sellerOfTheMonthId = Seller::with('user')->orderBy('created_at', 'desc')
+      $randomSeller = Seller::with('user')
+        ->inRandomOrder()
         ->first();
+
+      $sellerOfTheMonthId = $randomSeller->id;
     }
 
+
     $seller = Seller::with('user')->where('id', $sellerOfTheMonthId)->first();
+
     $sellerProducts = Products::with('images')
       ->where('is_verified', 1)
       ->where('seller_id', $seller->id)

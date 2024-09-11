@@ -61,14 +61,14 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
 });
 
-//unverified seller account
-Route::get('/created-success-pending', function () {
-  return Inertia::render('StatusPages/SuccessSellerAccount');
-})->name('seller.created.success');
-Route::get('/seller-account-on-the-process', function () {
-  return Inertia::render('StatusPages/PendingSellerAccount');
-})->middleware(NotVerfiedSeller::class)
-  ->name('seller.pending.account');
+// //unverified seller account
+// Route::get('/created-success-pending', function () {
+//   return Inertia::render('StatusPages/SuccessSellerAccount');
+// })->name('seller.created.success');
+// Route::get('/seller-account-on-the-process', function () {
+//   return Inertia::render('StatusPages/PendingSellerAccount');
+// })->middleware(NotVerfiedSeller::class)
+//   ->name('seller.pending.account');
 
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {

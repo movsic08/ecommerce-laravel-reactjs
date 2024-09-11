@@ -199,12 +199,12 @@ export default function Cart({ auth }) {
                                 <div className="mt-4 px-4 flex w-full items-center justify-between font-semibold">
                                     <p className="text-lg">
                                         Total Amount{" "}
-                                        <span className="text-themeColor">
+                                        <div className="text-themeColor whitespace-nowrap">
                                             ₱{" "}
                                             {new Intl.NumberFormat().format(
                                                 totalAmount
                                             )}
-                                        </span>
+                                        </div>
                                     </p>
                                     <button
                                         disabled={
