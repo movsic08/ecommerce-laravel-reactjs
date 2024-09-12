@@ -4,7 +4,8 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
 import Logo from "@/assets/icons/Logo.svg";
-
+import { FaUserGear } from "react-icons/fa6";
+import { TbLogout } from "react-icons/tb";
 export default function AdminAuthenticatedLayout({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -79,49 +80,13 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                 </div>
                             </div>
                             <div className=" gap-3 flex sm:items-center sm:ms-6">
-                                <div className=" relative">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <span className="inline-flex rounded-md">
-                                                <button
-                                                    type="button"
-                                                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                                >
-                                                    {user.first_name}
-
-                                                    <svg
-                                                        className="ms-2 -me-0.5 h-4 w-4"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                            clipRule="evenodd"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </span>
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content className="z-40">
-                                            <Dropdown.Link
-                                                className="z-40"
-                                                href={route("profile.edit")}
-                                            >
-                                                Profile
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                className="z-40"
-                                                href={route("logout")}
-                                                method="post"
-                                                as="button"
-                                            >
-                                                Log Out
-                                            </Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
+                                <NavLink
+                                    method="post"
+                                    href={route("logout")}
+                                    as="button"
+                                >
+                                    <TbLogout size={22} />
+                                </NavLink>
                             </div>
 
                             <div className="-me-2 flex items-center sm:hidden">
