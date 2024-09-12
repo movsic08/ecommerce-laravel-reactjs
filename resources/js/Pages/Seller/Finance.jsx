@@ -18,8 +18,8 @@ export default function Finance({ auth }) {
         weeklyReport,
         MonthylReport,
     } = usePage().props;
+    console.log("weekly report", weeklyReport);
 
-    console.log(weeklyReport);
     const [activeTab, setActiveTab] = useState();
 
     useEffect(() => {

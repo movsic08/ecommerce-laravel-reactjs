@@ -443,7 +443,7 @@ class SellerController extends Controller
     $user = auth()->user();
     $seller = Seller::where('user_id', $user->id)
       ->with(['wallet' => function ($query) {
-        // Eager load wallet transactions and sort by created_at in descending order
+
         $query->with(['walletTransactions' => function ($query) {
           $query->orderBy('created_at', 'desc')->limit(2);
         }]);
@@ -451,27 +451,22 @@ class SellerController extends Controller
       ->orderBy('created_at')
       ->firstOrFail();
 
-    if (!$seller || !$seller->wallet) {
-      return Inertia::render('Seller/Finance', [
-        'balance' => 0,
-        'walletTransactions' => [],
-      ]);
-    }
 
     $orderReceived = OrderReceivedReport::where('seller_id', $seller->id)->limit(5)->get();
 
-    $wallet = $seller->wallet;
-    $walletTransactions = $wallet->walletTransactions;
+    $wallet = $seller->wallet ?? null;
+    $walletTransactions = $wallet ? $wallet->walletTransactions : [];
 
-    $totalIncome = SellersWalletTransaction::where('wallet_id', $wallet->id)->where('type', 'income')->sum('amount');
+    $totalIncome = $wallet ? SellersWalletTransaction::where('wallet_id', $wallet->id)->where('type', 'income')->sum('amount') : 0;
 
     $weeklyReport = WeeklySalesReport::where('seller_id', $seller->id)->limit(3)->get();
+
     $MonthylReport = MonthlySalesReport::where('seller_id', $seller->id)->limit(3)->get();
 
 
     return Inertia::render('Seller/Finance', [
-      'balance' => $wallet->balance,
-      'walletTransactions' => $walletTransactions,
+      'balance' => $wallet ? $wallet->balance : 0,
+      'walletTransactions' =>  $walletTransactions,
       'orderReceived' => $orderReceived,
       'totalIncome' => $totalIncome,
       'weeklyReport' => $weeklyReport,
