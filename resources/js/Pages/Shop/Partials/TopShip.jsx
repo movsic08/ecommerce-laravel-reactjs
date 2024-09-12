@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 export default function ToShip({ toShipData }) {
+    console.log("toshipd ata", toShipData);
     return (
         <>
             <div className="bg-white p-4 rounded-lg shadow-md">
@@ -59,6 +60,10 @@ export default function ToShip({ toShipData }) {
                                     </div>
 
                                     <Link
+                                        href={route(
+                                            "order.show.cancel",
+                                            product.id
+                                        )}
                                         className={`bg-themeColor rounded-md px-2 uppercase font-bold  text-white py-1 text-sm ${
                                             product.status == "shipped"
                                                 ? " cursor-not-allowed"
