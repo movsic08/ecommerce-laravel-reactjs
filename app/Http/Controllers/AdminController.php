@@ -139,11 +139,11 @@ class AdminController extends Controller
       ->count();
 
     $monthlyPaymentReport = MontlyPaymentsReport::where('month', '<=', Carbon::now()->format('Y-m'))
-      ->orderBy('month', 'desc')
+      ->orderBy('month', 'asc')
       ->take(12)
       ->get();
     $monthlyCustomerReport = MontlyNewCustomersReport::where('month', '<=', Carbon::now()->format('Y-m'))
-      ->orderBy('month', 'desc')
+      ->orderBy('month', 'asc')
       ->take(12)
       ->get();
 
