@@ -107,11 +107,11 @@ export default function OrderDetais({ auth }) {
                                     >
                                         <TbTruckDelivery
                                             size={25}
-                                            className={
-                                                `${data.status} == 'shipped`
+                                            className={`${
+                                                data.is_picked_up
                                                     ? "text-white"
                                                     : "text-themeColor"
-                                            }
+                                            }`}
                                         />
                                     </div>
 
