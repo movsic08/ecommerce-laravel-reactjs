@@ -46,18 +46,22 @@ export default function FinanceOrderReceivedReport({ data }) {
                                 </td>
                             </tr>
                         ))}
-                        <tr className=" text-center ">
-                            <td className=" pt-1.5">
-                                <Link
-                                    href={route("seller.order-receipt-report")}
-                                    className="duration-200 ease-out hover:text-themeColor"
-                                >
-                                    View all order receipt list
-                                </Link>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
+                <div className=" text-center  mt-2 p-2  bg-red-100 text-red-700 rounded-md flex items-center justify-center">
+                    {data.length == 0 ? (
+                        "No data yet"
+                    ) : (
+                        <div className="w-fit">
+                            <Link
+                                href={route("seller.order-receipt-report")}
+                                className="duration-200 ease-out hover:text-themeColor"
+                            >
+                                View all order receipt list
+                            </Link>
+                        </div>
+                    )}
+                </div>
             </div>
         </>
     );
