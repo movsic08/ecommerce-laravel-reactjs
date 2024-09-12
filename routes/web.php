@@ -12,22 +12,12 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawRequestController;
-use App\Http\Middleware\NotVerfiedSeller;
-use App\Models\Review;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
   return redirect()->route('login');
 });
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 
 //Customer pages 
 Route::middleware('auth', 'customer')->group(function () {
@@ -39,10 +29,7 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('/shop', [ProductsController::class, 'allProducts'])->name('shop');
   Route::get('/shop/{shopid}', [SellerController::class, 'showShop'])->name('shop.profile');
   Route::get('/product/{productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
-
   Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('cart.store');
-  // Route::get('/cart-count', [CartController::class, 'cartCount'])->middleware('auth')->name('cart');  
-  // Route::get('/shop/id', [SellerController::class, 'shop'])->name('view.seller.shop');
   Route::get('/messages', function () {
     return Inertia::render('User/UserMessages');
   })->name('user-messages');
@@ -61,14 +48,6 @@ Route::middleware('auth', 'customer')->group(function () {
   Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
 });
 
-// //unverified seller account
-// Route::get('/created-success-pending', function () {
-//   return Inertia::render('StatusPages/SuccessSellerAccount');
-// })->name('seller.created.success');
-// Route::get('/seller-account-on-the-process', function () {
-//   return Inertia::render('StatusPages/PendingSellerAccount');
-// })->middleware(NotVerfiedSeller::class)
-//   ->name('seller.pending.account');
 
 // Admin
 Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
@@ -131,7 +110,6 @@ Route::get('/contact', function () {
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 //testing area here
