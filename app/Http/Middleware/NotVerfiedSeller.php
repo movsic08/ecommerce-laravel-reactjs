@@ -20,7 +20,7 @@ class NotVerfiedSeller
 
     if (Auth::check()) {
       $user = Auth::user();
-      $sellerData = Seller::where('seller_id', $user->id)->first();
+      $sellerData = Seller::where('user_id', $user->id)->first();
       // return $sellerData;
       if ($sellerData->is_verified == false && $user->is_seller == true) {
         // Proceed to the next request if the user is not admin and not seller

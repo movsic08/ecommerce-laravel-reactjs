@@ -1,19 +1,20 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\NotVerfiedSeller;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SellerController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\WithdrawRequestController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', function () {
   return redirect()->route('login');
@@ -66,6 +67,16 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
   Route::get('widthdrawal-lists', [WithdrawRequestController::class, 'index'])->name('widthdrawal.request.index');
   Route::post('widthdrawal-lists/update/{id}/{status}/{amount}', [WithdrawRequestController::class, 'updateRequest'])->name('withdrawal.request.update');
 });
+
+// //unverified seller account
+Route::get('/created-success-pending', function () {
+  return Inertia::render('StatusPages/SuccessSellerAccount');
+})->name('seller.created.success');
+Route::get('/seller-account-on-the-process', function () {
+  return Inertia::render('StatusPages/PendingSellerAccount');
+})
+  ->middleware(NotVerfiedSeller::class)
+  ->name('seller.pending.account');
 
 //seller pages
 Route::prefix('seller')->middleware('seller', 'auth')->group(function () {

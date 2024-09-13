@@ -47,11 +47,10 @@ class AuthenticatedSessionController extends Controller
       $seller = Seller::where('user_id', auth()->user()->id)->first();
 
       if ($seller->is_verified == 0) {
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
 
         return to_route('seller.pending.account');
       } else {
+
         return redirect()->intended(route('seller.dashboard', absolute: false));
       }
     } else {
