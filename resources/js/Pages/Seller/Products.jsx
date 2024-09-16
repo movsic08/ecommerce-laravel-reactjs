@@ -2,7 +2,7 @@ import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
 import defaultProduct1 from "../../assets/img/product_1.png";
 import InputLabel from "@/Components/InputLabel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg";
@@ -10,7 +10,16 @@ import DefaultProductIcon from "../../assets/img/Default-Product-Placeholder.svg
 export default function Products({ auth }) {
     const { products, flash } = usePage().props;
     const [data, setData] = useState(products.data);
-    console.log(data);
+
+    const [status, setStatus] = useState('all');
+
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const param = urlParams.get('status') || 'all';
+        setStatus(param);
+    }, []);
+
 
     const deleteSubmit = (e, id, name) => {
         e.preventDefault();
@@ -32,6 +41,14 @@ export default function Products({ auth }) {
         });
     };
 
+    const handleFilterStatus = (statusParam) => {
+        setStatus(statusParam);
+        const url = new URL(window.location);
+        url.searchParams.set('status', statusParam);
+        window.history.pushState(null, "", url);
+    };
+
+
     return (
         <>
             <SellerAuthenticatedLayout
@@ -40,16 +57,15 @@ export default function Products({ auth }) {
                 <Head title="Seller - Products" />
                 <ToastContainer />
                 <div>
-                    <div className=" flex items-center justify-between px-4">
-                        <div className=" flex items-center gap-1">
-                            {" "}
+                    <div className="flex items-center justify-between px-4 ">
+                        <div className="flex items-center gap-1 ">
                             <InputLabel
                                 htmlFor="filterbyStatus"
                                 value="Filter by Status"
                             />
-                            <select
+                            <select onChange={(e) => handleFilterStatus(e.target.value)}
                                 id="filterByStatus"
-                                className="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="all">All</option>
                                 <option value="verified">Verified</option>
@@ -59,7 +75,7 @@ export default function Products({ auth }) {
 
                         <Link
                             href={route("seller.showAddProduct")}
-                            className=" text-white bg-themeColor px-2 text-sm rounded-lg py-3"
+                            className="px-2 py-3 text-sm text-white rounded-lg bg-themeColor"
                         >
                             Add prodcut
                         </Link>
@@ -67,8 +83,8 @@ export default function Products({ auth }) {
 
                     {data.length == 0 ? (
                         <div className="flex justify-center w-full">
-                            <div className="bg-white p-8  mt-10 rounded-lg shadow-lg text-center max-w-sm w-full">
-                                <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                            <div className="w-full max-w-sm p-8 mt-10 text-center bg-white rounded-lg shadow-lg">
+                                <h2 className="mb-4 text-2xl font-semibold text-gray-800">
                                     No uploaded products yet
                                 </h2>
                                 <p className="text-gray-600">
@@ -77,11 +93,11 @@ export default function Products({ auth }) {
                             </div>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+                        <div className="grid grid-cols-1 gap-6 p-4 sm:grid-cols-2 lg:grid-cols-3">
                             {products.data.map((item) => (
                                 <div
                                     key={item.id}
-                                    className="bg-white shadow-md rounded-lg p-4 flex flex-col"
+                                    className="flex flex-col p-4 bg-white rounded-lg shadow-md"
                                 >
                                     <img
                                         src={
@@ -90,9 +106,9 @@ export default function Products({ auth }) {
                                                 : item.images[0].image_path
                                         }
                                         alt="Product"
-                                        className="w-full h-48 object-cover rounded-t-lg"
+                                        className="object-cover w-full h-48 rounded-t-lg"
                                     />
-                                    <div className="mt-4 flex-grow">
+                                    <div className="flex-grow mt-4">
                                         <h2 className="text-lg font-semibold text-gray-900">
                                             {item.product_name}
                                         </h2>
@@ -117,13 +133,13 @@ export default function Products({ auth }) {
                                             Date Created: 2024-07-20
                                         </p>
                                     </div>
-                                    <div className="mt-4 flex justify-end space-x-2">
+                                    <div className="flex justify-end mt-4 space-x-2">
                                         <Link
                                             href={route(
                                                 "seller.view.product",
                                                 item.id
                                             )}
-                                            className="bg-themeColor text-white px-4 py-2 rounded hover:bg-orange-500"
+                                            className="px-4 py-2 text-white rounded bg-themeColor hover:bg-orange-500"
                                         >
                                             View
                                         </Link>
@@ -136,7 +152,7 @@ export default function Products({ auth }) {
                                                     item.product_name
                                                 )
                                             }
-                                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
                                         >
                                             Delete
                                         </button>
