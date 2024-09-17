@@ -46,6 +46,10 @@ export default function Products({ auth }) {
         const url = new URL(window.location);
         url.searchParams.set('status', statusParam);
         window.history.pushState(null, "", url);
+        router.get(route('seller.products'), { status: statusParam }, {
+            preserveState: true,
+            replace: true,
+        });
     };
 
 
