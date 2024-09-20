@@ -3,11 +3,9 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
-import UserChatIcon from "@/assets/icons/UserChatIcon.svg";
 import UserCartIcon from "@/assets/icons/UserCartIcon.svg";
-import SearchIcon from "@/assets/icons/SearchIcon.svg";
-import HeartIcon from "@/assets/icons/HeartIcon.svg";
 import Logo from "@/assets/icons/Logo.svg";
+import { BsChatDots } from "react-icons/bs";
 
 export default function UserAuthenticatedLayout({
     user,
@@ -27,22 +25,22 @@ export default function UserAuthenticatedLayout({
 
     return (
         <div className="min-h-screen bg-white">
-            <nav className="  shadow drop-shadow-md border-b bg-white border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="bg-white border-b border-gray-100 shadow drop-shadow-md">
+                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
-                        <div className="shrink-0 flex items-center">
+                        <div className="flex items-center shrink-0">
                             <Link
                                 href="/home"
-                                className=" flex items-center gap-1"
+                                className="flex items-center gap-1 "
                             >
-                                <img className=" h-12" src={Logo} alt="Logo" />
-                                <h1 className="font-karla font-medium text-mainText">
+                                <img className="h-12 " src={Logo} alt="Logo" />
+                                <h1 className="font-medium font-karla text-mainText">
                                     MadeByHands
                                 </h1>
                             </Link>
                         </div>
 
-                        <div className="hidden font-manjari text-mainText uppercase space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <div className="hidden space-x-8 uppercase font-manjari text-mainText sm:-my-px sm:ms-10 sm:flex">
                             <NavLink
                                 href={route("dashboard")}
                                 active={route().current("dashboard")}
@@ -64,27 +62,35 @@ export default function UserAuthenticatedLayout({
                             </NavLink>
                         </div>
 
-                        <div className=" gap-3 hidden md:flex items-center justify-between sm:ms-6">
+                        <div className="items-center justify-between hidden gap-3 md:flex sm:ms-6">
                             <NavLink href={route("user-cart")}>
-                                <div className=" relative ">
-                                    <span className=" absolute -top-2 -right-2 text-sm font-bold">
+                                <div className="relative ">
+                                    <span className="absolute text-sm font-bold -top-2 -right-2">
                                         {cartCount == 0 ? "" : cartCount}
                                     </span>
                                     <img
-                                        className=" h-6 "
+                                        className="h-6 "
                                         src={UserCartIcon}
                                         alt="cart icon"
                                     />
                                 </div>
                             </NavLink>
+                            <NavLink href={route("user.messages")}>
+                                <div className="relative ">
+                                    <span className="absolute text-sm font-bold -top-2 -right-2">
+                                        {cartCount == 0 ? "" : cartCount}
+                                    </span>
+                                    <BsChatDots size={20} />
+                                </div>
+                            </NavLink>
 
-                            <div className=" relative">
+                            <div className="relative ">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md hover:text-gray-700 focus:outline-none"
                                             >
                                                 {user.first_name}
                                                 <svg
@@ -122,17 +128,17 @@ export default function UserAuthenticatedLayout({
                             </div>
                         </div>
 
-                        <div className="-me-2 flex items-center sm:hidden">
+                        <div className="flex items-center -me-2 sm:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
                                         (previousState) => !previousState
                                     )
                                 }
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
                             >
                                 <svg
-                                    className="h-6 w-6"
+                                    className="w-6 h-6"
                                     stroke="currentColor"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -171,7 +177,7 @@ export default function UserAuthenticatedLayout({
                         " sm:hidden"
                     }
                 >
-                    <div className="pt-2  space-y-1">
+                    <div className="pt-2 space-y-1">
                         <ResponsiveNavLink
                             href={route("dashboard")}
                             active={route().current("dashboard")}
@@ -182,15 +188,14 @@ export default function UserAuthenticatedLayout({
 
                     <div className="pt-2space-y-1">
                         <ResponsiveNavLink
-                            className=" flex items-center "
+                            className="flex items-center "
                             href={route("user-cart")}
                             active={route().current("user-cart")}
                         >
                             Cart
                             <div
-                                className={`ml-2 text-white rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 ${
-                                    cartCount == 0 ? "" : "bg-slate-800 "
-                                }`}
+                                className={`ml-2 text-white rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 ${cartCount == 0 ? "" : "bg-slate-800 "
+                                    }`}
                             >
                                 {" "}
                                 {cartCount == 0 ? "" : cartCount}
@@ -216,10 +221,10 @@ export default function UserAuthenticatedLayout({
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">
+                            <div className="text-base font-medium text-gray-800">
                                 {/* {user.user.first_name} */}
                             </div>
-                            <div className="font-medium text-sm text-gray-500">
+                            <div className="text-sm font-medium text-gray-500">
                                 {/* {user.user.email} */}
                             </div>
                         </div>
@@ -242,7 +247,7 @@ export default function UserAuthenticatedLayout({
 
             {header && (
                 <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto font-karla py-6 px-4 sm:px-6 lg:px-8">
+                    <div className="px-4 py-6 mx-auto max-w-7xl font-karla sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
