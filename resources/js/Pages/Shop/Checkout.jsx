@@ -65,10 +65,10 @@ export default function Checkout({ auth }) {
             payment_method: e.target.value,
         });
     };
-    console.log(data.payment_method);
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form submitted with data:", data);
+
         post(route("checkout.store"), data, {
             onSuccess: () => {
                 toast.success("Checkout complete");
@@ -81,7 +81,7 @@ export default function Checkout({ auth }) {
 
     useEffect(() => {
         if (flash.message) {
-            toast.error("Error placing your order");
+            toast.info(flash.message);
         }
     }, [flash]);
 
@@ -89,10 +89,10 @@ export default function Checkout({ auth }) {
         <UserAuthenticatedLayout user={auth}>
             <Head title="Checkout" />
             <ToastContainer />
-            <div className="max-w-2xl mx-auto p-6 my-6 bg-white shadow-lg md:rounded-lg border border-gray-200">
-                <div className=" flex items-center  justify-between">
+            <div className="max-w-2xl p-6 mx-auto my-6 bg-white border border-gray-200 shadow-lg md:rounded-lg">
+                <div className="flex items-center justify-between ">
                     <button
-                        className="duration-200 flex items-center gap-1 ease-out font-bold hover:text-themeColor uppercase cursor-pointer text-mainText"
+                        className="flex items-center gap-1 font-bold uppercase duration-200 ease-out cursor-pointer hover:text-themeColor text-mainText"
                         onClick={() => window.history.back()}
                     >
                         <IoChevronBackCircleSharp /> back
@@ -102,8 +102,8 @@ export default function Checkout({ auth }) {
                     </h1>
                 </div>
                 <form onSubmit={handleSubmit} className="mt-6" method="POST">
-                    <div className="bg-gray-100 p-4 rounded-lg">
-                        <h2 className="text-2xl mb-2 flex items-center gap-2 font-semibold text-gray-700">
+                    <div className="p-4 bg-gray-100 rounded-lg">
+                        <h2 className="flex items-center gap-2 mb-2 text-2xl font-semibold text-gray-700">
                             <FaLocationDot className="text-gray-600" /> Delivery
                             Address
                         </h2>
@@ -113,17 +113,17 @@ export default function Checkout({ auth }) {
                         <div className="text-gray-600">{address}</div>
                     </div>
 
-                    <h2 className="text-2xl font-semibold mt-6 text-gray-800">
+                    <h2 className="mt-6 text-2xl font-semibold text-gray-800">
                         Product Details
                     </h2>
-                    <div className="space-y-4 mt-4">
+                    <div className="mt-4 space-y-4">
                         {/* list of checking out products */}
 
                         {products.map((item, index) => (
-                            <div className="border border-gray-300 p-4 rounded-lg flex justify-between items-center bg-gray-50">
-                                <div className="flex gap-3 items-center">
+                            <div className="flex items-center justify-between p-4 border border-gray-300 rounded-lg bg-gray-50">
+                                <div className="flex items-center gap-3">
                                     <ModalImage
-                                        className="w-24 h-24 object-cover"
+                                        className="object-cover w-24 h-24"
                                         small={
                                             item.images.data.length == 0
                                                 ? DefaultProductIcon
@@ -144,7 +144,7 @@ export default function Checkout({ auth }) {
                                                 "shop.profile",
                                                 item.seller.id
                                             )}
-                                            className="text-gray-500 hover:text-themeColor duration-100 ease-in-out"
+                                            className="text-gray-500 duration-100 ease-in-out hover:text-themeColor"
                                         >
                                             Shop: {item.seller.shop_name}
                                         </Link>
@@ -164,21 +164,21 @@ export default function Checkout({ auth }) {
                                     {" " +
                                         new Intl.NumberFormat().format(
                                             item.product.price *
-                                                item.buying_quantity
+                                            item.buying_quantity
                                         )}
                                 </p>
                             </div>
                         ))}
                     </div>
 
-                    <h2 className="text-2xl font-semibold mt-6 text-gray-800">
+                    <h2 className="mt-6 text-2xl font-semibold text-gray-800">
                         Order Summary
                     </h2>
-                    <div className="flex justify-between font-semibold mt-2 text-gray-700">
+                    <div className="flex justify-between mt-2 font-semibold text-gray-700">
                         <span>Total Items:</span>
                         <span>{totalItems}</span>
                     </div>
-                    <div className="flex justify-between font-semibold mt-2 text-gray-700">
+                    <div className="flex justify-between mt-2 font-semibold text-gray-700">
                         <span>Total Price:</span>
                         <span>
                             Php
@@ -186,7 +186,7 @@ export default function Checkout({ auth }) {
                         </span>
                     </div>
 
-                    <h2 className="text-2xl font-semibold mt-6 text-gray-800">
+                    <h2 className="mt-6 text-2xl font-semibold text-gray-800">
                         Payment Option
                     </h2>
                     <div className="flex flex-col mt-4">
@@ -222,10 +222,10 @@ export default function Checkout({ auth }) {
 
                     <button
                         type="submit"
-                        className="w-full mt-6 p-3  bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200"
+                        className="w-full p-3 mt-6 text-white transition duration-200 bg-blue-600 rounded-lg shadow-md hover:bg-blue-700"
                     >
                         {processing ? (
-                            <div className="flex items-center gap-2 w-full justify-center ">
+                            <div className="flex items-center justify-center w-full gap-2 ">
                                 Placing Order <SpinnerLoading />
                             </div>
                         ) : (
