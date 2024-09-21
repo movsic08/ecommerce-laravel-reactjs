@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use Carbon\Carbon;
+use Date;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,10 +21,23 @@ class BillingMail extends Mailable
 
     public $items;
     public $payment;
-    public function __construct($line_items, $payment_method)
+    public $date;
+    public $orderId;
+
+    public $customer;
+    public function __construct($line_items, $payment_method, $orderId)
     {
+        // dd( $this->items = $line_items,
+        // $this->payment = $payment_method,
+        // $this->date = Carbon::now(),
+        // $this->orderId = $orderId,
+        // $this->customer = Auth()->user()->first_name . " " . Auth()->user()->last_name);
+
         $this->items = $line_items;
         $this->payment = $payment_method;
+        $this->date = Carbon::now();
+        $this->orderId = $orderId;
+        $this->customer = Auth()->user()->first_name . " " . Auth()->user()->last_name;
     }
 
     /**

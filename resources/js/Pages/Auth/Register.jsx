@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import GuestLayout from "@/Layouts/GuestLayout";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -6,7 +6,6 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import GuestFooter from "@/Layouts/GuestFooter";
-import { regions, provinces, cities, barangays, regionByCode, provincesByCode, provinceByName } from "select-philippines-address";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -31,52 +30,6 @@ export default function Register() {
         post(route("register"));
     };
 
-    const [regionData, setRegion] = useState([]);
-    const [provinceData, setProvince] = useState([]);
-    const [cityData, setCity] = useState([]);
-    const [barangayData, setBarangay] = useState([]);
-
-    const [regionAddr, setRegionAddr] = useState("");
-    const [provinceAddr, setProvinceAddr] = useState("");
-    const [cityAddr, setCityAddr] = useState("");
-    const [barangayAddr, setBarangayAddr] = useState("");
-
-    const region = () => {
-        regions().then(response => {
-            setRegion(response);
-        });
-    }
-
-    const province = (e) => {
-        setRegionAddr(e.target.selectedOptions[0].text);
-        provinces(e.target.value).then(response => {
-            setProvince(response);
-            setCity([]);
-            setBarangay([]);
-        });
-    }
-
-    const city = (e) => {
-        setProvinceAddr(e.target.selectedOptions[0].text);
-        cities(e.target.value).then(response => {
-            setCity(response);
-        });
-    }
-
-    const barangay = (e) => {
-        setCityAddr(e.target.selectedOptions[0].text);
-        barangays(e.target.value).then(response => {
-            setBarangay(response);
-        });
-    }
-
-    const brgy = (e) => {
-        setBarangayAddr(e.target.selectedOptions[0].text);
-    }
-
-    useEffect(() => {
-        region()
-    }, [])
     return (
         <>
             <GuestLayout>
@@ -178,7 +131,6 @@ export default function Register() {
 
                         <InputError message={errors.lname} className="mt-2" />
                     </div>
-
                     <div className="mt-2">
                         <InputLabel htmlFor="password" value="Password" />
 
@@ -226,7 +178,7 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="flex flex-col items-center justify-end gap-3 mt-2">
+                    <div className="flex items-center justify-between mt-2">
                         <Link
                             href={route("login")}
                             className="text-sm text-gray-600 underline rounded-md hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -234,7 +186,7 @@ export default function Register() {
                             Already registered?
                         </Link>
 
-                        <PrimaryButton className="w-full ms-4" disabled={processing}>
+                        <PrimaryButton className="ms-4" disabled={processing}>
                             Register
                         </PrimaryButton>
                     </div>

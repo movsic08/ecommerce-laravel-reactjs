@@ -135,8 +135,6 @@ class CheckoutController extends Controller
                 ];
             }
 
-
-
             //remove the order from cart if its from cart
             if (isset($request->cart_items)) {
                 foreach ($request->cart_items as $item) {
@@ -191,7 +189,7 @@ class CheckoutController extends Controller
                             ]);
                     }
                     DB::commit();
-                    Mail::to(auth()->user()->email)->send(new BillingMail($line_items, $request->payment_method));
+                    Mail::to(auth()->user()->email)->send(new BillingMail($line_items, $request->payment_method, $generated_order_id));
 
                     return Inertia::location($checkoutUrl);
                 } catch (\Exception $e) {
@@ -209,7 +207,7 @@ class CheckoutController extends Controller
             }
 
             DB::commit();
-            Mail::to(auth()->user()->email)->send(new BillingMail($line_items, $request->payment_method));
+            Mail::to(auth()->user()->email)->send(new BillingMail($line_items, $request->payment_method, $generated_order_id));
             return to_route('checkout.success', $generated_order_id)->with([
                 'status' => 'success',
                 'message' => 'Order Placed Successfully'

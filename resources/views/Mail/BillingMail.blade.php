@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receipt</title>
+    <title>Order Receipt</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -61,13 +61,24 @@
             align-items: center;
             justify-content: space-between;
         }
+
+        .order-details {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Receipt</h1>
-        <p>Thank you for your purchase!</p>
+        <h1>ORDER RECEIPT</h1>
+
+        <div class="order-details">
+            {{-- <p>Seller: {{ $seller }}</p> --}}
+            <p>Customer: {{ $customer }}</p>
+            <p>Payment Method: {{ $payment }}</p>
+            <p>Order ID: {{ $orderId }}</p>
+            <p>Date: {{ $date }}</p>
+        </div>
 
         <div class="items">
             @php
@@ -87,15 +98,12 @@
                 </div>
             @endforeach
         </div>
+
         <div class="lastBox">
-            <div class="total">
-                Payment Method: <strong>{{ $payment }}</strong>
-            </div>
             <div class="total">
                 Total: <span class="currency">₱{{ number_format($totalAmount, 2) }}</span>
             </div>
         </div>
-
     </div>
 </body>
 
