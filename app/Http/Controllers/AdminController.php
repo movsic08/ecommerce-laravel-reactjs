@@ -237,10 +237,21 @@ class AdminController extends Controller
         $query = Products::query()->with('images', 'seller.user');
 
 
-        if (request()->has('sortBySeller') && request('sortBySeller') !== null) {
+        if (request()->has('sortBySeller') && request('sortBySeller') !== 'all') {
             $query->whereHas('seller', function ($q) {
                 $q->where('id', request('sortBySeller'));
             });
+        }
+
+        if (request()->has('status') && request('status') !== 'all') {
+            switch (request('status')) {
+                case 'verified':
+                    $query->where('is_verified', true);
+                    break;
+                case 'unverified':
+                    $query->where('is_verified', false);
+                    break;
+            }
         }
 
         $products = $query->paginate(3);
@@ -257,6 +268,8 @@ class AdminController extends Controller
                     'name' => $user->first_name . ' ' . $user->last_name,
                 ];
             });
+
+
 
 
 

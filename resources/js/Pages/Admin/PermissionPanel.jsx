@@ -74,13 +74,29 @@ export default function PermissionPanel({ auth }) {
 
 
     const [currentSeller, setCurrentSeller] = useState();
+    const [currentStatus, setCurrentStatus] = useState('all');
 
     const handleFilterBySeller = (e) => {
-        const sellerId = e.target.value === 'all' ? null : e.target.value;
-        setCurrentSeller()
+        const sellerId = e.target.value === 'all' ? 'all' : e.target.value;
+
+        setCurrentSeller(sellerId)
 
         router.get(route('admin.permission'), {
             sortBySeller: sellerId,
+            status: currentStatus
+        }, {
+            preserveScroll: true,
+            preserveState: true,
+            replace: true,
+        });
+    };
+    const handleFilterByStatus = (e) => {
+        const status = e.target.value === 'all' ? 'all' : e.target.value;
+        setCurrentStatus(status)
+
+        router.get(route('admin.permission'), {
+            sortBySeller: currentSeller,
+            status: status
         }, {
             preserveScroll: true,
             preserveState: true,
@@ -91,8 +107,10 @@ export default function PermissionPanel({ auth }) {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const seller = urlParams.get("sortBySeller") || "all";  // Fetch seller from query or use 'all'
+        const seller = urlParams.get("sortBySeller") || "all";
+        const status = urlParams.get("status") || "all";
         setCurrentSeller(seller);
+        setCurrentStatus(status);
     }, []);
 
 
@@ -110,16 +128,17 @@ export default function PermissionPanel({ auth }) {
                     <h2>Permission List</h2>
 
                 </h2>
-                <div className="mt-2">
+                <div className="flex gap-4 mt-2">
+                    {/* filter by seller */}
                     <div className="flex items-center mb-4 w-fit">
                         <label
-                            htmlFor="rowsPerPage"
+                            htmlFor="seller"
                             className="mr-2 whitespace-nowrap"
                         >
-                            Filter by Seller:
+                            Seller:
                         </label>
                         <select
-                            id="rowsPerPage"
+                            id="seller"
                             value={currentSeller}
                             onChange={handleFilterBySeller}
                             className="w-full p-2 pr-8 border border-gray-300 rounded-md appearance-none custom-select-arrow"
@@ -129,6 +148,27 @@ export default function PermissionPanel({ auth }) {
                             {sellersData.map((seller) => (
                                 <option key={seller.id} value={seller.id}>{seller.name}</option>
                             ))}
+                        </select>
+                    </div>
+                    {/* filter by status */}
+                    <div className="flex items-center mb-4 w-fit">
+                        <label
+                            htmlFor="status"
+                            className="mr-2 whitespace-nowrap"
+                        >
+                            Status:
+                        </label>
+                        <select
+                            id="status"
+                            value={currentStatus}
+                            onChange={handleFilterByStatus}
+                            className="w-full p-2 pr-8 border border-gray-300 rounded-md appearance-none custom-select-arrow"
+                        >
+                            {/* <option selected value={currentSeller}>{currentSeller}</option> */}
+                            <option value={'all'}>All</option>
+                            <option value={'verified'}>Verified</option>
+                            <option value={'unverified'}>Unverified</option>
+
                         </select>
                     </div>
                 </div>
