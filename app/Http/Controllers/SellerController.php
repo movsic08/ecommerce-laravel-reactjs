@@ -79,7 +79,6 @@ class SellerController extends Controller
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'proof_of_membership_path' => ['required'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'phone_no' => ['required', 'digits:11', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Password::defaults()],
@@ -99,45 +98,32 @@ class SellerController extends Controller
             'has_bir.required' => 'The BIR Registration is required.'
         ]);
 
-        try {
-            $randomNumber = rand(1000, 9999);
-            $fileExtension = $request->file('proof_of_membership_path')->getClientOriginalExtension();
-            $fileName = 'Permit_' . $request->first_name . '_' . $randomNumber . '.' . $fileExtension;
-            $directory = 'Photos/Permit_photos';
-            $path = Storage::disk('public')->putFileAs($directory, $request->file('proof_of_membership_path'), $fileName);
-        } catch (Exception $e) {
-            return redirect()->route('seller.signup')->with('message', 'Something Went wrong.');
-        }
-        if ($path) {
-            $user = User::create([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'address' => $request->address,
-                'email' => $request->email,
-                'phone_no' => $request->phone_no,
-                'is_seller' => true,
-                'password' => Hash::make($request->password),
-            ]);
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'address' => $request->address,
+            'email' => $request->email,
+            'phone_no' => $request->phone_no,
+            'is_seller' => true,
+            'password' => Hash::make($request->password),
+        ]);
 
-            $sellerDetails = Seller::create([
-                'user_id' => $user->id,
-                'seller_address' => $request->address,
-                'years_in_selling' => $request->years_in_selling,
-                'has_permit' => $request->has_permit == 'on' ? true : false,
-                'has_DTI' => $request->has_dti == 'on' ? true : false,
-                'has_mayors_business_permit' => $request->has_mayors_business_permit == 'on' ? true : false,
-                'has_paid_organizational_fee' => $request->has_paid_org_fee == 'on' ? true : false,
-                'has_barangay_clearance' => $request->has_barangay_clearance == 'on' ? true : false,
-                'has_bir' => $request->has_bir == 'on' ? true : false,
-                'proof_of_membership_path' => $path,
-            ]);
+        $sellerDetails = Seller::create([
+            'user_id' => $user->id,
+            'seller_address' => $request->address,
+            'years_in_selling' => $request->years_in_selling,
+            'has_permit' => $request->has_permit == 'on' ? true : false,
+            'has_DTI' => $request->has_dti == 'on' ? true : false,
+            'has_mayors_business_permit' => $request->has_mayors_business_permit == 'on' ? true : false,
+            'has_paid_organizational_fee' => $request->has_paid_org_fee == 'on' ? true : false,
+            'has_barangay_clearance' => $request->has_barangay_clearance == 'on' ? true : false,
+            'has_bir' => $request->has_bir == 'on' ? true : false,
+        ]);
 
-            if ($user && $sellerDetails) {
-                return Inertia::render('StatusPages/SuccessSellerAccount');
-            }
-        } else {
-            return redirect()->route('seller.signup')->with('message', 'Something went wrong in creating path, contact developers.');
+        if ($user && $sellerDetails) {
+            return Inertia::render('StatusPages/SuccessSellerAccount');
         }
+
     }
 
     public function dashboard()

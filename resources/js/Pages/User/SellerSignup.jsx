@@ -30,7 +30,6 @@ export default function SellerSignup() {
         password_confirmation: "",
         years_in_selling: "below 11 months",
         has_permit: false,
-        proof_of_membership_path: "",
         has_dti: "",
         has_mayors_business_permit: "",
         has_paid_org_fee: "",
@@ -292,29 +291,7 @@ export default function SellerSignup() {
                                     className="mt-1"
                                 />
                             </div>
-                            {/* file path */}
-                            <div className=" w-full">
-                                <h1 className=" font-bold text-xl text-slate-800">
-                                    Proof of membership
-                                </h1>
-                                <div className=" flex w-full items-center gap-2 mt-1">
-                                    <input
-                                        className="w-full bg-themeColor text-white rounded-r"
-                                        type="file"
-                                        name="proof_file_path"
-                                        onChange={(e) =>
-                                            setData(
-                                                "proof_of_membership_path",
-                                                e.target.files[0]
-                                            )
-                                        }
-                                    />
-                                </div>
-                                <InputError
-                                    message={errors.proof_of_membership_path}
-                                    className="mt-1"
-                                />
-                            </div>
+
                         </div>
                         <div className="mt-4">
                             <h1 className=" font-bold text-xl text-slate-800 whitespace-nowrap">
