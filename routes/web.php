@@ -32,7 +32,7 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::get('/product/{productid}', [ProductsController::class, 'viewProduct'])->name('view-product');
     Route::post('/store-to-cart', [CartController::class, 'addToCart'])->name('cart.store');
     Route::get('/messages', function () {
-        return Inertia::render('User/Messages');
+        return Inertia::render('ChatLayout');
     })->name('user.messages');
     Route::get('/cart', [CartController::class, 'currentCartList'])->name('user-cart');
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.item.destroy');

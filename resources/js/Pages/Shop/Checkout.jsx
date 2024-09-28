@@ -86,7 +86,7 @@ export default function Checkout({ auth }) {
     }, [flash]);
 
     return (
-        <UserAuthenticatedLayout user={auth}>
+        <UserAuthenticatedLayout user={auth.user}>
             <Head title="Checkout" />
             <ToastContainer />
             <div className="max-w-2xl p-6 mx-auto my-6 bg-white border border-gray-200 shadow-lg md:rounded-lg">

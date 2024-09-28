@@ -59,13 +59,13 @@ export default function ViewProduct({ auth }) {
                     rating={product.rating}
                 />
 
-                <div className="py-2  bg-slate-50 max-h-max">
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                        <div className="container mx-auto p-4">
+                <div className="py-2 bg-slate-50 max-h-max">
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <div className="container p-4 mx-auto">
                             <div className="flex flex-col lg:flex-row">
                                 <div className="w-full lg:w-[40%] p-4">
                                     <div className="p-3 rounded-md bg-slate-200">
-                                        <div className="aspect-w-1 aspect-h-1 w-full">
+                                        <div className="w-full aspect-w-1 aspect-h-1">
                                             <img
                                                 src={currentPhoto}
                                                 alt={`${product.product_name} Image`}
@@ -73,7 +73,7 @@ export default function ViewProduct({ auth }) {
                                             />
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 mt-2 py-2 overflow-x-auto">
+                                    <div className="flex gap-2 py-2 mt-2 overflow-x-auto">
                                         {product.images.map((image) => (
                                             <img
                                                 key={image.id}
@@ -84,12 +84,11 @@ export default function ViewProduct({ auth }) {
                                                 }
                                                 src={image.image_path}
                                                 alt="Sample Image"
-                                                className={`rounded-md h-20 w-20 ${
-                                                    currentPhoto ==
+                                                className={`rounded-md h-20 w-20 ${currentPhoto ==
                                                     image.image_path
-                                                        ? "bg-secondaryColor"
-                                                        : "cursor-pointer"
-                                                }  object-cover p-2 `}
+                                                    ? "bg-secondaryColor"
+                                                    : "cursor-pointer"
+                                                    }  object-cover p-2 `}
                                             />
                                         ))}
                                     </div>
@@ -104,7 +103,7 @@ export default function ViewProduct({ auth }) {
                                             "shop.profile",
                                             product.seller.id
                                         )}
-                                        className="mt-4 flex items-center text-xl text-themeColor gap-1 font-bold "
+                                        className="flex items-center gap-1 mt-4 text-xl font-bold text-themeColor "
                                     >
                                         <FaShop
                                             size={30}
@@ -119,7 +118,7 @@ export default function ViewProduct({ auth }) {
                                         )}
                                     </p>
                                     <StarRating rating={product.rating} />
-                                    <p className="text-lg mt-2 text-gray-700">
+                                    <p className="mt-2 text-lg text-gray-700">
                                         {product.description}
                                     </p>
                                     <div className="mt-4">
@@ -134,24 +133,18 @@ export default function ViewProduct({ auth }) {
                                         </span>{" "}
                                         {product.sold}
                                     </div>
-                                    <div className="flex gap-2 items-center mt-4">
-                                        <button
-                                            onClick={toggleModal}
-                                            className="text-white px-4 py-2 rounded-md bg-secondaryColor hover:bg-secondaryColor-dark transition duration-200"
-                                        >
-                                            Add to Cart
-                                        </button>
+                                    <div>
+                                        <Quantity
+                                            currentStock={product.quantity}
+                                            quantity={1}
+                                            onQuantityChange={
+                                                handleQuantityChange
+                                            }
+                                        />
                                     </div>
-                                    <div className="flex items-cente justify-between mt-2 md:mt-1">
-                                        <div>
-                                            <Quantity
-                                                currentStock={product.quantity}
-                                                quantity={1}
-                                                onQuantityChange={
-                                                    handleQuantityChange
-                                                }
-                                            />
-                                        </div>
+                                    {/* add to cart component */}
+
+                                    <div className="flex items-center justify-start gap-2 mt-2 md:mt-4">
 
                                         <button
                                             onClick={() =>
@@ -163,13 +156,27 @@ export default function ViewProduct({ auth }) {
                                                 )
                                             }
                                             disabled={product.quantity === 0}
-                                            className="text-white bg-thirdColor hover:bg-thirdColor-dark font-medium rounded-md px-4 py-2 mt-4 transition duration-200 disabled:opacity-50"
+                                            className="px-4 py-2 font-medium text-white transition duration-200 rounded-md bg-secondaryColor hover:bg-thirdColor-dark disabled:opacity-50"
                                         >
                                             Buy Now
                                         </button>
+                                        <button
+                                            onClick={toggleModal}
+                                            className="px-4 py-2 text-white transition duration-200 rounded-md bg-secondaryColor hover:bg-secondaryColor-dark"
+                                        >
+                                            Add to Cart
+                                        </button>
+
+
+                                        <Link
+
+                                            className="px-4 py-2 font-medium text-white transition duration-200 rounded-md bg-secondaryColor hover:bg-thirdColor-dark disabled:opacity-50"
+                                        >
+                                            Message Seller
+                                        </Link>
                                     </div>
                                     {product.quantity === 0 ? (
-                                        <div className="mt-2 w-fit text-xs px-2 py-1 border-red-500 bg-red-100 text-red-600 rounded-sm">
+                                        <div className="px-2 py-1 mt-2 text-xs text-red-600 bg-red-100 border-red-500 rounded-sm w-fit">
                                             This item is currently out of stock
                                         </div>
                                     ) : (
@@ -177,20 +184,20 @@ export default function ViewProduct({ auth }) {
                                     )}
 
                                     {/* review area */}
-                                    <div className=" mt-6 border-t-2 border-slate-300 pt-4">
+                                    <div className="pt-4 mt-6 border-t-2 border-slate-300">
                                         <div>
-                                            <div className="w-full items-center flex justify-between">
+                                            <div className="flex items-center justify-between w-full">
                                                 <h1 className="flex items-center gap-1 font-bold text-mainText">
                                                     {product.rating + " "}
                                                     <span>
-                                                        <FaStar className=" text-yellow-500" />
+                                                        <FaStar className="text-yellow-500 " />
                                                     </span>
                                                     Product Ratings
                                                 </h1>
                                                 {product.reviews.length <= 5 ? (
                                                     ""
                                                 ) : (
-                                                    <Link className="text-themeColor duration-300 hover:text-orange-600">
+                                                    <Link className="duration-300 text-themeColor hover:text-orange-600">
                                                         View All
                                                     </Link>
                                                 )}
@@ -198,13 +205,13 @@ export default function ViewProduct({ auth }) {
                                             {product.reviews.length === 0
                                                 ? "This product does not have any reviews yet."
                                                 : product.reviews.map(
-                                                      (review) => (
-                                                          <ReviewComponent
-                                                              data={review}
-                                                              key={review.id}
-                                                          />
-                                                      )
-                                                  )}
+                                                    (review) => (
+                                                        <ReviewComponent
+                                                            data={review}
+                                                            key={review.id}
+                                                        />
+                                                    )
+                                                )}
                                         </div>
                                     </div>
                                 </div>
