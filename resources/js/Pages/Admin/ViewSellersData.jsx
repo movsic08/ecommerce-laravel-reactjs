@@ -91,14 +91,7 @@ export default function ViewSellersData({ auth }) {
                             status={seller.seller.is_verified}
                         />
                     )}
-                    {isPermitViewerOpen && (
-                        <PermitPictureViewer
-                            onClose={() => {
-                                setIsPermitViewerOpen(false);
-                            }}
-                            imageUrl={seller.seller.proof_of_membership_path}
-                        />
-                    )}
+
                     <form className="py-8" onSubmit={submit}>
                         <h2 className="text-xl flex items-center font-semibold leading-tight mb-6">
                             <Link
@@ -120,7 +113,7 @@ export default function ViewSellersData({ auth }) {
                                                 seller.seller
                                                     .profile_picture_path
                                                     ? seller.seller
-                                                          .profile_picture_path
+                                                        .profile_picture_path
                                                     : DefaultShopProfile
                                             }
                                             // alt={seller.first_name}
@@ -142,11 +135,10 @@ export default function ViewSellersData({ auth }) {
                                                     value={data.shop_name || ""}
                                                     onChange={handleChange}
                                                     disabled={!isEditing}
-                                                    className={`mt-1 block w-full rounded-md ${
-                                                        isEditing
-                                                            ? "border-gray-300"
-                                                            : "border-none bg-gray-100"
-                                                    }`}
+                                                    className={`mt-1 block w-full rounded-md ${isEditing
+                                                        ? "border-gray-300"
+                                                        : "border-none bg-gray-100"
+                                                        }`}
                                                 />
                                                 <InputError>asfarfa</InputError>
                                                 {errors.shop_name && (
@@ -174,11 +166,10 @@ export default function ViewSellersData({ auth }) {
                                                     }
                                                     onChange={handleChange}
                                                     disabled={!isEditing}
-                                                    className={`mt-1 block w-full rounded-md ${
-                                                        isEditing
-                                                            ? "border-gray-300"
-                                                            : "border-none bg-gray-100"
-                                                    }`}
+                                                    className={`mt-1 block w-full rounded-md ${isEditing
+                                                        ? "border-gray-300"
+                                                        : "border-none bg-gray-100"
+                                                        }`}
                                                 />
                                                 {errors.shop_address && (
                                                     <InputError
@@ -204,12 +195,11 @@ export default function ViewSellersData({ auth }) {
                                                             : "Not Verified"
                                                     }
                                                     disabled
-                                                    className={`mt-1 block w-full uppercase font-bold text-center rounded-md border-none  ${
-                                                        seller.seller
-                                                            .is_verified
-                                                            ? "text-green-900 bg-green-100"
-                                                            : "bg-red-100 text-red-800"
-                                                    }`}
+                                                    className={`mt-1 block w-full uppercase font-bold text-center rounded-md border-none  ${seller.seller
+                                                        .is_verified
+                                                        ? "text-green-900 bg-green-100"
+                                                        : "bg-red-100 text-red-800"
+                                                        }`}
                                                 />
                                             </div>
                                             <div>
@@ -240,11 +230,10 @@ export default function ViewSellersData({ auth }) {
                                         value={data.first_name}
                                         onChange={handleChange}
                                         disabled={!isEditing}
-                                        className={`mt-1 block w-full rounded-md ${
-                                            isEditing
-                                                ? "border-gray-300"
-                                                : "border-none bg-gray-100"
-                                        }`}
+                                        className={`mt-1 block w-full rounded-md ${isEditing
+                                            ? "border-gray-300"
+                                            : "border-none bg-gray-100"
+                                            }`}
                                     />
                                     {errors.first_name && (
                                         <InputError
@@ -264,11 +253,10 @@ export default function ViewSellersData({ auth }) {
                                         value={data.last_name}
                                         onChange={handleChange}
                                         disabled={!isEditing}
-                                        className={`mt-1 block w-full rounded-md ${
-                                            isEditing
-                                                ? "border-gray-300"
-                                                : "border-none bg-gray-100"
-                                        }`}
+                                        className={`mt-1 block w-full rounded-md ${isEditing
+                                            ? "border-gray-300"
+                                            : "border-none bg-gray-100"
+                                            }`}
                                     />
                                     {errors.last_name && (
                                         <InputError
@@ -292,11 +280,10 @@ export default function ViewSellersData({ auth }) {
                                         value={data.seller_address}
                                         onChange={handleChange}
                                         disabled={!isEditing}
-                                        className={`mt-1 block w-full rounded-md ${
-                                            isEditing
-                                                ? "border-gray-300"
-                                                : "border-none bg-gray-100"
-                                        }`}
+                                        className={`mt-1 block w-full rounded-md ${isEditing
+                                            ? "border-gray-300"
+                                            : "border-none bg-gray-100"
+                                            }`}
                                     />
                                     {errors.seller_address && (
                                         <InputError
@@ -340,11 +327,10 @@ export default function ViewSellersData({ auth }) {
                                                     Permit
                                                 </label>
                                                 <span
-                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${
-                                                        seller.seller.has_permit
-                                                            ? "bg-green-300 text-green-900"
-                                                            : "bg-red-300 text-red-900"
-                                                    }`}
+                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${seller.seller.has_permit
+                                                        ? "bg-green-300 text-green-900"
+                                                        : "bg-red-300 text-red-900"
+                                                        }`}
                                                 >
                                                     {seller.seller.has_permit
                                                         ? "Yes"
@@ -356,11 +342,10 @@ export default function ViewSellersData({ auth }) {
                                                     DTI
                                                 </label>
                                                 <span
-                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${
-                                                        seller.seller.has_DTI
-                                                            ? "bg-green-300 text-green-900"
-                                                            : "bg-red-300 text-red-900"
-                                                    }`}
+                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${seller.seller.has_DTI
+                                                        ? "bg-green-300 text-green-900"
+                                                        : "bg-red-300 text-red-900"
+                                                        }`}
                                                 >
                                                     {seller.seller.has_DTI
                                                         ? "Yes"
@@ -372,12 +357,11 @@ export default function ViewSellersData({ auth }) {
                                                     Mayor's Business Permit
                                                 </label>
                                                 <span
-                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${
-                                                        seller.seller
-                                                            .has_mayors_business_permit
-                                                            ? "bg-green-300 text-green-900"
-                                                            : "bg-red-300 text-red-900"
-                                                    }`}
+                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${seller.seller
+                                                        .has_mayors_business_permit
+                                                        ? "bg-green-300 text-green-900"
+                                                        : "bg-red-300 text-red-900"
+                                                        }`}
                                                 >
                                                     {seller.seller
                                                         .has_mayors_business_permit
@@ -387,29 +371,17 @@ export default function ViewSellersData({ auth }) {
                                             </div>
                                         </div>
                                         <div className="">
-                                            <div className=" ">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    Permit file
-                                                </label>
-                                                <button
-                                                    onClick={togglePermitViewer}
-                                                    type="button"
-                                                    className="ml-2 bg-blue-500 px-2 py-1 rounded text-white"
-                                                >
-                                                    View Permit
-                                                </button>
-                                            </div>{" "}
-                                            <div className="mt-4">
+
+                                            <div className="">
                                                 <label className="block text-sm font-medium text-gray-700">
                                                     Paid Organizational Fee
                                                 </label>
                                                 <span
-                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${
-                                                        seller.seller
-                                                            .has_paid_organizational_fee
-                                                            ? "bg-green-300 text-green-900"
-                                                            : "bg-red-300 text-red-900"
-                                                    }`}
+                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${seller.seller
+                                                        .has_paid_organizational_fee
+                                                        ? "bg-green-300 text-green-900"
+                                                        : "bg-red-300 text-red-900"
+                                                        }`}
                                                 >
                                                     {seller.seller
                                                         .has_paid_organizational_fee
@@ -422,12 +394,11 @@ export default function ViewSellersData({ auth }) {
                                                     Barangay Clearance
                                                 </label>
                                                 <span
-                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${
-                                                        seller.seller
-                                                            .has_barangay_clearance
-                                                            ? "bg-green-300 text-green-900"
-                                                            : "bg-red-300 text-red-900"
-                                                    }`}
+                                                    className={`mt-1 block w-fit px-2 py-1 rounded-md ${seller.seller
+                                                        .has_barangay_clearance
+                                                        ? "bg-green-300 text-green-900"
+                                                        : "bg-red-300 text-red-900"
+                                                        }`}
                                                 >
                                                     {seller.seller
                                                         .has_barangay_clearance
