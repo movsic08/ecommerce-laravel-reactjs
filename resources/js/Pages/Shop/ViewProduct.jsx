@@ -7,6 +7,7 @@ import Quantity from "@/Components/Quantity";
 import ReviewComponent from "./Components/ReviewComponent";
 import { FaStar } from "react-icons/fa";
 import { FaShop } from "react-icons/fa6";
+import CreateChatModal from "@/Components/CreateChatModal";
 
 export default function ViewProduct({ auth }) {
     const { product } = usePage().props;
@@ -174,6 +175,7 @@ export default function ViewProduct({ auth }) {
                                         >
                                             Message Seller
                                         </Link>
+                                        <CreateChatModal productData={product} />
                                     </div>
                                     {product.quantity === 0 ? (
                                         <div className="px-2 py-1 mt-2 text-xs text-red-600 bg-red-100 border-red-500 rounded-sm w-fit">

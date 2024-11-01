@@ -14,14 +14,15 @@ return new class extends Migration {
             $table->id();
             $table->longText('message');
             $table->foreignId('sender_id')->constrained('users');
-            $table->foreignId('receiver_id')->constrained('users')->nullable();
+            $table->foreignId('receiver_id')->constrained('users');
             $table->foreignId('conversation_id')->constrained('conversations')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('conversations', function (Blueprint $table) {
-            $table->foreignId('last_message_id ')->nullable()->constrained('messages');
+        Schema::table('conversations', function (Blueprint $table) {
+            $table->foreign('last_message_id')->references('id')->on('messages')->onDelete('set null');
         });
+
     }
 
     /**

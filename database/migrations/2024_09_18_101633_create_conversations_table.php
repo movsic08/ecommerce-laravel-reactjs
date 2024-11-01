@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id1')->constrained();
             $table->foreignId('user_id2')->constrained();
+            $table->unsignedBigInteger('last_message_id')->nullable();
             $table->timestamps();
         });
     }

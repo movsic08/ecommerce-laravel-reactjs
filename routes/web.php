@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MessageController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
@@ -47,6 +48,10 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('pay', [PaymentController::class, 'pay'])->name('pay.show');
     Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
+    Route::get('/chat', function () {
+        return Inertia::render('Chat');
+    });
+    Route::post('chat-seller', [MessageController::class, 'createMessage'])->name('chat.seller');
 });
 
 
