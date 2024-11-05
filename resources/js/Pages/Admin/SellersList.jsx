@@ -11,6 +11,7 @@ import Pagination from "@/Components/Pagination";
 
 export default function SellersList({ auth }) {
     const { users, flash } = usePage().props;
+
     console.log(users);
 
     useEffect(() => {
