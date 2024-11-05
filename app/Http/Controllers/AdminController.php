@@ -56,6 +56,7 @@ class AdminController extends Controller
         }
 
         $users = $query->paginate(15);
+        // dd($users);
         return Inertia::render('Admin/SellersList', [
             'users' => AdminResourceOfSellers::collection($users),
             'queryParams' => $request->query(),
