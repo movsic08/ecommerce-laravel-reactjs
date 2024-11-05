@@ -11,6 +11,7 @@ import Pagination from "@/Components/Pagination";
 
 export default function SellersList({ auth }) {
     const { users, flash } = usePage().props;
+    console.log(users);
 
     useEffect(() => {
         if (flash.status === "success") {
@@ -72,8 +73,8 @@ export default function SellersList({ auth }) {
         if (
             !window.confirm(
                 "Are you sure you want to delete this seller named " +
-                    name +
-                    "?"
+                name +
+                "?"
             )
         ) {
             return;
@@ -86,34 +87,31 @@ export default function SellersList({ auth }) {
             <AdminAuthenticatedLayout user={auth.user}>
                 <ToastContainer />
                 <Head title="Sellers List" />
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center justify-between mb-4">
                     <div className="p-4">
                         <button
-                            className={`px-4 py-2 ${
-                                currentStatus === "all"
-                                    ? "bg-themeColor text-white"
-                                    : "bg-white text-slate-600 hover:bg-slate-600 duration-150 hover:text-white"
-                            } rounded`}
+                            className={`px-4 py-2 ${currentStatus === "all"
+                                ? "bg-themeColor text-white"
+                                : "bg-white text-slate-600 hover:bg-slate-600 duration-150 hover:text-white"
+                                } rounded`}
                             onClick={() => handleFilterChange("all")}
                         >
                             All
                         </button>
                         <button
-                            className={`ml-2 px-4 py-2 ${
-                                currentStatus === "verified"
-                                    ? "bg-themeColor text-white"
-                                    : "bg-white text-slate-600 hover:bg-slate-600 duration-150 hover:text-white"
-                            } rounded`}
+                            className={`ml-2 px-4 py-2 ${currentStatus === "verified"
+                                ? "bg-themeColor text-white"
+                                : "bg-white text-slate-600 hover:bg-slate-600 duration-150 hover:text-white"
+                                } rounded`}
                             onClick={() => handleFilterChange("verified")}
                         >
                             Verified
                         </button>
                         <button
-                            className={`ml-2 px-4 py-2 ${
-                                currentStatus === "unverified"
-                                    ? "bg-themeColor text-white"
-                                    : "bg-white text-slate-600 hover:bg-slate-600 duration-150 hover:text-white"
-                            } rounded`}
+                            className={`ml-2 px-4 py-2 ${currentStatus === "unverified"
+                                ? "bg-themeColor text-white"
+                                : "bg-white text-slate-600 hover:bg-slate-600 duration-150 hover:text-white"
+                                } rounded`}
                             onClick={() => handleFilterChange("unverified")}
                         >
                             Unverified
@@ -129,7 +127,7 @@ export default function SellersList({ auth }) {
                         />
                         <button
                             type="submit"
-                            className="ml-2 px-4 py-2 bg-themeColor text-white rounded-lg"
+                            className="px-4 py-2 ml-2 text-white rounded-lg bg-themeColor"
                         >
                             Search
                         </button>
@@ -156,17 +154,17 @@ export default function SellersList({ auth }) {
                                     <td className="px-4 py-2">
                                         <ModalImage
                                             small={
-                                                user.seller_picture
-                                                    ? user.seller_picture
+                                                user.profile_picture_path
+                                                    ? user.profile_picture_path
                                                     : DefaultPicture
                                             }
                                             large={
-                                                user.seller_picture
-                                                    ? user.seller_picture
+                                                user.profile_picture_path
+                                                    ? user.profile_picture_path
                                                     : DefaultPicture
                                             }
                                             alt={user.first_name}
-                                            className="w-12 h-12 rounded-full mx-auto"
+                                            className="w-12 h-12 mx-auto rounded-full"
                                         />
                                     </td>
                                     <td className="px-4 py-2">
@@ -205,7 +203,7 @@ export default function SellersList({ auth }) {
                                                 user.id
                                             )}
                                         >
-                                            <button className="p-2 text-white rounded bg-blue-800 hover:bg-blue-900 mr-1 duration-200 ease-in-out">
+                                            <button className="p-2 mr-1 text-white duration-200 ease-in-out bg-blue-800 rounded hover:bg-blue-900">
                                                 <MdRemoveRedEye />
                                             </button>
                                         </Link>
@@ -218,7 +216,7 @@ export default function SellersList({ auth }) {
                                                     user.name
                                                 )
                                             }
-                                            className="p-2 text-white rounded bg-red-800 hover:bg-red-900 duration-200 ease-in-out"
+                                            className="p-2 text-white duration-200 ease-in-out bg-red-800 rounded hover:bg-red-900"
                                         >
                                             <BsTrash2Fill />
                                         </button>
