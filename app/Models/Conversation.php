@@ -22,11 +22,11 @@ class Conversation extends Model
 
     public function user1()
     {
-        return $this->belongsTo(User::class, 'user_id1');
+        return $this->belongsTo(User::class, 'user_id1')->with('seller');
     }
 
     public function user2()
     {
-        return $this->belongsTo(User::class, 'user_id2');
+        return $this->belongsTo(User::class, 'user_id2')->with('seller');
     }
 }

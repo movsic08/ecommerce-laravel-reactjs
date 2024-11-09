@@ -1,16 +1,18 @@
 import StarRating from "@/Components/StarRating";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddToCart from "@/Components/AddToCart";
 import Quantity from "@/Components/Quantity";
 import ReviewComponent from "./Components/ReviewComponent";
 import { FaStar } from "react-icons/fa";
 import { FaShop } from "react-icons/fa6";
 import CreateChatModal from "@/Components/CreateChatModal";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function ViewProduct({ auth }) {
-    const { product } = usePage().props;
+    const { product, flash } = usePage().props;
+    console.log('flash data = ', flash)
 
     const [currentPhoto, setCurrentPhoto] = useState(
         product.images[0].image_path
@@ -38,7 +40,17 @@ export default function ViewProduct({ auth }) {
         router.get(route("checkout.show", { items: [item] }));
     };
 
-    console.log(product);
+    useEffect(() => {
+        if (flash?.status === "success") {
+            toast.success(
+                <div dangerouslySetInnerHTML={{ __html: flash.message }} />
+            );
+        } else if (flash?.status === "error") {
+            toast.error(
+                <div dangerouslySetInnerHTML={{ __html: flash.message }} />
+            );
+        }
+    }, [flash]);
 
     return (
         <>
@@ -46,6 +58,7 @@ export default function ViewProduct({ auth }) {
                 user={auth.user}
                 cartNumber={auth.cartCount}
             >
+                <ToastContainer />
                 <Head title={product.product_name} />
 
                 {/* Modal */}
@@ -167,14 +180,6 @@ export default function ViewProduct({ auth }) {
                                         >
                                             Add to Cart
                                         </button>
-
-
-                                        <Link
-
-                                            className="px-4 py-2 font-medium text-white transition duration-200 rounded-md bg-secondaryColor hover:bg-thirdColor-dark disabled:opacity-50"
-                                        >
-                                            Message Seller
-                                        </Link>
                                         <CreateChatModal productData={product} />
                                     </div>
                                     {product.quantity === 0 ? (

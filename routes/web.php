@@ -48,9 +48,7 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::post('/checkout/create', [CheckoutController::class, 'store'])->name('checkout.store');
     Route::get('pay', [PaymentController::class, 'pay'])->name('pay.show');
     Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
-    Route::get('/chat', function () {
-        return Inertia::render('Chat');
-    });
+    Route::get('/message', [MessageController::class, 'messagesIndex'])->name('message.index');
     Route::post('chat-seller', [MessageController::class, 'createMessage'])->name('chat.seller');
 });
 

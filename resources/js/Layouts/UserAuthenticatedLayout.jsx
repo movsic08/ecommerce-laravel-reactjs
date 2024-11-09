@@ -24,7 +24,7 @@ export default function UserAuthenticatedLayout({
         useState(false);
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="flex flex-col min-h-screen bg-white">
             <nav className="bg-white border-b border-gray-100 shadow drop-shadow-md">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -75,7 +75,7 @@ export default function UserAuthenticatedLayout({
                                     />
                                 </div>
                             </NavLink>
-                            <NavLink href={route("user.messages")}>
+                            <NavLink href={route("message.index")}>
                                 <div className="relative ">
                                     <span className="absolute text-sm font-bold -top-2 -right-2">
                                         {cartCount == 0 ? "" : cartCount}
@@ -253,7 +253,7 @@ export default function UserAuthenticatedLayout({
                 </header>
             )}
 
-            <main>{children}</main>
+            <main className="flex-grow">{children}</main>
         </div>
     );
 }

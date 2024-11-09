@@ -12,7 +12,7 @@ export default function CreateChatModal({ dataAddedTrigger, setDataAddedTrigger,
     const toggleModal = () => {
         setShowModal(!showModal);
     };
-    const { data, setData, post, errors, processing } = useForm({
+    const { data, setData, post, errors, processing, reset } = useForm({
         message: '',
         product_id: productData.id,
         seller_id: productData.seller.user_id
@@ -22,12 +22,15 @@ export default function CreateChatModal({ dataAddedTrigger, setDataAddedTrigger,
 
     const chatSellerHandler = (e) => {
         e.preventDefault();
-        const response = post(route('chat.seller'), { data })
-
-        // setDataAddedTrigger(!dataAddedTrigger)
-        // setShowModal(!showModal)
+        post(route('chat.seller'), {
+            onSuccess: () => {
+                reset();
+                toggleModal();
+            }, onError: (error) => {
+                console.log('Error', error);
+            }
+        })
     }
-    console.log('product data in modal', productData)
 
     return <>
 
