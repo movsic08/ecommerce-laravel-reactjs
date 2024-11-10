@@ -1,52 +1,166 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import CryptoJS from "crypto-js";
+import { router, useForm, usePage } from "@inertiajs/react";
+import { toast, ToastContainer } from "react-toastify";
 
-export default function SelectedConversation() {
-    const [currentConvoParam, setCurrentConvoParam] = useState(null);
+export default function SelectedConversation({ currentConvoParam }) {
     const [conversationData, setConversationData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const secretKey = "madeByHands";
+    const { user } = usePage().props.auth;
+    const { flash } = usePage().props;
+    const receiverName = conversationData?.messages[0].receiver?.seller?.shop_name;
+    const receiverId = conversationData?.messages[0].receiver_id
+    const decryptData = (encryptedData, secretKey) => {
+        const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
+        const decrypted = bytes.toString(CryptoJS.enc.Utf8);
+        return parseInt(decrypted, 10);
+    };
 
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const param = urlParams.get("currentConvo");
-        setCurrentConvoParam(param);
-    }, []);
+    console.log('convo data', receiverId)
+
+    const { processing, reset, post, data, setData } = useForm({
+        message: '',
+        conversation_id: "",
+        receiver_id: '',
+    });
 
     const fetchConversation = async () => {
-        setLoading(true)
+        setLoading(true);
         try {
+            const decryptId = decryptData(currentConvoParam, secretKey);
+            setData('conversation_id', decryptId);
             const response = await axios.get('/get-convo', {
-                params: { convoId: currentConvoParam }
+                params: { convoId: decryptId }
             });
             setConversationData(response.data);
+            setData('receiver_id', conversationData.messages[0].receiver_id)
             setError(null);
         } catch (err) {
             console.error("Error fetching conversation data:", err);
             setError("Unable to load conversation data.");
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchConversation();
+        if (currentConvoParam) {
+            fetchConversation();
+        }
     }, [currentConvoParam]);
 
+    console.log(flash)
+
+    const replyHandler = (e) => {
+        e.preventDefault();
+        console.log('submitted data', data);
+
+        router.post(route('store.chat', data), {
+            onSuccess: () => {
+                setData('message', '');
+                fetchConversation();
+            },
+            onError: (err) => {
+                console.error("Error sending message:", err);
+                toast.error('Error in', err);
+            }
+        })
+    };
+
     return (
-        <div className={`w-full pt-[10rem] overflow-y-auto flex ${currentConvoParam ? 'w-full' : 'items-center justify-center'} bg-white border-r min-h-[39.010rem] max-h-screen`}>
-            {error ? (
-                <p className="font-semibold text-red-500">{error}</p>
-            ) : currentConvoParam ? (
-                <div>
-                    <div className="w-full p-4 bg-red-500">top</div>
-                    <div className="w-full p-4 bg-blue-500">bottom</div>
+        <>
+            <ToastContainer />
+            {!currentConvoParam ? (
+                <div className="flex items-center justify-center flex-grow p-4 bg-gray-50">
+                    <p className="text-lg font-semibold text-gray-600">
+                        Welcome to MadeByHands
+                    </p>
+                </div>
+            ) : conversationData && !loading ? (
+                <div className="relative flex flex-col w-full bg-slate-50">
+                    <header className="p-4 text-gray-700 bg-white drop-shadow-sm">
+                        <h1 className="text-2xl font-semibold">
+                            {receiverName}
+                        </h1>
+                    </header>
+                    <div className="max-h-[calc(100vh-12.65rem)] pb-6 pt-4 px-4 overflow-y-auto">
+                        {/* Render conversation */}
+                        {conversationData.messages.map((data, index) => {
+                            const is_sender = user.id === data.sender_id;
+
+                            return (
+                                <div key={index} className={`flex mb-4 cursor-pointer ${is_sender ? 'justify-end' : 'justify-start'}`}>
+                                    {is_sender ? (
+                                        <>
+                                            <div className="flex gap-3 p-3 text-white rounded-lg drop-shadow-md bg-themeColor max-w-96">
+                                                <p>{data.message}</p>
+                                            </div>
+                                            <div className="flex items-center justify-center ml-2 rounded-full w-9 h-9">
+                                                {data.sender.profile_picture_path ? (
+                                                    <img
+                                                        src={`${data.sender.profile_picture_path}`}
+                                                        alt="Shop Picture"
+                                                        className="object-cover w-full h-full rounded-full"
+                                                    />
+                                                ) : (
+                                                    data.sender.first_name?.charAt(0)
+                                                )}
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="flex items-center justify-center mr-2 rounded-full w-9 h-9">
+                                                <img
+                                                    src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                                    alt="Receiver Avatar"
+                                                    className="w-8 h-8 rounded-full"
+                                                />
+                                            </div>
+                                            <div className="flex gap-3 p-3 bg-white rounded-lg drop-shadow-md max-w-96">
+                                                <p className="text-gray-700">{data.message}</p>
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <footer className="absolute bottom-0 w-full p-4 bg-white border-t border-gray-300">
+                        <div className="flex items-center">
+                            {/* Textarea instead of input */}
+                            <textarea
+                                value={data.message}
+                                onChange={(e) => setData('message', e.target.value)}
+                                placeholder="Type a message..."
+                                className="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:border-blue-500 resize-none min-h-[50px]"
+                            />
+                            <button
+                                disabled={data.message == ''}
+                                type="button"
+                                onClick={(e) => replyHandler(e)}
+                                className="px-4 py-2 ml-2 text-white duration-150 ease-in-out bg-indigo-500 rounded-md hover:bg-indigo-600"
+                            >
+                                Send
+                            </button>
+                        </div>
+                    </footer>
                 </div>
             ) : (
-                <p className="text-lg font-semibold text-gray-600">
-                    Welcome to MadeByHands
-                </p>
+                loading && (
+                    <div className="flex items-center justify-center flex-grow p-4 bg-gray-50">
+                        <div className="flex flex-col items-center">
+                            <div className="w-12 h-12 border-4 border-t-4 border-gray-300 rounded-full border-t-indigo-500 animate-spin"></div>
+                            <p className="mt-3 text-lg font-semibold text-gray-600">
+                                Loading data...
+                            </p>
+                        </div>
+                    </div>
+                )
             )}
-        </div>
+        </>
     );
 }

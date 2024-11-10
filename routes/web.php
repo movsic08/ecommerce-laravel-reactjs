@@ -55,6 +55,7 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::get('checkout/success/{orderID}', [CheckoutController::class, 'successPage'])->name('checkout.success');
     Route::get('/message', [MessageController::class, 'messagesIndex'])->name('message.index');
     Route::post('chat-seller', [MessageController::class, 'createMessage'])->name('chat.seller');
+    Route::post('store-chat', [MessageController::class, 'store'])->name('store.chat');
 });
 
 

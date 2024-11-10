@@ -69,10 +69,52 @@ class MessageController extends Controller
     public function retrieveConvo(Request $request)
     {
         $messages = Message::where('conversation_id', $request->convoId)
+            ->with(['sender', 'receiver.seller'])
             ->get();
-        return response()->json([
-            'message' => 'Message retrieve',
-            'messages' => $messages
-        ], 200);
+
+        if ($messages !== null) {
+            return response()->json([
+                'message' => 'Message retrieve',
+                'messages' => $messages,
+                'request data' => $request->all()
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Not found',
+                'request data' => $request->all()
+            ], 401);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $conversation = Conversation::firstOrCreate([
+                'user_id1' => $request->receiver_id,
+                'user_id2' => Auth()->id()
+            ]);
+
+            $message = Message::create([
+                'message' => $request->message,
+                'sender_id' => Auth()->id(),
+                'receiver_id' => $request->receiver_id,
+                'conversation_id' => $conversation->id
+            ]);
+
+            $conversation->update([
+                'last_message_id' => $message->id,
+            ]);
+            DB::commit();
+            // return redirect()->back()->with(['message' => 'Message created!']);
+            return redirect()->route('message.index', parameters: ['convoId' => $conversation->id])
+                ->with('message', 'Message created!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with([
+                'message' => 'Error in ' . $e->getMessage(),
+                'status' => 'error'
+            ]);
+        }
     }
 }
