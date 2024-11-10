@@ -106,9 +106,13 @@ class MessageController extends Controller
                 'last_message_id' => $message->id,
             ]);
             DB::commit();
-            // return redirect()->back()->with(['message' => 'Message created!']);
-            return redirect()->route('message.index', parameters: ['convoId' => $conversation->id])
-                ->with('message', 'Message created!');
+            return redirect()->back()->with(['message' => 'Message created!']);
+            // return redirect()->route('message.index', parameters: ['currentConvo' => $conversation->id])
+            //     ->with('message', 'Message created!');
+            // return redirect()->route('seller.shop', [
+            //     'activeProcessingTab' => 'forPickUp',
+            //     'activeTab' => 'processed',
+            // ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with([

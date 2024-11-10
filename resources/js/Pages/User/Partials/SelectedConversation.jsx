@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CryptoJS from "crypto-js";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function SelectedConversation({ currentConvoParam }) {
     const [conversationData, setConversationData] = useState(null);
@@ -36,7 +37,6 @@ export default function SelectedConversation({ currentConvoParam }) {
                 params: { convoId: decryptId }
             });
             setConversationData(response.data);
-            setData('receiver_id', conversationData.messages[0].receiver_id)
             setError(null);
         } catch (err) {
             console.error("Error fetching conversation data:", err);
@@ -45,6 +45,27 @@ export default function SelectedConversation({ currentConvoParam }) {
             setLoading(false);
         }
     };
+    const reFetchConversation = async () => {
+        try {
+            const decryptId = decryptData(currentConvoParam, secretKey);
+            setData('conversation_id', decryptId);
+            const response = await axios.get('/get-convo', {
+                params: { convoId: decryptId }
+            });
+            setConversationData(response.data);
+            setError(null);
+        } catch (err) {
+            console.error("Error fetching conversation data:", err);
+            setError("Unable to load conversation data.");
+        }
+    };
+
+    useEffect(() => {
+        if (conversationData && conversationData.messages.length > 0) {
+            setData('receiver_id', conversationData.messages[0].receiver_id);
+        }
+    }, [conversationData]);
+
 
     useEffect(() => {
         if (currentConvoParam) {
@@ -58,18 +79,28 @@ export default function SelectedConversation({ currentConvoParam }) {
         e.preventDefault();
         console.log('submitted data', data);
 
-        router.post(route('store.chat', data), {
+        post(route('store.chat', data), {
             onSuccess: () => {
+                reFetchConversation();
                 setData('message', '');
-                fetchConversation();
             },
-            onError: (err) => {
-                console.error("Error sending message:", err);
-                toast.error('Error in', err);
+            onError: (errors) => {
+                console.error("Error sending message:", errors);
+                toast.error('Failed to send message.');
             }
-        })
+        });
+
+    };
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
+    // Scroll to bottom whenever conversationData.messages changes
+    useEffect(() => {
+        scrollToBottom();
+    }, [conversationData]);
     return (
         <>
             <ToastContainer />
@@ -87,10 +118,8 @@ export default function SelectedConversation({ currentConvoParam }) {
                         </h1>
                     </header>
                     <div className="max-h-[calc(100vh-12.65rem)] pb-6 pt-4 px-4 overflow-y-auto">
-                        {/* Render conversation */}
                         {conversationData.messages.map((data, index) => {
                             const is_sender = user.id === data.sender_id;
-
                             return (
                                 <div key={index} className={`flex mb-4 cursor-pointer ${is_sender ? 'justify-end' : 'justify-start'}`}>
                                     {is_sender ? (
@@ -127,6 +156,8 @@ export default function SelectedConversation({ currentConvoParam }) {
                                 </div>
                             );
                         })}
+                        {/* This is the scroll-to-bottom marker */}
+                        <div ref={messagesEndRef} />
                     </div>
 
                     <footer className="absolute bottom-0 w-full p-4 bg-white border-t border-gray-300">
