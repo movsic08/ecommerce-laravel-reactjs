@@ -65,4 +65,14 @@ class MessageController extends Controller
             'conversations' => $conversations
         ]);
     }
+
+    public function retrieveConvo(Request $request)
+    {
+        $messages = Message::where('conversation_id', $request->convoId)
+            ->get();
+        return response()->json([
+            'message' => 'Message retrieve',
+            'messages' => $messages
+        ], 200);
+    }
 }

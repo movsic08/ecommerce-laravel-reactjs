@@ -21,6 +21,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
+Route::middleware('auth')
+    ->get('/get-convo', [MessageController::class, 'retrieveConvo'])
+    ->name('get.convo');
+
 //Customer pages
 Route::middleware('auth', 'customer')->group(function () {
     Route::get('/home', [ProductsController::class, 'customerHome'])->name('dashboard');
