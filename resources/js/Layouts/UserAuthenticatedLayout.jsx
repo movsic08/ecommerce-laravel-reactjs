@@ -25,7 +25,7 @@ export default function UserAuthenticatedLayout({
 
     return (
         <div className="flex flex-col min-h-screen bg-white">
-            <nav className="bg-white border-b border-gray-100 shadow drop-shadow-md">
+            <nav className="z-30 bg-white border-b border-gray-100 shadow drop-shadow-md">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex items-center shrink-0">
@@ -253,7 +253,8 @@ export default function UserAuthenticatedLayout({
                 </header>
             )}
 
-            <main className="flex-grow">{children}</main>
+
+            <main className="flex flex-col flex-grow">{children}</main>
         </div>
     );
 }

@@ -13,7 +13,7 @@ export default function Dashboard({ auth }) {
         <AuthenticatedLayout user={auth.user} cartNumber={auth.cartCount}>
             <Head title="Home" />
             {/* first page full*/}
-            <div className="lg:-mt-[5rem] h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">
+            <div className="lg:-mt-[5rem] z-10 h-screen w-full overflow-hidden -z-20 flex items-center justify-center ">
                 <div className=" absolute left-[2rem] md:left-[5rem] lg:left-[10rem]  flex items-center ">
                     <div className="flex-col text-4xl md:text-6xl lg:text-8xl flex text-[#403E3E]">
                         <h1>Shell </h1>
@@ -27,26 +27,26 @@ export default function Dashboard({ auth }) {
                     </div>
                 </div>
                 <img
-                    className=" w-full h-full object-cover"
+                    className="object-cover w-full h-full "
                     src={frame_1}
                     alt=""
                 />
             </div>
             {/* 2nd page */}
-            <div className="bg-white w-full h-full p-6 flex flex-col items-center ">
-                <h1 className=" font-bold text-center text-4xl py-8">
+            <div className="flex flex-col items-center w-full h-full p-6 bg-white ">
+                <h1 className="py-8 text-4xl font-bold text-center ">
                     Discovery Pick
                 </h1>
-                <div className="flex-col md:flex-row flex items-center lg:items-start justify-center ">
+                <div className="flex flex-col items-center justify-center md:flex-row lg:items-start ">
                     <img
                         src="https://2.img-dpreview.com/files/p/E~C1000x0S4000x4000T1200x1200~articles/3925134721/0266554465.jpeg"
-                        className=" rounded-full object-cover h-52 w-52"
+                        className="object-cover rounded-full  h-52 w-52"
                         alt=""
                     />
-                    <div className=" ml-8 mb-6 lg:mb-0 flex items-center  flex-col">
+                    <div className="flex flex-col items-center mb-6 ml-8  lg:mb-0">
                         <Link
                             href={route("shop.profile", sellerData.id)}
-                            className="mt-4 flex items-center text-xl text-themeColor gap-1 font-bold "
+                            className="flex items-center gap-1 mt-4 text-xl font-bold text-themeColor "
                         >
                             <FaShop size={30} className="text-themeColor" />
                             {sellerData.shop_name}
@@ -54,7 +54,7 @@ export default function Dashboard({ auth }) {
 
                         <table className="min-w-full overflow-hidden">
                             <tr className="text-left">
-                                <td className=" font-bold pr-6 pt-2">Name</td>
+                                <td className="pt-2 pr-6 font-bold ">Name</td>
                                 <td className="pt-2 font-italic">
                                     {sellerData.user.first_name +
                                         " " +
@@ -62,7 +62,7 @@ export default function Dashboard({ auth }) {
                                 </td>
                             </tr>
                             <tr>
-                                <td className=" font-bold pr-6 pt-2">
+                                <td className="pt-2 pr-6 font-bold ">
                                     Location
                                 </td>
                                 <td className="pt-2 font-italic">
@@ -70,7 +70,7 @@ export default function Dashboard({ auth }) {
                                 </td>
                             </tr>
                             <tr>
-                                <td className=" font-bold pr-6 pt-2">Join</td>
+                                <td className="pt-2 pr-6 font-bold ">Join</td>
                                 <td className="pt-2 font-italic">
                                     {new Intl.DateTimeFormat("en-US", {
                                         month: "long",
@@ -82,23 +82,21 @@ export default function Dashboard({ auth }) {
                         </table>
                     </div>
                 </div>
-                <div className="grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-3 md:mt-6 grid max-w-5xl ">
+                <div className="grid max-w-5xl grid-cols-2 gap-5 mt-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:mt-6 ">
                     {sellerProducts.data.map((product) => (
                         <Link
                             key={product.id}
                             href={route("view-product", product.id)}
-                            className={`bg-gray-100 duration-300 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg flex rounded relative overflow-hidden ${
-                                layout == "grid"
+                            className={`bg-gray-100 duration-300 hover:bg-gray-200 ease-in-out hover:-translate-y-3 drop-shadow-lg flex rounded relative overflow-hidden ${layout == "grid"
                                     ? "flex-col"
                                     : "flex-row h-[10rem]"
-                            }`}
+                                }`}
                         >
                             <div
-                                className={` ${
-                                    layout == "grid"
+                                className={` ${layout == "grid"
                                         ? "pt-[100%] w-full"
                                         : "w-[10rem] h-full aspect-1"
-                                } relative`}
+                                    } relative`}
                             >
                                 <img
                                     src={
@@ -107,32 +105,31 @@ export default function Dashboard({ auth }) {
                                             : product.images[0].image_path
                                     }
                                     alt={product.product_name + " Image"}
-                                    className="absolute top-0 left-0 w-full h-full object-cover"
+                                    className="absolute top-0 left-0 object-cover w-full h-full"
                                 />
 
                                 {/* Overlay for Out of Stock */}
                                 {product.quantity === 0 && (
                                     <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                                        <span className="text-white text-lg font-semibold">
+                                        <span className="text-lg font-semibold text-white">
                                             Out of Stock
                                         </span>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="p-4 text-center flex flex-col w-full h-full justify-between">
-                                <p className="line-clamp-2 overflow-hidden">
+                            <div className="flex flex-col justify-between w-full h-full p-4 text-center">
+                                <p className="overflow-hidden line-clamp-2">
                                     {product.product_name}
                                 </p>
                                 <div
-                                    className={`flex flex-col w-full ${
-                                        layout == "grid"
+                                    className={`flex flex-col w-full ${layout == "grid"
                                             ? "items-center"
                                             : "items-start"
-                                    }`}
+                                        }`}
                                 >
                                     <StarRating rating={product.rating} />
-                                    <div className="flex items-center w-full justify-between">
+                                    <div className="flex items-center justify-between w-full">
                                         <p className="font-semibold">
                                             Php{" "}
                                             {new Intl.NumberFormat().format(

@@ -62,19 +62,18 @@ export default function MyPurchases({ auth }) {
             >
                 <Head title="My Purchases" />
                 <ToastContainer />
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-6">
-                    <h1 className="text-3xl font-bold mb-6">My Purchases</h1>
+                <div className="py-6 max-w-7xl sm:px-6 lg:px-8">
+                    <h1 className="mb-6 text-3xl font-bold">My Purchases</h1>
 
                     <div className="mb-6">
-                        <ul className="flex justify-around border-b overflow-y-auto">
+                        <ul className="flex justify-around overflow-y-auto border-b">
                             {tabs.map((tab) => (
                                 <li
                                     key={tab.id}
-                                    className={`cursor-pointer p-4 flex-col md:flex-row text-slate-700 flex items-center space-x-2 transition-colors duration-200 ${
-                                        activeTab === tab.id
+                                    className={`cursor-pointer p-4 flex-col md:flex-row text-slate-700 flex items-center space-x-2 transition-colors duration-200 ${activeTab === tab.id
                                             ? "border-b-2 border-themeColor text-themeColor"
                                             : "hover:text-themeColor"
-                                    }`}
+                                        }`}
                                     onClick={(e) => handleChangeTab(tab.id)}
                                 >
                                     {tab.icon}
@@ -96,7 +95,7 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status ==
-                                                        "order placed" &&
+                                                    "order placed" &&
                                                     !product.is_preparing &&
                                                     !product.is_ready_for_pickup &&
                                                     !product.is_picked_up &&
@@ -119,9 +118,9 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status ==
-                                                        "pending" ||
+                                                    "pending" ||
                                                     product.status ==
-                                                        "preparing"
+                                                    "preparing"
                                             ),
                                         }))
                                         .filter(
@@ -152,7 +151,7 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status ==
-                                                        "delivered" &&
+                                                    "delivered" &&
                                                     product.is_delivered
                                             ),
                                         }))
@@ -170,7 +169,7 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status ==
-                                                        "delivered" &&
+                                                    "delivered" &&
                                                     product.is_delivered &&
                                                     !product.is_rated
                                             ),
@@ -188,7 +187,7 @@ export default function MyPurchases({ auth }) {
                                             items: bulk.items.filter(
                                                 (product) =>
                                                     product.status ==
-                                                        "cancelled" &&
+                                                    "cancelled" &&
                                                     product.is_cancelled
                                             ),
                                         }))
