@@ -118,7 +118,7 @@ export default function SellerSelectedConversation({ currentConvoParam }) {
                                             <div className="flex gap-3 p-3 text-white rounded-lg drop-shadow-md bg-themeColor max-w-96">
                                                 <p>{data.message}</p>
                                             </div>
-                                            <div className="flex items-center justify-center ml-2 rounded-full w-9 h-9">
+                                            <div className="flex items-center justify-center ml-2 rounded-full bg-themeColor w-9 h-9">
                                                 {data.sender.profile_picture_path ? (
                                                     <img
                                                         src={`/storage/${data.sender.profile_picture_path}`}
@@ -132,7 +132,7 @@ export default function SellerSelectedConversation({ currentConvoParam }) {
                                         </>
                                     ) : (
                                         <>
-                                            <div className="flex items-center justify-center mr-2 rounded-full w-9 h-9">
+                                            <div className="flex items-center justify-center mr-2 rounded-full bg-themeColor w-9 h-9">
                                                 {data.sender.profile_picture_path ? (
                                                     <img
                                                         src={`/storage/${data.sender.profile_picture_path}`}
