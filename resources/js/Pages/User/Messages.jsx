@@ -3,21 +3,11 @@ import { Head, usePage } from "@inertiajs/react";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import SelectedConversation from "./Partials/SelectedConversation";
-import CryptoJS from "crypto-js";
 
 export default function Messages({ auth }) {
     const { conversations } = usePage().props;
     const [selectedConvo, setSelectedConvo] = useState();
     const [selectedName, setSelectedName] = useState();
-    const secretKey = "madeByHands";
-    const encryptData = (data, secretKey) => {
-        return CryptoJS.AES.encrypt(data.toString(), secretKey).toString();
-    };
-    const decryptData = (encryptedData, secretKey) => {
-        const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
-        const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-        return parseInt(decrypted, 10); // Convert back to number
-    };
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -26,12 +16,13 @@ export default function Messages({ auth }) {
     }, []);
 
     const handleSelectedConversation = (tabId) => {
-        const encodedId = encryptData(tabId, secretKey);
-        setSelectedConvo(encodedId);
+        setSelectedConvo(tabId);
         const url = new URL(window.location);
-        url.searchParams.set("currentConvo", encodedId);
+        url.searchParams.set("currentConvo", tabId);
         window.history.pushState({ selectedConvo }, "", url);
     };
+
+
 
     return (
         <UserAuthenticatedLayout user={auth.user}>
@@ -56,7 +47,7 @@ export default function Messages({ auth }) {
                                 className={`flex items-center p-2 rounded-md ${selectedConvo == data.id ? "bg-slate-300 cursor-default" : "hover:bg-gray-200 cursor-pointer"
                                     }`}
                                 onClick={() => {
-                                    handleSelectedConversation(data.id);
+                                    handleSelectedConversation(data.reference);
                                     setSelectedName(data.user1.seller.shop_name);
                                 }}
                             >

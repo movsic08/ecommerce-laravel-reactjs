@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import CryptoJS from "crypto-js";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,37 +8,33 @@ export default function SelectedConversation({ currentConvoParam }) {
     const [conversationData, setConversationData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const secretKey = "madeByHands";
     const { user } = usePage().props.auth;
     const { flash } = usePage().props;
     const receiverName = conversationData?.messages[0].receiver?.seller?.shop_name;
     const receiverId = conversationData?.messages[0].receiver_id
-    const decryptData = (encryptedData, secretKey) => {
-        const bytes = CryptoJS.AES.decrypt(encryptedData, secretKey);
-        const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-        return parseInt(decrypted, 10);
-    };
 
-    console.log('convo data', receiverId)
+
+    console.log('convo data', currentConvoParam)
 
     const { processing, reset, post, data, setData } = useForm({
         message: '',
-        conversation_id: "",
+        reference: "",
         receiver_id: '',
     });
+
 
     const fetchConversation = async () => {
         setLoading(true);
         try {
-            const decryptId = decryptData(currentConvoParam, secretKey);
-            setData('conversation_id', decryptId);
+            setData('conversation_id', currentConvoParam);
             const response = await axios.get('/get-convo', {
-                params: { convoId: decryptId }
+                params: { reference: currentConvoParam }
             });
             setConversationData(response.data);
             setError(null);
         } catch (err) {
             console.error("Error fetching conversation data:", err);
+            toast.error('Something went wrong, try again later.')
             setError("Unable to load conversation data.");
         } finally {
             setLoading(false);
@@ -47,10 +42,9 @@ export default function SelectedConversation({ currentConvoParam }) {
     };
     const reFetchConversation = async () => {
         try {
-            const decryptId = decryptData(currentConvoParam, secretKey);
-            setData('conversation_id', decryptId);
+            setData('conversation_id', currentConvoParam);
             const response = await axios.get('/get-convo', {
-                params: { convoId: decryptId }
+                params: { reference: currentConvoParam }
             });
             setConversationData(response.data);
             setError(null);
@@ -72,8 +66,6 @@ export default function SelectedConversation({ currentConvoParam }) {
             fetchConversation();
         }
     }, [currentConvoParam]);
-
-    console.log(flash)
 
     const replyHandler = (e) => {
         e.preventDefault();
@@ -97,7 +89,6 @@ export default function SelectedConversation({ currentConvoParam }) {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
 
-    // Scroll to bottom whenever conversationData.messages changes
     useEffect(() => {
         scrollToBottom();
     }, [conversationData]);

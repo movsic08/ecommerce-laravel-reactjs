@@ -70,7 +70,10 @@ class MessageController extends Controller
 
     public function retrieveConvo(Request $request)
     {
-        $messages = Message::where('conversation_id', $request->convoId)
+        $conversation = Conversation::where('reference', $request->reference)
+            ->firstOrFail();
+
+        $messages = Message::where('conversation_id', $conversation->id)
             ->with(['sender', 'receiver.seller'])
             ->get();
 
