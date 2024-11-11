@@ -1,10 +1,14 @@
-import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
+import SellerAuthenticatedLayout from "@/Layouts/SellerAuthenticatedLayout";
+import SellerMessageLayout from "@/Layouts/SellerMessageLayout";
 import { Head, usePage } from "@inertiajs/react";
 import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
-import SelectedConversation from "./Partials/SelectedConversation";
+import CryptoJS from "crypto-js";
+import SelectedConversation from "../User/Partials/SelectedConversation";
+import SellerSelectedConversation from "./Partials/SellerSelectedConversation";
 
-export default function Messages({ auth }) {
+
+export default function SellerMessages() {
     const { conversations } = usePage().props;
     const [selectedConvo, setSelectedConvo] = useState();
     const [selectedName, setSelectedName] = useState();
@@ -22,10 +26,8 @@ export default function Messages({ auth }) {
         window.history.pushState({ selectedConvo }, "", url);
     };
 
-
-
-    return (
-        <UserAuthenticatedLayout user={auth.user}>
+    return <>
+        <SellerMessageLayout >
             <Head title="Messages" />
             <div className="flex flex-grow w-full h-full bg-slate-200">
                 <div className="border-r min-w-[30%] bg-slate-100 border-slate-200">
@@ -38,9 +40,8 @@ export default function Messages({ auth }) {
                             className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-600"
                         />
                     </header>
-
                     {/* Convo list */}
-                    <div className="p-1.5 max-h-[calc(100vh-14.800rem)] space-y-1 overflow-y-auto mb-9">
+                    <div className="p-1.5 max-h-[calc(100vh-14.800rem)] min-h-[calc(100vh-13.210rem)] space-y-1 overflow-y-auto mb-9">
                         {conversations == null || conversations.length == 0 ? (
                             <div className="flex items-center justify-center w-full p-4 text-center ">
                                 <h1 className="text-gray-700">No conversation yet.</h1>
@@ -80,11 +81,10 @@ export default function Messages({ auth }) {
 
                     </div>
                 </div>
-                <SelectedConversation
-                    currentConvoParam={selectedConvo}
-                />
+                {/* chat area */}
+                <SellerSelectedConversation
+                    currentConvoParam={selectedConvo} />
             </div>
-
-        </UserAuthenticatedLayout>
-    );
+        </SellerMessageLayout>
+    </>
 }

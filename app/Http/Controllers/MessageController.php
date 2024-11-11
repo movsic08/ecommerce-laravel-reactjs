@@ -120,6 +120,35 @@ class MessageController extends Controller
             ]);
         }
     }
+    public function sellerReply(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $conversation = Conversation::firstOrCreate([
+                'user_id1' => Auth()->id(),
+                'user_id2' => $request->receiver_id
+            ]);
+
+            $message = Message::create([
+                'message' => $request->message,
+                'sender_id' => Auth()->id(),
+                'receiver_id' => $request->receiver_id,
+                'conversation_id' => $conversation->id
+            ]);
+
+            $conversation->update([
+                'last_message_id' => $message->id,
+            ]);
+            DB::commit();
+            return redirect()->back()->with(['message' => 'Message created!']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with([
+                'message' => 'Error in ' . $e->getMessage(),
+                'status' => 'error'
+            ]);
+        }
+    }
 
     public function sellerMessagesIndex()
     {

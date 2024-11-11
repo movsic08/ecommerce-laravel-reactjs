@@ -11,7 +11,7 @@ import { FaUserGear } from "react-icons/fa6";
 import { BsChatDots } from "react-icons/bs";
 
 
-export default function SellerAuthenticatedLayout({
+export default function SellerMessageLayout({
     user,
     header,
     notificationCount,
@@ -207,7 +207,7 @@ export default function SellerAuthenticatedLayout({
             )}
 
             <main
-                className="container p-4 mx-auto -z-20"
+                className="-z-20"
             >
                 {children}
             </main>

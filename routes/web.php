@@ -116,6 +116,8 @@ Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
     Route::get('finance/request', [WithdrawRequestController::class, 'requestPayoutForm'])->name('seller.request.withdraw');
     Route::post('finance/request/create', [WithdrawRequestController::class, 'createWithdraw'])->name('seller.store.withdraw');
     Route::get('shipping-setting', [SellerController::class, 'showShippingSetting'])->name('seller.shipping.setting');
+    Route::get('messages', [MessageController::class, 'sellerMessagesIndex'])->name('seller.messages.index');
+    Route::post('seller-reply-chat', [MessageController::class, 'sellerReply'])->name('seller.reply.chat');
 });
 
 Route::get('/about', function () {
