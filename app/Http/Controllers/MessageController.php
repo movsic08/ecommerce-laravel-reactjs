@@ -7,6 +7,7 @@ use App\Models\Message;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class MessageController extends Controller
@@ -21,7 +22,8 @@ class MessageController extends Controller
             DB::beginTransaction();
             $conversation = Conversation::firstOrCreate([
                 'user_id1' => $request->seller_id,
-                'user_id2' => Auth()->id()
+                'user_id2' => Auth()->id(),
+                'reference' => Str::uuid(),
             ]);
 
             $message = Message::create([
@@ -107,12 +109,6 @@ class MessageController extends Controller
             ]);
             DB::commit();
             return redirect()->back()->with(['message' => 'Message created!']);
-            // return redirect()->route('message.index', parameters: ['currentConvo' => $conversation->id])
-            //     ->with('message', 'Message created!');
-            // return redirect()->route('seller.shop', [
-            //     'activeProcessingTab' => 'forPickUp',
-            //     'activeTab' => 'processed',
-            // ]);
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->with([
@@ -121,4 +117,18 @@ class MessageController extends Controller
             ]);
         }
     }
+
+    public function sellerMessagesIndex()
+    {
+        $conversations = Conversation::with(['lastMessage', 'user1'])
+            ->where('user_id1', Auth::id())
+            ->orWhere('user_id2', Auth::id())
+            ->get();
+
+        return Inertia::render('Seller/SellerMessages', [
+            'conversations' => $conversations,
+        ]);
+    }
+
+    // endline
 }
