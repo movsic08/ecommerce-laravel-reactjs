@@ -121,7 +121,7 @@ export default function SellerSelectedConversation({ currentConvoParam }) {
                                             <div className="flex items-center justify-center ml-2 rounded-full w-9 h-9">
                                                 {data.sender.profile_picture_path ? (
                                                     <img
-                                                        src={`/${data.sender.profile_picture_path}`}
+                                                        src={`/storage/${data.sender.profile_picture_path}`}
                                                         alt="Shop Picture"
                                                         className="object-cover w-full h-full rounded-full"
                                                     />
@@ -135,7 +135,7 @@ export default function SellerSelectedConversation({ currentConvoParam }) {
                                             <div className="flex items-center justify-center mr-2 rounded-full w-9 h-9">
                                                 {data.sender.profile_picture_path ? (
                                                     <img
-                                                        src={`/${data.sender.profile_picture_path}`}
+                                                        src={`/storage/${data.sender.profile_picture_path}`}
                                                         alt="Shop Picture"
                                                         className="object-cover w-full h-full rounded-full"
                                                     />
