@@ -41,36 +41,43 @@ export default function Messages({ auth }) {
 
                     {/* Convo list */}
                     <div className="p-1.5 max-h-[calc(100vh-14.800rem)] space-y-1 overflow-y-auto mb-9">
-                        {conversations.map((data, index) => (
-                            <div
-                                key={index}
-                                className={`flex items-center p-2 rounded-md ${selectedConvo == data.id ? "bg-slate-300 cursor-default" : "hover:bg-gray-200 cursor-pointer"
-                                    }`}
-                                onClick={() => {
-                                    handleSelectedConversation(data.reference);
-                                    setSelectedName(data.user1.seller.shop_name);
-                                }}
-                            >
-                                <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 text-lg text-white bg-yellow-500 rounded-full">
-                                    {data.user1.seller.shop_picture_path ? (
-                                        <img
-                                            src={`/storage/${data.user1.seller.shop_picture_path}`}
-                                            alt="Shop Picture"
-                                            className="object-cover w-full h-full rounded-full"
-                                        />
-                                    ) : (
-                                        data.user1.seller?.shop_name?.charAt(0)
-                                    )}
-                                </div>
-                                <div className="flex-grow ml-4">
-                                    <p className="font-semibold text-gray-800">{data.user1.seller.shop_name}</p>
-                                    <p className="text-sm text-gray-500">{data.last_message.message}</p>
-                                    <div className="ml-auto text-xs text-gray-500">
-                                        {formatDistanceToNow(new Date(data.updated_at), { addSuffix: true })}
+                        {conversations == null || conversations.length == 0 ? (
+                            <div className="flex items-center justify-center w-full p-4 text-center ">
+                                <h1 className="text-gray-700">No conversation yet.</h1>
+                            </div>
+                        ) : (
+                            conversations.map((data, index) => (
+                                <div
+                                    key={index}
+                                    className={`flex items-center p-2 rounded-md ${selectedConvo == data.id ? "bg-slate-300 cursor-default" : "hover:bg-gray-200 cursor-pointer"
+                                        }`}
+                                    onClick={() => {
+                                        handleSelectedConversation(data.reference);
+                                        setSelectedName(data.user1.seller.shop_name);
+                                    }}
+                                >
+                                    <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 text-lg text-white bg-yellow-500 rounded-full">
+                                        {data.user1.seller.shop_picture_path ? (
+                                            <img
+                                                src={`/storage/${data.user1.seller.shop_picture_path}`}
+                                                alt="Shop Picture"
+                                                className="object-cover w-full h-full rounded-full"
+                                            />
+                                        ) : (
+                                            data.user1.seller?.shop_name?.charAt(0)
+                                        )}
+                                    </div>
+                                    <div className="flex-grow ml-4">
+                                        <p className="font-semibold text-gray-800">{data.user1.seller.shop_name}</p>
+                                        <p className="text-sm text-gray-500">{data.last_message.message}</p>
+                                        <div className="ml-auto text-xs text-gray-500">
+                                            {formatDistanceToNow(new Date(data.updated_at), { addSuffix: true })}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            )))
+                        }
+
                     </div>
                 </div>
                 <SelectedConversation
