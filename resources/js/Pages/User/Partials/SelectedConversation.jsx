@@ -118,7 +118,7 @@ export default function SelectedConversation({ currentConvoParam }) {
                                             <div className="flex gap-3 p-3 text-white rounded-lg drop-shadow-md bg-themeColor max-w-96">
                                                 <p>{data.message}</p>
                                             </div>
-                                            <div className="flex items-center justify-center ml-2 rounded-full w-9 h-9">
+                                            <div className="flex items-center justify-center ml-2 rounded-full bg-themeColor w-9 h-9">
                                                 {data.sender.profile_picture_path ? (
                                                     <img
                                                         src={`${data.sender.profile_picture_path}`}
@@ -132,12 +132,16 @@ export default function SelectedConversation({ currentConvoParam }) {
                                         </>
                                     ) : (
                                         <>
-                                            <div className="flex items-center justify-center mr-2 rounded-full w-9 h-9">
-                                                <img
-                                                    src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                                    alt="Receiver Avatar"
-                                                    className="w-8 h-8 rounded-full"
-                                                />
+                                            <div className="flex items-center justify-center mr-2 rounded-full bg-themeColor w-9 h-9">
+                                                {data.sender.profile_picture_path ? (
+                                                    <img
+                                                        src={`${data.sender.profile_picture_path}`}
+                                                        alt="Shop Picture"
+                                                        className="object-cover w-full h-full rounded-full"
+                                                    />
+                                                ) : (
+                                                    data.sender.first_name?.charAt(0)
+                                                )}
                                             </div>
                                             <div className="flex gap-3 p-3 bg-white rounded-lg drop-shadow-md max-w-96">
                                                 <p className="text-gray-700">{data.message}</p>
