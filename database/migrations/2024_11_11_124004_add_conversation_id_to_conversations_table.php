@@ -16,7 +16,7 @@ return new class extends Migration {
         });
 
         DB::table('conversations')->whereNull('reference')->update([
-            'reference' => DB::raw("CONCAT('CONV-', UUID())") // Correct UUID execution for each row
+            'reference' => DB::raw("CONCAT(UUID())") // Correct UUID execution for each row
         ]);
     }
 
