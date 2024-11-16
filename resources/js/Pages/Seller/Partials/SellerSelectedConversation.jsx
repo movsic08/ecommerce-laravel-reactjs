@@ -13,9 +13,6 @@ export default function SellerSelectedConversation({ currentConvoParam }) {
     const receiverName = conversationData?.messages[0].receiver?.seller?.shop_name;
     const receiverId = conversationData?.messages[0].receiver_id
 
-
-    console.log('convo data', currentConvoParam)
-
     const { processing, reset, post, data, setData } = useForm({
         message: '',
         reference: "",

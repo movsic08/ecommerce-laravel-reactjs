@@ -4,9 +4,10 @@ import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import SelectedConversation from "./Partials/SelectedConversation";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Messages({ auth }) {
-    const { conversations } = usePage().props;
+    const { conversations, flash } = usePage().props;
     const [selectedConvo, setSelectedConvo] = useState();
     const [selectedName, setSelectedName] = useState();
     const [hoveredConvo, setHoveredConvo] = useState(null);
@@ -42,10 +43,19 @@ export default function Messages({ auth }) {
         }
     }
 
+    useEffect(() => {
+        if (flash.error == 'success') {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message)
+        }
+    }, [flash]);
+
 
 
     return (
         <UserAuthenticatedLayout user={auth.user}>
+            <ToastContainer />
             <Head title="Messages" />
             <div className="flex flex-grow w-full h-full bg-slate-200">
                 <div className="border-r min-w-[30%] bg-slate-100 border-slate-200">

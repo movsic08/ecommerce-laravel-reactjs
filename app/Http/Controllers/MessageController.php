@@ -188,8 +188,8 @@ class MessageController extends Controller
 
             DB::commit();
             return redirect()->route('message.index')->with([
-                'message' => 'Deleted successfully!.',
-                'status' => 'success'
+                // 'message' => 'Deleted successfully!.',
+                // 'status' => 'success'
             ]);
 
         } catch (\Exception $e) {
@@ -213,13 +213,14 @@ class MessageController extends Controller
             $conversation->update(['is_deleted_by_user_id1' => 1]);
 
             if ($conversation->is_deleted_by_user_id1 && $conversation->is_deleted_by_user_id2) {
+                $conversation->message->delete();
                 $conversation->delete();
             }
 
             DB::commit();
             return redirect()->route('seller.messages.index')->with([
-                'message' => 'Deleted successfully!.',
-                'status' => 'success'
+                // 'message' => 'Deleted successfully!.',
+                // 'status' => 'success'
             ]);
 
         } catch (\Exception $e) {

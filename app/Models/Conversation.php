@@ -32,4 +32,9 @@ class Conversation extends Model
     {
         return $this->belongsTo(User::class, 'user_id2')->with('seller');
     }
+
+    public function message()
+    {
+        return $this->hasMany(Message::class, 'conversation_id');
+    }
 }

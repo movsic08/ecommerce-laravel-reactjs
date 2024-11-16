@@ -4,9 +4,10 @@ import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
 import SellerSelectedConversation from "./Partials/SellerSelectedConversation";
 import { HiDotsHorizontal } from "react-icons/hi";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function SellerMessages() {
-    const { conversations } = usePage().props;
+    const { conversations, flash } = usePage().props;
     const [selectedConvo, setSelectedConvo] = useState();
     const [selectedName, setSelectedName] = useState();
     const [hoveredConvo, setHoveredConvo] = useState(null);
@@ -42,8 +43,18 @@ export default function SellerMessages() {
         }
     }
 
+    useEffect(() => {
+        if (flash.status == 'success') {
+            toast.success(flash.message);
+        } else {
+            toast.error(flash.message)
+        }
+    }, [flash]);
+
+
     return <>
         <SellerMessageLayout >
+            <ToastContainer />
             <Head title="Messages" />
             <div className="flex flex-grow w-full h-full bg-slate-200">
                 <div className="border-r min-w-[30%] bg-slate-100 border-slate-200">
