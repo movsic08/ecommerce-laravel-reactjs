@@ -17,14 +17,21 @@ class MessageController extends Controller
         $request->validate([
             'message' => 'required'
         ]);
+
         try {
 
             DB::beginTransaction();
-            $conversation = Conversation::firstOrCreate([
-                'user_id1' => $request->seller_id,
-                'user_id2' => Auth()->id(),
-                'reference' => Str::uuid(),
-            ]);
+            $conversation = Conversation::firstOrCreate(
+                [
+                    'user_id1' => $request->seller_id,
+                    'user_id2' => Auth()->id(),
+                ],
+                [
+                    'user_id1' => $request->seller_id,
+                    'user_id2' => Auth()->id(),
+                    'reference' => Str::uuid(),
+                ]
+            );
 
             $message = Message::create([
                 'message' => $request->message,
@@ -60,8 +67,8 @@ class MessageController extends Controller
         $conversations = Conversation::with(['lastMessage', 'user1'])
             ->where('user_id1', Auth::id())
             ->orWhere('user_id2', Auth::id())
+            ->orderBy('updated_at', 'desc')
             ->get();
-
 
         return Inertia::render('User/Messages', [
             'conversations' => $conversations
