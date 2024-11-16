@@ -65,8 +65,9 @@ class MessageController extends Controller
     public function messagesIndex()
     {
         $conversations = Conversation::with(['lastMessage', 'user1'])
-            ->where('user_id1', Auth::id())
-            ->orWhere('user_id2', Auth::id())
+            // ->where('user_id1', Auth::id())
+            ->where('user_id2', Auth::id())
+            ->where('is_deleted_by_user_id2', 0)
             ->orderBy('updated_at', 'desc')
             ->get();
 
@@ -161,12 +162,73 @@ class MessageController extends Controller
     {
         $conversations = Conversation::with(['lastMessage', 'user1'])
             ->where('user_id1', Auth::id())
-            ->orWhere('user_id2', Auth::id())
+            ->where('is_deleted_by_user_id1', 0)
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         return Inertia::render('Seller/SellerMessages', [
             'conversations' => $conversations,
         ]);
+    }
+
+    public function deleteByCustomer(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $conversation = Conversation::where('id', $request->convo_id)
+                ->firstOrFail();
+
+            $conversation->update(['is_deleted_by_user_id2' => 1]);
+
+            if ($conversation->is_deleted_by_user_id1 && $conversation->is_deleted_by_user_id2) {
+
+                $conversation->delete();
+            }
+
+            DB::commit();
+            return redirect()->route('message.index')->with([
+                'message' => 'Deleted successfully!.',
+                'status' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('message.index')->with([
+                'message' => 'Something went wrong in ' . $e->getMessage(),
+                'status' => 'Error'
+            ]);
+        }
+    }
+
+    public function deleteBySeller(Request $request)
+    {
+
+        try {
+            DB::beginTransaction();
+
+            $conversation = Conversation::where('id', $request->convo_id)
+                ->firstOrFail();
+
+            $conversation->update(['is_deleted_by_user_id1' => 1]);
+
+            if ($conversation->is_deleted_by_user_id1 && $conversation->is_deleted_by_user_id2) {
+                $conversation->delete();
+            }
+
+            DB::commit();
+            return redirect()->route('seller.messages.index')->with([
+                'message' => 'Deleted successfully!.',
+                'status' => 'success'
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('seller.messages.index')->with([
+                'message' => 'Something went wrong in ' . $e->getMessage(),
+                'status' => 'Error'
+            ]);
+        }
     }
 
     // endline

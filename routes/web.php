@@ -56,6 +56,7 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::get('/message', [MessageController::class, 'messagesIndex'])->name('message.index');
     Route::post('chat-seller', [MessageController::class, 'createMessage'])->name('chat.seller');
     Route::post('store-chat', [MessageController::class, 'store'])->name('store.chat');
+    Route::patch('delete-my-chat', [MessageController::class, 'deleteByCustomer'])->name('customer.delete.convo');
 });
 
 
@@ -118,6 +119,7 @@ Route::prefix('seller')->middleware('seller', 'auth')->group(function () {
     Route::get('shipping-setting', [SellerController::class, 'showShippingSetting'])->name('seller.shipping.setting');
     Route::get('messages', [MessageController::class, 'sellerMessagesIndex'])->name('seller.messages.index');
     Route::post('seller-reply-chat', [MessageController::class, 'sellerReply'])->name('seller.reply.chat');
+    Route::patch('delete-my-chat', [MessageController::class, 'deleteBySeller'])->name('seller.delete.convo');
 });
 
 Route::get('/about', function () {
