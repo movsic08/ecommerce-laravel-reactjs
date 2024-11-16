@@ -13,7 +13,9 @@ class Conversation extends Model
         'user_id1',
         'user_id2',
         'last_message_id',
-        'reference'
+        'reference',
+        'is_deleted_by_user_id1',
+        'is_deleted_by_user_id2',
     ];
 
     public function lastMessage()
