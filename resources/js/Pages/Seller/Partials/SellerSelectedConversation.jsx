@@ -12,7 +12,6 @@ export default function SellerSelectedConversation({ currentConvoParam }) {
     const { flash } = usePage().props;
     const receiverName = conversationData?.messages[0].receiver?.seller?.shop_name;
     const receiverId = conversationData?.messages[0].receiver_id
-
     const { processing, reset, post, data, setData } = useForm({
         message: '',
         reference: "",

@@ -182,12 +182,13 @@ class MessageController extends Controller
             $conversation->update(['is_deleted_by_user_id2' => 1]);
 
             if ($conversation->is_deleted_by_user_id1 && $conversation->is_deleted_by_user_id2) {
-
+                Message::where('conversation_id', $conversation->id)
+                    ->delete();
                 $conversation->delete();
             }
 
             DB::commit();
-            return redirect()->route('message.index')->with([
+            return redirect(route('message.index'))->with([
                 // 'message' => 'Deleted successfully!.',
                 // 'status' => 'success'
             ]);
@@ -213,12 +214,13 @@ class MessageController extends Controller
             $conversation->update(['is_deleted_by_user_id1' => 1]);
 
             if ($conversation->is_deleted_by_user_id1 && $conversation->is_deleted_by_user_id2) {
-                $conversation->message->delete();
+                Message::where('conversation_id', $conversation->id)
+                    ->delete();
                 $conversation->delete();
             }
 
             DB::commit();
-            return redirect()->route('seller.messages.index')->with([
+            return redirect(route('seller.messages.index'))->with([
                 // 'message' => 'Deleted successfully!.',
                 // 'status' => 'success'
             ]);

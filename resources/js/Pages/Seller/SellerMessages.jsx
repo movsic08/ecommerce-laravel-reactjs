@@ -13,13 +13,13 @@ export default function SellerMessages() {
     const [hoveredConvo, setHoveredConvo] = useState(null);
     const { processing, errors, patch } = useForm();
     const [activeMenuIndex, setActiveMenuIndex] = useState(null);
-    const { url } = usePage();
+
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const param = urlParams.get("currentConvo") || null;
         setSelectedConvo(param);
-    }, [url]);
+    }, [window.location.search]);
 
     const handleSelectedConversation = (tabId) => {
         setSelectedConvo(tabId);
@@ -48,6 +48,7 @@ export default function SellerMessages() {
             toast.success(flash.message);
         } else {
             toast.error(flash.message)
+            console.log(flash.message)
         }
     }, [flash]);
 
