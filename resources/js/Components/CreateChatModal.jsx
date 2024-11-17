@@ -35,7 +35,7 @@ export default function CreateChatModal({ dataAddedTrigger, setDataAddedTrigger,
     return <>
 
         <button onClick={toggleModal} className="px-4 py-2 font-medium text-white transition duration-200 rounded-md bg-secondaryColor hover:bg-thirdColor-dark disabled:opacity-50">
-            <span>Message</span>
+            <span>Message Seller</span>
         </button>
 
         <Modal show={showModal} maxWidth='lg' onClose={toggleModal} >
