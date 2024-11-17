@@ -7,24 +7,24 @@ export default function Success({ auth }) {
     const { orderId, products } = usePage().props;
     return (
         <>
-            <UserAuthenticatedLayout user={auth}>
+            <UserAuthenticatedLayout user={auth.user}>
                 <Head title={orderId + ` Success`} />
-                <div className="my-4 mx-auto max-w-5xl">
-                    <div className="bg-slate-50 shadow-lg rounded-lg flex items-center justify-center flex-col p-8 w-full text-center">
+                <div className="max-w-5xl mx-auto my-4">
+                    <div className="flex flex-col items-center justify-center w-full p-8 text-center rounded-lg shadow-lg bg-slate-50">
                         <IoBagCheckOutline
                             size={50}
                             className="text-green-600"
                         />
-                        <h1 className="text-2xl font-bold text-green-700 mb-2">
+                        <h1 className="mb-2 text-2xl font-bold text-green-700">
                             Purchase Successful!
                         </h1>
-                        <p className="text-gray-500 mb-6">
+                        <p className="mb-6 text-gray-500">
                             Thank you for your purchase. Your order has been
                             successfully placed.
                         </p>
-                        <div className="gap-4 flex flex-col lg:flex-row w-full items-center justify-center">
+                        <div className="flex flex-col items-center justify-center w-full gap-4 lg:flex-row">
                             <Link href={route("shop")} className="block">
-                                <button className="w-full bg-themeColor hover:bg-themeDark text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out ">
+                                <button className="w-full px-4 py-2 font-bold text-white transition duration-300 ease-in-out rounded bg-themeColor hover:bg-themeDark ">
                                     Shop
                                 </button>
                             </Link>
@@ -32,7 +32,7 @@ export default function Success({ auth }) {
                                 href={route("user.myPurchases")}
                                 className="block"
                             >
-                                <button className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                                <button className="w-full px-4 py-2 font-bold text-gray-700 transition duration-300 ease-in-out bg-gray-200 rounded hover:bg-gray-300">
                                     My Purchases
                                 </button>
                             </Link>
