@@ -85,18 +85,18 @@ export default function Cart({ auth }) {
             >
                 <ToastContainer />
                 <Head title="Cart" />
-                <div className="py-12 h-full">
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="h-full py-12">
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                         {cartsItem.length === 0 ? (
-                            <div className="container mx-auto p-4 bg-slate-50 rounded-lg  border-2 border-slate-200">
+                            <div className="container p-4 mx-auto border-2 rounded-lg bg-slate-50 border-slate-200">
                                 Cart is empty.
                             </div>
                         ) : (
-                            <div className="container mx-auto p-4 bg-slate-50 rounded-lg shadow-md">
+                            <div className="container p-4 mx-auto rounded-lg shadow-md bg-slate-50">
                                 {cartsItem.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="flex items-center justify-between p-4 w-full border-b border-gray-200"
+                                        className="flex items-center justify-between w-full p-4 border-b border-gray-200"
                                     >
                                         <div className="flex items-center w-full">
                                             <Checkbox
@@ -112,7 +112,7 @@ export default function Cart({ auth }) {
                                                 }
                                             />
 
-                                            <div className="flex w-full flex-col lg:flex-row gap-3 lg:items-center justify-between lg:justify-start">
+                                            <div className="flex flex-col justify-between w-full gap-3 lg:flex-row lg:items-center lg:justify-start">
                                                 <div className="flex gap-1 items-center lg:justify-start max-w-[57.5rem] lg:min-w-[40.5rem]">
                                                     <img
                                                         src={
@@ -149,7 +149,7 @@ export default function Cart({ auth }) {
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center justify-between w-full gap-2">
-                                                    <div className="mt-1 mr-6 relative rounded-md shadow-sm">
+                                                    <div className="relative mt-1 mr-6 rounded-md shadow-sm">
                                                         <Quantity
                                                             onQuantityChange={(
                                                                 newQuantity
@@ -170,7 +170,7 @@ export default function Cart({ auth }) {
                                                     </div>
 
                                                     <div className="flex items-center gap-2">
-                                                        <p className="text-lg mr-4 font-semibold">
+                                                        <p className="mr-4 text-lg font-semibold">
                                                             ₱{" "}
                                                             {new Intl.NumberFormat().format(
                                                                 item.product
@@ -186,7 +186,7 @@ export default function Cart({ auth }) {
                                                                     item.id
                                                                 )
                                                             }
-                                                            className="text-lg text-red-600 font-semibold"
+                                                            className="text-lg font-semibold text-red-600"
                                                         >
                                                             <FaTrash />
                                                         </button>
@@ -196,7 +196,7 @@ export default function Cart({ auth }) {
                                         </div>
                                     </div>
                                 ))}
-                                <div className="mt-4 px-4 flex w-full items-center justify-between font-semibold">
+                                <div className="flex items-center justify-between w-full px-4 mt-4 font-semibold">
                                     <p className="text-lg">
                                         Total Amount{" "}
                                         <div className="text-themeColor whitespace-nowrap">

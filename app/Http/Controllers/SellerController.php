@@ -306,6 +306,18 @@ class SellerController extends Controller
         ]);
 
         $user = $request->user();
+        $seller = $user->seller;
+
+        $hasUndeliveredOrders = OrderItem::where('seller_id', $seller->id)
+            ->whereIn('status', ['pending', 'preparing', 'shipped', 'order placed'])
+            ->exists();
+
+        if ($hasUndeliveredOrders) {
+            return back()->withErrors([
+                'password' => 'You cannot proceed while there are undelivered orders.',
+            ]);
+        }
+
 
         Auth::logout();
 

@@ -4,12 +4,16 @@ import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
-import { useForm } from "@inertiajs/react";
-import { useRef, useState } from "react";
+import { useForm, usePage } from "@inertiajs/react";
+import { useEffect, useRef, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function DeleteUserProfileForm() {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const passwordInput = useRef();
+    const { flash } = usePage().props;
     const {
         data,
         setData,
@@ -40,9 +44,19 @@ export default function DeleteUserProfileForm() {
             onFinish: () => reset(),
         });
     };
+
+    useEffect(() => {
+        if (flash.status == 'error') {
+            toast.error(flash.message);
+        } else {
+            toast.info(flash.message)
+        }
+    }, [])
+
     return (
         <>
-            <section className=" bg-slate-50 shadow-lg p-6 rounded-md">
+            <ToastContainer />
+            <section className="p-6 rounded-md shadow-lg bg-slate-50">
                 <div className="max-w-3xl">
                     <header>
                         <h2 className="text-lg font-medium text-gray-900">
@@ -92,7 +106,7 @@ export default function DeleteUserProfileForm() {
                                 onChange={(e) =>
                                     setData("password", e.target.value)
                                 }
-                                className="mt-1 block w-3/4"
+                                className="block w-3/4 mt-1"
                                 isFocused
                                 placeholder="Password"
                             />
@@ -103,7 +117,7 @@ export default function DeleteUserProfileForm() {
                             />
                         </div>
 
-                        <div className="mt-6 flex justify-end">
+                        <div className="flex justify-end mt-6">
                             <SecondaryButton onClick={closeModal}>
                                 Cancel
                             </SecondaryButton>

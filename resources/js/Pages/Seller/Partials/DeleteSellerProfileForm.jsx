@@ -6,6 +6,9 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 import { useRef, useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function DeleteSellerProfileForm() {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -42,7 +45,8 @@ export default function DeleteSellerProfileForm() {
     };
     return (
         <>
-            <section className=" bg-slate-50 shadow-lg p-6 rounded-md">
+            <ToastContainer />
+            <section className="p-6 rounded-md shadow-lg  bg-slate-50">
                 <div className="max-w-3xl">
                     <header>
                         <h2 className="text-lg font-medium text-gray-900">
@@ -92,7 +96,7 @@ export default function DeleteSellerProfileForm() {
                                 onChange={(e) =>
                                     setData("password", e.target.value)
                                 }
-                                className="mt-1 block w-3/4"
+                                className="block w-3/4 mt-1"
                                 isFocused
                                 placeholder="Password"
                             />
@@ -103,7 +107,7 @@ export default function DeleteSellerProfileForm() {
                             />
                         </div>
 
-                        <div className="mt-6 flex justify-end">
+                        <div className="flex justify-end mt-6">
                             <SecondaryButton onClick={closeModal}>
                                 Cancel
                             </SecondaryButton>
