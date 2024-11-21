@@ -17,9 +17,9 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\WithdrawRequestController;
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// Route::get('/', function () {
+//     return redirect()->route('login');
+// });
 
 
 Route::middleware('auth')
