@@ -202,8 +202,7 @@ export default function UserAuthenticatedLayout({
                         >
                             Cart
                             <div
-                                className={`ml-2 text-white rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 ${cartCount == 0 ? "" : "bg-slate-800 "
-                                    }`}
+                                className={`ml-2 text-slate-700 rounded-full h-5 text-xs  flex items-center justify-center p-0.5 w-5 `}
                             >
                                 {" "}
                                 {cartCount == 0 ? "" : cartCount}
