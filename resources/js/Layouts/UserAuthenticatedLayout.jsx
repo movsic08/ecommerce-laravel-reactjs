@@ -77,9 +77,9 @@ export default function UserAuthenticatedLayout({
                             </NavLink>
                             <NavLink href={route("message.index")}>
                                 <div className="relative ">
-                                    <span className="absolute text-sm font-bold -top-2 -right-2">
+                                    {/* <span className="absolute text-sm font-bold -top-2 -right-2">
                                         {cartCount == 0 ? "" : cartCount}
-                                    </span>
+                                    </span> */}
                                     <BsChatDots size={20} />
                                 </div>
                             </NavLink>
@@ -183,6 +183,14 @@ export default function UserAuthenticatedLayout({
                             active={route().current("dashboard")}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                    </div>
+                    <div className="pt-2 space-y-1">
+                        <ResponsiveNavLink
+                            href={route("message.index")}
+                            active={route().current("message.index")}
+                        >
+                            Messages
                         </ResponsiveNavLink>
                     </div>
 
