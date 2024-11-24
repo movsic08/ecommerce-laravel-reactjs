@@ -54,11 +54,12 @@ export default function ViewProduct({ auth }) {
 
     return (
         <>
+            {/* <ToastContainer /> */}
             <UserAuthenticatedLayout
                 user={auth.user}
                 cartNumber={auth.cartCount}
             >
-                <ToastContainer />
+
                 <Head title={product.product_name} />
 
                 {/* Modal */}
