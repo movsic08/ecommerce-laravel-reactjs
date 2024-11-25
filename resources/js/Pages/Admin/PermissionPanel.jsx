@@ -74,7 +74,7 @@ export default function PermissionPanel({ auth }) {
 
 
     const [currentSeller, setCurrentSeller] = useState();
-    const [currentStatus, setCurrentStatus] = useState('all');
+    const [currentStatus, setCurrentStatus] = useState('unverified');
 
     const handleFilterBySeller = (e) => {
         const sellerId = e.target.value === 'all' ? 'all' : e.target.value;
@@ -91,7 +91,7 @@ export default function PermissionPanel({ auth }) {
         });
     };
     const handleFilterByStatus = (e) => {
-        const status = e.target.value === 'all' ? 'all' : e.target.value;
+        const status = e.target.value === 'unverified' ? 'unverified' : e.target.value;
         setCurrentStatus(status)
 
         router.get(route('admin.permission'), {
@@ -107,7 +107,7 @@ export default function PermissionPanel({ auth }) {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const seller = urlParams.get("sortBySeller") || "all";
+        const seller = urlParams.get("sortBySeller") || "unverified";
         const status = urlParams.get("status") || "all";
         setCurrentSeller(seller);
         setCurrentStatus(status);

@@ -12,17 +12,17 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
     return (
         <>
             <div className="min-h-screen bg-white">
-                <nav className="  shadow drop-shadow-md border-b bg-white border-gray-100">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <nav className="bg-white border-b border-gray-100 shadow  drop-shadow-md">
+                    <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
-                            <div className=" flex items-center gap-6">
-                                <div className="shrink-0 flex items-center">
+                            <div className="flex items-center gap-6 ">
+                                <div className="flex items-center shrink-0">
                                     <Link
                                         href="/"
-                                        className=" flex items-center gap-1"
+                                        className="flex items-center gap-1 "
                                     >
                                         <img
-                                            className=" h-12"
+                                            className="h-12 "
                                             src={Logo}
                                             alt="Logo"
                                         />
@@ -30,7 +30,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     </Link>
                                 </div>
 
-                                <div className="hidden uppercase space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <div className="hidden space-x-8 uppercase sm:-my-px sm:ms-10 sm:flex">
                                     <NavLink
                                         href={route("admin.index")}
                                         active={route().current("admin.index")}
@@ -52,13 +52,15 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                         Users
                                     </NavLink> */}
                                     <NavLink
-                                        href={route("admin.permission")}
-                                        active={route().current(
-                                            "admin.permission"
-                                        )}
+                                        href={route("admin.permission", {
+                                            sortBySeller: 'all',
+                                            status: 'unverified'
+                                        })}
+                                        active={route().current("admin.permission")}
                                     >
                                         Permission
                                     </NavLink>
+
                                     <NavLink
                                         href={route("paymongo.payments")}
                                         active={route().current(
@@ -79,7 +81,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     </NavLink>
                                 </div>
                             </div>
-                            <div className=" gap-3 flex sm:items-center sm:ms-6">
+                            <div className="flex gap-3  sm:items-center sm:ms-6">
                                 <NavLink
                                     method="post"
                                     href={route("logout")}
@@ -89,17 +91,17 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="-me-2 flex items-center sm:hidden">
+                            <div className="flex items-center -me-2 sm:hidden">
                                 <button
                                     onClick={() =>
                                         setShowingNavigationDropdown(
                                             (previousState) => !previousState
                                         )
                                     }
-                                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                    className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500"
                                 >
                                     <svg
-                                        className="h-6 w-6"
+                                        className="w-6 h-6"
                                         stroke="currentColor"
                                         fill="none"
                                         viewBox="0 0 24 24"
@@ -149,12 +151,12 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
 
                         <div className="pt-4 pb-1 border-t border-gray-200">
                             <div className="px-4">
-                                <div className="font-medium text-base text-gray-800">
+                                <div className="text-base font-medium text-gray-800">
                                     {/* {user.first_name == null
                                         ? user.first_name
                                         : "Admin"} */}
                                 </div>
-                                <div className="font-medium text-sm text-gray-500">
+                                <div className="text-sm font-medium text-gray-500">
                                     {/* {user.email} */}
                                 </div>
                             </div>
@@ -177,13 +179,13 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
 
                 {header && (
                     <header className="bg-white shadow">
-                        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
                             {header}
                         </div>
                     </header>
                 )}
 
-                <main className=" mx-auto container p-4">{children}</main>
+                <main className="container p-4 mx-auto ">{children}</main>
             </div>
         </>
     );
