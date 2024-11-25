@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderReceivedReport;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\RedirectResponse;
@@ -43,11 +44,12 @@ class UserController extends Controller
                 'password' => 'You cannot delete your account while you have undelivered orders.',
             ]);
         }
-
-        Auth::logout();
+        OrderReceivedReport::where('buyer_id', $user->id)->delete();
+        Order::where('user_id', $user->id)->delete();
 
         $user->delete();
 
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
