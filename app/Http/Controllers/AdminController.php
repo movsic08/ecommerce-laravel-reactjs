@@ -411,10 +411,23 @@ class AdminController extends Controller
 
             DB::commit();
 
-            return redirect()->route('admin.permission')->with([
-                'message' => 'Changing status success',
-                'status' => 'success'
-            ]);
+            if (!$product->is_verified == true) {
+                return redirect()->route('admin.permission')->with([
+                    'message' => 'Changing status success',
+                    'status' => 'success'
+                ]);
+            } else {
+                return redirect()->route('admin.permission', [
+                    'sortBySeller' => 'all',
+                    'status' => 'unverified'
+                ])->with([
+                            'message' => 'Changing status success',
+                            'status' => 'success'
+                        ]);
+
+            }
+
+
         } catch (Exception $e) {
             DB::rollBack();
             Log::error('Something went wrong: ' . $e->getMessage());

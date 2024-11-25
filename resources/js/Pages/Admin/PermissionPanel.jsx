@@ -53,7 +53,7 @@ export default function PermissionPanel({ auth }) {
             return;
         }
         setIsProcessing(id);
-        router.patch(route("admin.permission.toggleVerification", id), {
+        const response = router.patch(route("admin.permission.toggleVerification", id), {
             preserveState: true,
             preserveScroll: true,
             onFinish: () => {
