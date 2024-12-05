@@ -3,10 +3,10 @@ import GuestHeader from "./GuestHeader";
 
 export default function Guest({ children }) {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="flex flex-col min-h-screen">
             <GuestHeader />
-            <main className="flex-grow flex flex-col justify-center items-center bg-gray-100">
-                <div className="w-full flex flex-col my-12 items-center justify-center sm:max-w-md mt-6 px-8 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <main className="flex flex-col items-center justify-center flex-grow bg-gray-100">
+                <div className="flex flex-col items-center justify-center w-full px-8 py-4 my-12 mt-6 overflow-hidden bg-white shadow-md sm:max-w-md sm:rounded-lg md:max-w-2xl lg:max-w-5xl">
                     {children}
                 </div>
             </main>
