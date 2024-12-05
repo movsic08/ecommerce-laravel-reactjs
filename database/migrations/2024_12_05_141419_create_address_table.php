@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('full_address');
-            $table->string('region_code');
+            $table->string('region');
             $table->smallInteger('active')->default(false);
             $table->timestamps();
         });
