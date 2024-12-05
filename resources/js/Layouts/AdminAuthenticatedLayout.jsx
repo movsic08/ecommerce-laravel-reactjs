@@ -79,6 +79,16 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     >
                                         Requests
                                     </NavLink>
+                                    <NavLink
+                                        href={route(
+                                            "admin.reportedProducts"
+                                        )}
+                                        active={route().current(
+                                            "admin.reportedProducts"
+                                        )}
+                                    >
+                                        Reported Products
+                                    </NavLink>
                                 </div>
                             </div>
                             <div className="flex gap-3  sm:items-center sm:ms-6">
