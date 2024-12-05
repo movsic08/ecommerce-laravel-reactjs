@@ -16,6 +16,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\WithdrawRequestController;
+use App\Http\Controllers\ReportProductController;
 
 // Route::get('/', function () {
 //     return redirect()->route('login');
@@ -57,6 +58,7 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::post('chat-seller', [MessageController::class, 'createMessage'])->name('chat.seller');
     Route::post('store-chat', [MessageController::class, 'store'])->name('store.chat');
     Route::patch('delete-my-chat', [MessageController::class, 'deleteByCustomer'])->name('customer.delete.convo');
+    Route::post('/reports', [ReportProductController::class, 'store']);
 });
 
 
@@ -76,6 +78,9 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
     Route::get('paymongo/payments/{id}', [AdminController::class, 'paymentInfo'])->name('paymongo.payment.info');
     Route::get('widthdrawal-lists', [WithdrawRequestController::class, 'index'])->name('widthdrawal.request.index');
     Route::post('widthdrawal-lists/update/{id}/{status}/{amount}', [WithdrawRequestController::class, 'updateRequest'])->name('withdrawal.request.update');
+    Route::get('/reported-products', [ReportProductController::class, 'show'])->name('admin.reportedProducts');
+    Route::post('/reports/{id}/verify', [ReportProductController::class, 'verifyReport']);
+    Route::post('/reports/{id}/reject', [ReportProductController::class, 'rejectReport']);
 });
 
 // //unverified seller account
