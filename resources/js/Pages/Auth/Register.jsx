@@ -4,11 +4,12 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import GuestFooter from "@/Layouts/GuestFooter";
 import axios from "axios";
 
 export default function Register() {
+    const { flash } = usePage().props;
     const { data, setData, post, processing, errors, reset, setError } = useForm({
         first_name: "",
         last_name: "",
@@ -32,24 +33,7 @@ export default function Register() {
         };
     }, []);
 
-    const submit = (e) => {
-        e.preventDefault();
 
-        if (!data.region || !data.province || !data.city_municipality || !data.barangay) {
-            setError({
-                region: !data.region ? "Region is required." : undefined,
-                province: !data.province ? "Province is required." : undefined,
-                city_municipality: !data.city_municipality
-                    ? "City/Municipality is required."
-                    : undefined,
-                barangay: !data.barangay ? "Barangay is required." : undefined,
-            });
-            return;
-        }
-        return console.log('submitted data', data)
-        // If no errors, submit the form
-        post(route("register"));
-    };
 
     const [regions, setRegions] = useState([]);
     const [provinces, setProvinces] = useState([]);
@@ -110,7 +94,29 @@ export default function Register() {
             setBarangays([]);
         }
     }, [selectedCitiesMunicipalities]);
-    console.log(data)
+
+    const submit = (e) => {
+        e.preventDefault();
+        try {
+            if (!data.region || !data.province || !data.city_municipality || !data.barangay) {
+                setError({
+                    region: !data.region ? "Region is required." : undefined,
+                    province: !data.province ? "Province is required." : undefined,
+                    city_municipality: !data.city_municipality
+                        ? "City/Municipality is required."
+                        : undefined,
+                    barangay: !data.barangay ? "Barangay is required." : undefined,
+                });
+                return;
+            }
+            // return console.log('submitted data', data)
+            // If no errors, submit the form
+            post(route("register"));
+        } catch (error) {
+            console.log(error)
+        }
+
+    };
     return (
         <>
             <GuestLayout>
