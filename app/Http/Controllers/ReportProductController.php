@@ -25,6 +25,7 @@ class ReportProductController extends Controller
             'seller_id' => $product->seller_id,
             'reason' => $validated['reason'],
             'details' => $validated['details'],
+            'user_id' => auth()->id(), 
         ]);
 
         session()->flash('success', 'Report submitted successfully.');
@@ -38,70 +39,56 @@ class ReportProductController extends Controller
             'reports' => $reports,
         ]);
     }
-
-public function verifyReport($id)
+    public function verifyReport($id)
 {
     $report = Report::findOrFail($id);
+    $recipientId = $report->user_id ?? 1; 
     $product = $report->product;
     $product->update(['is_verified' => 0]);
     Notification::create([
         'title' => 'Product Report Verified',
         'body' => 'Your product "' . $product->product_name . '" has been reported and disabled from the platform.',
         'is_read' => 0,
-        'created_by' => auth()->id(),
-        'to_user_id' => $product->seller->user_id,  
+        'created_by' => 1,  
+        'to_user_id' => $product->seller->user_id, 
     ]);
-
-    if ($report->created_by) {
+    if ($recipientId) {
         Notification::create([
             'title' => 'Report Approved',
             'body' => 'The product "' . $product->product_name . '" you reported has been verified and disabled.',
             'is_read' => 0,
-            'created_by' => auth()->id(),
-            'to_user_id' => $report->created_by,  
-        ]);
-    } else {
-        Notification::create([
-            'title' => 'Report Approved - No Reporter Found',
-            'body' => 'A report for the product "' . $product->product_name . '" has been approved, but no reporter information was found.',
-            'is_read' => 0,
-            'created_by' => auth()->id(),
-            'to_user_id' => 1,  
+            'created_by' => auth()->id(),  
+            'to_user_id' => $recipientId, 
         ]);
     }
-
     $report->delete();
-
     session()->flash('success', 'Report verified and product disabled.');
     return back();
 }
 
-
     public function rejectReport($id)
     {
-        $report = Report::findOrFail($id);
-        
-        if ($report->created_by) {
-            Notification::create([
-                'title' => 'Report Rejected',
-                'body' => 'Your report for the product "' . $report->product->product_name . '" has been rejected.',
-                'is_read' => 0,
-                'created_by' => auth()->id(), 
-                'to_user_id' => $report->created_by,  
-            ]);
-        } else {
-            Notification::create([
-                'title' => 'Report Rejected - No Reporter Found',
-                'body' => 'A report for the product "' . $report->product->product_name . '" has been rejected, but no reporter information was found.',
-                'is_read' => 0,
-                'created_by' => auth()->id(),
-                'to_user_id' => 1, 
-            ]);
-        }
-                $report->delete();
-        
+        $report = Report::with('user')->findOrFail($id);
+    
+        $recipientId = $report->user->id ?? 1; 
+    
+        Notification::create([
+            'title' => 'Report Rejected',
+            'body' => 'Your report for the product "' . $report->product->product_name . '" has been rejected.',
+            'is_read' => 0,
+            'created_by' => auth()->id(),
+            'to_user_id' => $recipientId,  
+        ]);
+    
+        $report->delete();
+    
         session()->flash('success', 'Report rejected successfully.');
+    
         return back();
     }
+    
+
+    
+    
     
 }

@@ -126,13 +126,20 @@ function ReportModal({ productId, isReportModalVisible, onClose }) {
                                     />
                                     Other (please specify)
                                 </label>
-                                <textarea
-                                    value={data.details}
-                                    onChange={(e) => setData('details', e.target.value)}
-                                    placeholder="Provide additional details..."
-                                    className="w-full p-2 border rounded"
-                                />
-                                <label className="text-sm font-medium text-slate-500">{data.details.length}/300</label>
+                                {data.reason === 'Other' && (
+                                    <div>
+                                        <textarea
+                                            value={data.details}
+                                            onChange={(e) => setData('details', e.target.value)}
+                                            placeholder="Provide additional details..."
+                                            className="w-full p-2 border rounded"
+                                            maxLength={300}
+                                        />
+                                        <label className="text-sm font-medium text-slate-500">
+                                            {data.details.length}/300
+                                        </label>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="mt-4 flex justify-end space-x-2">

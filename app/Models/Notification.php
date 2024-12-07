@@ -16,7 +16,7 @@ class Notification extends Model
     'body',
     'is_read',
     'created_by',
-    'to_user_id'
+    'to_user_id',
   ];
 
   public function createdBy()

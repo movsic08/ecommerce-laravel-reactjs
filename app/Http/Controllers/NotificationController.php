@@ -17,7 +17,6 @@ class NotificationController extends Controller
     $notification = Notification::where('to_user_id', auth()->id())
       ->orderBy('created_at', 'desc')
       ->get();
-
     return Inertia::render('Seller/Notification', [
       'notifications' => $notification
     ]);
@@ -64,6 +63,20 @@ class NotificationController extends Controller
     return redirect()->back();
   }
 
+  public function notification()
+  {
+      $notification = Notification::where('to_user_id', auth()->id())
+          ->orderBy('created_at', 'desc')
+          ->get();
+      
+      // dd($notification);
+  
+      return Inertia::render('Shop/Notification', [
+          'notifications' => $notification,
+      ]);
+  }
+  
+  
 
   /**
    * Show the form for creating a new resource.

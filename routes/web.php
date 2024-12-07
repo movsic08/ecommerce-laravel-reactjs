@@ -59,6 +59,10 @@ Route::middleware('auth', 'customer')->group(function () {
     Route::post('store-chat', [MessageController::class, 'store'])->name('store.chat');
     Route::patch('delete-my-chat', [MessageController::class, 'deleteByCustomer'])->name('customer.delete.convo');
     Route::post('/reports', [ReportProductController::class, 'store']);
+    Route::get('/notification', [NotificationController::class, 'notification'])->name('notification.show');
+    Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::patch('/notifications/{id}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('notifications.markAsUnread');
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
 
 

@@ -23,7 +23,6 @@ export default function ViewProduct({ auth, success }) {
     const handleQuantityChange = (newQuantity) => {
         setBuyingQuantity(newQuantity);
     };
-
     const toggleModal = () => {
         setModalOpen(!modalOpen);
     };

@@ -42,7 +42,6 @@ export default function Notification({ auth }) {
             }
         );
     };
-
     const handleMarkAsUnread = (id) => {
         router.patch(
             `/seller/notifications/${id}/mark-as-unread`,
@@ -74,15 +73,13 @@ export default function Notification({ auth }) {
                                 No notifications available.
                             </p>
                         )}
-
                         {notificationList.map((notification) => (
                             <div
                                 key={notification.id}
-                                className={`p-4 rounded shadow-lg ${
-                                    notification.is_read
-                                        ? "bg-white text-mainText"
-                                        : "bg-themeColor text-white"
-                                }`}
+                                className={`p-4 rounded shadow-lg ${notification.is_read
+                                    ? "bg-white text-mainText"
+                                    : "bg-themeColor text-white"
+                                    }`}
                             >
                                 <h3 className="text-lg font-semibold">
                                     {notification.title}
@@ -97,7 +94,7 @@ export default function Notification({ auth }) {
 
                                 <div className="mt-2 flex items-center justify-between space-x-2">
                                     <div className="flex space-x-2">
-                                        {}
+                                        { }
                                         {notification.is_read ? (
                                             <button
                                                 onClick={() =>
@@ -135,7 +132,6 @@ export default function Notification({ auth }) {
                                                 : "Delete"}
                                         </button>
                                     </div>
-
                                     <small className="text-sm">
                                         {formatDistanceToNow(
                                             new Date(notification.created_at),

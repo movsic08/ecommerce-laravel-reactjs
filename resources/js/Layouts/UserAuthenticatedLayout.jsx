@@ -3,6 +3,7 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/react";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import UserCartIcon from "@/assets/icons/UserCartIcon.svg";
 import Logo from "@/assets/icons/Logo.svg";
 import { BsChatDots } from "react-icons/bs";
@@ -12,6 +13,7 @@ export default function UserAuthenticatedLayout({
     cartNumber,
     header,
     children,
+    notificationCount,
 }) {
     const [cartCount, setCartCount] = useState(
         cartNumber == null ? 0 : cartNumber
@@ -23,6 +25,13 @@ export default function UserAuthenticatedLayout({
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+    const [notification, setNotification] = useState(
+        notificationCount == null ? null : notificationCount
+    );
+
+    useEffect(() => {
+        setNotification(notificationCount);
+    }, [notificationCount]);
     return (
         <div className="flex flex-col min-h-screen bg-white">
             <nav className="z-30 bg-white border-b border-gray-100 shadow drop-shadow-md">
@@ -61,7 +70,6 @@ export default function UserAuthenticatedLayout({
                                 My Purchases
                             </NavLink>
                         </div>
-
                         <div className="items-center justify-between hidden gap-3 md:flex sm:ms-6">
                             <NavLink href={route("user-cart")}>
                                 <div className="relative ">
@@ -83,7 +91,20 @@ export default function UserAuthenticatedLayout({
                                     <BsChatDots size={20} />
                                 </div>
                             </NavLink>
-
+                            <div className="relative flex items-center justify-center">
+                                {notification == 0 || notification == null ? (
+                                    ""
+                                ) : (
+                                    <small className="absolute -top-0.5 -right-0.5 z-10 text-white text-[0.50rem] bg-slate-900 p-1 flex items-center justify-center h-4 w-4 rounded-lg border-2 border-white">
+                                        {notification}
+                                    </small>
+                                )}
+                                <NavLink
+                                    href={route("notification.show")}
+                                >
+                                    <IoMdNotificationsOutline size={20} />
+                                </NavLink>
+                            </div>
                             <div className="relative ">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -193,7 +214,6 @@ export default function UserAuthenticatedLayout({
                             Messages
                         </ResponsiveNavLink>
                     </div>
-
                     <div className="pt-2space-y-1">
                         <ResponsiveNavLink
                             className="flex items-center "
