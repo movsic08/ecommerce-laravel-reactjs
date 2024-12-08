@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ShippingRateController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
@@ -85,6 +86,7 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
     Route::get('/reported-products', [ReportProductController::class, 'show'])->name('admin.reportedProducts');
     Route::post('/reports/{id}/verify', [ReportProductController::class, 'verifyReport']);
     Route::post('/reports/{id}/reject', [ReportProductController::class, 'rejectReport']);
+    Route::get('shipping-rates', [ShippingRateController::class, 'getShippingRates'])->name('admin.get.shipping-rates');
 });
 
 // //unverified seller account

@@ -12,7 +12,7 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
     return (
         <>
             <div className="min-h-screen bg-white">
-                <nav className="bg-white border-b border-gray-100 shadow  drop-shadow-md">
+                <nav className="bg-white border-b border-gray-100 shadow drop-shadow-md">
                     <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                         <div className="flex justify-between h-16">
                             <div className="flex items-center gap-6 ">
@@ -89,9 +89,19 @@ export default function AdminAuthenticatedLayout({ user, header, children }) {
                                     >
                                         Reported Products
                                     </NavLink>
+                                    <NavLink
+                                        href={route(
+                                            "admin.get.shipping-rates"
+                                        )}
+                                        active={route().current(
+                                            "admin.get.shipping-rates"
+                                        )}
+                                    >
+                                        Shipping Rates
+                                    </NavLink>
                                 </div>
                             </div>
-                            <div className="flex gap-3  sm:items-center sm:ms-6">
+                            <div className="flex gap-3 sm:items-center sm:ms-6">
                                 <NavLink
                                     method="post"
                                     href={route("logout")}
