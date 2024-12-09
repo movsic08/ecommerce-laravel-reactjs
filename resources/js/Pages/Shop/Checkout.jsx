@@ -84,7 +84,7 @@ export default function Checkout({ auth }) {
             toast.info(flash.message);
         }
     }, [flash]);
-
+    console.log(products)
     return (
         <UserAuthenticatedLayout user={auth.user}>
             <Head title="Checkout" />
@@ -103,10 +103,13 @@ export default function Checkout({ auth }) {
                 </div>
                 <form onSubmit={handleSubmit} className="mt-6" method="POST">
                     <div className="p-4 bg-gray-100 rounded-lg">
-                        <h2 className="flex items-center gap-2 mb-2 text-2xl font-semibold text-gray-700">
-                            <FaLocationDot className="text-gray-600" /> Delivery
-                            Address
-                        </h2>
+                        <div className="flex items-center justify-between">
+                            <h2 className="flex items-center gap-2 mb-2 text-2xl font-semibold text-gray-700">
+                                <FaLocationDot className="text-gray-600" /> Delivery
+                                Address
+                            </h2>
+                            <button className="duration-300 ease-in-out hover:text-themeColor">Change Address</button>
+                        </div>
                         <div className="text-gray-600">
                             {name} | {phone_no}
                         </div>
@@ -157,6 +160,11 @@ export default function Checkout({ auth }) {
                                         <p className="text-gray-500">
                                             Quantity: {item.buying_quantity}
                                         </p>
+                                        <p className="text-gray-500">
+                                            Weight:  {Number(item.product.weight) < 1
+                                                ? `${(Number(item.product.weight) * 1000).toFixed(0)} g`
+                                                : `${Number(item.product.weight).toFixed(2)} kg`}
+                                        </p>
                                     </div>
                                 </div>
                                 <p className="text-xl font-bold text-gray-800">
@@ -174,6 +182,9 @@ export default function Checkout({ auth }) {
                     <h2 className="mt-6 text-2xl font-semibold text-gray-800">
                         Order Summary
                     </h2>
+                    <div className="flex justify-between mt-2 font-semibold text-gray-700">
+                        <span>Total Shipping Fee: </span>
+                    </div>
                     <div className="flex justify-between mt-2 font-semibold text-gray-700">
                         <span>Total Items:</span>
                         <span>{totalItems}</span>
