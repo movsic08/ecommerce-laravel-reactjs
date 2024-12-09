@@ -7,6 +7,7 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import GuestFooter from "@/Layouts/GuestFooter";
 import axios from "axios";
+import RegisterLayout from "@/Layouts/RegisterLayout";
 
 export default function Register() {
     const { flash } = usePage().props;
@@ -119,7 +120,7 @@ export default function Register() {
     };
     return (
         <>
-            <GuestLayout>
+            <RegisterLayout>
                 <Head title="Register" />
                 <h1 className="py-4 text-3xl font-bold uppercase text-mainText">
                     Create account
@@ -389,7 +390,7 @@ export default function Register() {
                         </Link>
                     </div>
                 </form>
-            </GuestLayout>
+            </RegisterLayout>
             <GuestFooter />
         </>
     );
