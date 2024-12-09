@@ -48,7 +48,7 @@ export default function ViewProduct({ auth, success }) {
                 rating={product.rating}
             />
             <div className="py-2 bg-slate-50 max-h-max">
-                <div className="mx-auto max-w-7xl  sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="container p-4 mx-auto">
                         <div className="flex flex-col lg:flex-row">
                             <div className="w-full lg:w-[40%] p-4">
@@ -97,6 +97,14 @@ export default function ViewProduct({ auth, success }) {
                                     <span className="font-semibold">Sold:</span> {product.sold}
                                 </div>
                                 <div>
+                                    <span className="font-semibold">Weight: </span>
+                                    {Number(product.weight) < 1
+                                        ? `${(Number(product.weight) * 1000).toFixed(0)} g`
+                                        : `${Number(product.weight).toFixed(2)} kg`}
+                                </div>
+
+
+                                <div>
                                     <Quantity
                                         currentStock={product.quantity}
                                         quantity={1}
@@ -123,7 +131,7 @@ export default function ViewProduct({ auth, success }) {
                                     </Link> */}
                                     <CreateChatModal productData={product} />
                                     <button
-                                        className="bg-red-500 text-white rounded-md px-6 py-2"
+                                        className="px-6 py-2 text-white bg-red-500 rounded-md"
                                         onClick={() => setReportModalVisible(true)}
                                     >
                                         {reportStatus}
