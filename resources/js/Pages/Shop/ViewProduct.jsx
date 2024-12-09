@@ -102,9 +102,10 @@ export default function ViewProduct({ auth, success }) {
                                         ? `${(Number(product.weight) * 1000).toFixed(0)} g`
                                         : `${Number(product.weight).toFixed(2)} kg`}
                                 </div>
-
-
                                 <div>
+                                    {/* <div>
+                                        <span className="font-semibold">Shipping Fee:</span>c Php.
+                                    </div> */}
                                     <Quantity
                                         currentStock={product.quantity}
                                         quantity={1}

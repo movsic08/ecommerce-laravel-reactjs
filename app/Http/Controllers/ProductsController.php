@@ -1,13 +1,14 @@
 <?php
 
     namespace App\Http\Controllers;
-
+    use Illuminate\Support\Facades\Auth;
     use App\Http\Resources\Seller\ViewProductResource;
     use App\Models\Category;
     use App\Models\MonthlySalesReport;
     use Inertia\Inertia;
     use App\Models\Products;
     use App\Models\ProductsImages;
+    use App\Models\ShippingRate;
     use App\Models\Seller;
     use Exception;
     use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -113,7 +114,6 @@
                 abort(403, 'Product not found');
             }
         }
-
         public function sellerViewEditProduct(int $id)
         {
             $product = Products::with('images')->findOrFail($id);

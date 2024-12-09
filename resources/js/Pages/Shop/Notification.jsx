@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import UserAuthenticatedLayout from "@/Layouts/UserAuthenticatedLayout";
 import { Head, router, usePage } from "@inertiajs/react";
-
 export default function Notification({ auth }) {
     const { notifications } = usePage().props;
     const [notificationList, setNotificationList] = useState(notifications);
     const [isDeleting, setIsDeleting] = useState(null);
-
     const handleDelete = (id) => {
         setIsDeleting(id);
-
         router.delete(`/notifications/${id}`, {
             preserveScroll: true,
             onSuccess: (page) => {
@@ -24,7 +21,6 @@ export default function Notification({ auth }) {
             },
         });
     };
-
     const handleMarkAsRead = (id) => {
         router.patch(
             `/notifications/${id}/mark-as-read`,
@@ -40,7 +36,6 @@ export default function Notification({ auth }) {
             }
         );
     };
-
     const handleMarkAsUnread = (id) => {
         router.patch(
             `/notifications/${id}/mark-as-unread`,
@@ -56,7 +51,6 @@ export default function Notification({ auth }) {
             }
         );
     };
-
     return (
         <UserAuthenticatedLayout user={auth.user} notificationCount={auth.notificationCount}>
             <Head title="Customer - Notification" />

@@ -86,7 +86,8 @@ Route::prefix('admin')->middleware('admin', 'auth')->group(function () {
     Route::get('/reported-products', [ReportProductController::class, 'show'])->name('admin.reportedProducts');
     Route::post('/reports/{id}/verify', [ReportProductController::class, 'verifyReport']);
     Route::post('/reports/{id}/reject', [ReportProductController::class, 'rejectReport']);
-    Route::get('shipping-rates', [ShippingRateController::class, 'getShippingRates'])->name('admin.get.shipping-rates');
+    Route::get('/shipping-rates', [ShippingRateController::class, 'getShippingRates'])->name('admin.get.shipping-rates');
+    Route::put('/shipping-rates/{id}', [ShippingRateController::class, 'updateShippingRate']);
 });
 
 // //unverified seller account

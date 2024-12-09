@@ -17,5 +17,6 @@ class Address extends Model
         'active',
     ];
 
-
+    
+    
 }

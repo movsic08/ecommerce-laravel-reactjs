@@ -42,12 +42,9 @@ class NotificationController extends Controller
   {
     $notification = Notification::findOrFail($id);
     $notification->update(['is_read' => true]);
-
-    // Fetch the updated notifications
     $notifications = Notification::where('to_user_id', auth()->id())
       ->orderBy('created_at', 'desc')
       ->get();
-
     return redirect()->back();
   }
 

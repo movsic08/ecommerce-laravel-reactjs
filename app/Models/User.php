@@ -76,4 +76,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class, 'address_id');
     }
+
+
 }
