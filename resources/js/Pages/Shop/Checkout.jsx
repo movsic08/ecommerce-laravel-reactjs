@@ -108,7 +108,7 @@ export default function Checkout({ auth }) {
                                 <FaLocationDot className="text-gray-600" /> Delivery
                                 Address
                             </h2>
-                            <button className="duration-300 ease-in-out hover:text-themeColor">Change Address</button>
+                            <button disabled className="duration-300 ease-in-out hover:text-themeColor">Change Address</button>
                         </div>
                         <div className="text-gray-600">
                             {name} | {phone_no}
